@@ -27,9 +27,10 @@ public class Setting : WindowServant2D
         UIHelper.getByName<UIToggle>(gameObject, "resize_").value = UIHelper.fromStringToBool(Config.Get("resize_", "0"));
         UIHelper.getByName<UIToggle>(gameObject, "longField_").value = UIHelper.fromStringToBool(Config.Get("longField_", "0"));
 
-        //显示FPS
+        //显示与限制FPS
         UIHelper.registEvent(gameObject, "ShowFPS_", onShowFPS);
         ShowFPS = UIHelper.getByName<UIToggle>(gameObject, "ShowFPS_").value = UIHelper.fromStringToBool(Config.Get("ShowFPS_", "0"));
+        UIHelper.registEvent(setting.LimitFPS.gameObject, onchangeFPS);
 
         if (QualitySettings.GetQualityLevel()<3)
         {
@@ -72,6 +73,7 @@ public class Setting : WindowServant2D
         }
         setting.showoffATK.value = Config.Get("showoffATK","1800");
         setting.showoffStar.value = Config.Get("showoffStar", "5");
+        setting.LimitFPS.value = Config.Get("LimitFPS", "144");
         UIHelper.registEvent(setting.showoffATK.gameObject, onchangeClose);
         UIHelper.registEvent(setting.showoffStar.gameObject, onchangeClose);
         UIHelper.registEvent(setting.mouseEffect.gameObject, onchangeMouse);
@@ -83,6 +85,19 @@ public class Setting : WindowServant2D
         onchangeMouse();
         onchangeCloud();
         setScreenSizeValue();
+    }
+
+    private void onchangeFPS()
+    {
+        try
+        {
+            int FPS = int.Parse(setting.LimitFPS.value);
+            Application.targetFrameRate = FPS;
+        }
+        catch
+        {
+            Application.targetFrameRate = 144;
+        }
     }
 
     private void onShowFPS()
@@ -265,6 +280,7 @@ public class Setting : WindowServant2D
         }
         Config.Set("showoffATK", setting.showoffATK.value.ToString());
         Config.Set("showoffStar", setting.showoffStar.value.ToString());
+        Config.Set("LimitFPS", setting.LimitFPS.value.ToString());
         Config.Set("resize_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "resize_").value));
         Config.Set("maximize_", UIHelper.fromBoolToString(UIHelper.isMaximized()));
     }
