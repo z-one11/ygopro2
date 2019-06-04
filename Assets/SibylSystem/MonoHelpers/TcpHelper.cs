@@ -15,6 +15,7 @@ public static class TcpHelper
     static  NetworkStream networkStream = null;
 
     static bool canjoin = true;
+    static bool roomListChecking = false;
 
     public static void join(string ipString, string name, string portString, string pswString, string version)
     {
@@ -30,6 +31,14 @@ public static class TcpHelper
                     Thread t = new Thread(receiver);
                     t.Start();
                     CtosMessage_PlayerInfo(name);
+                    if (pswString == "L")
+                    {
+                        roomListChecking = true;
+                    }
+                    else
+                    { 
+                        roomListChecking = false;
+                    }
                     CtosMessage_JoinGame(pswString, version);
                 }
                 catch (Exception e)
@@ -162,6 +171,9 @@ public static class TcpHelper
                                 break;
                             case StocMessage.HsWatchChange:
                                 Program.I().room.StocMessage_HsWatchChange(r);
+                                break;
+                            case YGOSharp.Network.Enums.StocMessage.RoomList:
+                                ((Room)Program.I().room).StocMessage_RoomList(r);
                                 break;
                             default:
                                 break;
