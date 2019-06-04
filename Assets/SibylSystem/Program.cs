@@ -293,9 +293,9 @@ public class Program : MonoBehaviour
             {
                 GameStringManager.initialize("cdb/strings.conf");
             }
-            if (File.Exists("diy/strings.conf"))
+            if (File.Exists("expansions/strings.conf"))
             {
-                GameStringManager.initialize("diy/strings.conf");
+                GameStringManager.initialize("expansions/strings.conf");
             }
             YGOSharp.BanlistManager.initialize("config/lflist.conf");
 
@@ -311,16 +311,16 @@ public class Program : MonoBehaviour
                 }
             }
 
-            if (Directory.Exists("diy"))
+            if (Directory.Exists("expansions"))
             {
-                fileInfos = (new DirectoryInfo("diy")).GetFiles();
+                fileInfos = (new DirectoryInfo("expansions")).GetFiles();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
                     {
                         if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                         {
-                            YGOSharp.CardsManager.initialize("diy/" + fileInfos[i].Name);
+                            YGOSharp.CardsManager.initialize("expansions/" + fileInfos[i].Name);
                         }
                     }
                 }
