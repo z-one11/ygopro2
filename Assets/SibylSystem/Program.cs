@@ -826,6 +826,14 @@ public class Program : MonoBehaviour
 
     #region MonoBehaviors
 
+    private float LastUpdateShowTime = 0f;
+
+    private float UpdateShowDeltaTime = 1f;  //更新帧率
+
+    private int FrameUpdate = 0;
+
+    private float FPS = 0;
+
     void Start()
     {
         if (Screen.width < 100 || Screen.height < 100)
@@ -838,6 +846,8 @@ public class Program : MonoBehaviour
         instance = this;
         initialize();
         go(500, () => { gameStart(); });
+
+        LastUpdateShowTime = Time.realtimeSinceStartup;
     }
 
     int preWid = 0;
@@ -849,14 +859,27 @@ public class Program : MonoBehaviour
     void OnGUI()
     {
         if (Event.current.type == EventType.ScrollWheel)
+        {
             _padScroll = -Event.current.delta.y / 100;
+        }
         else
+        {
             _padScroll = 0;
+        }
+
+        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 100, 100), "FPS: " + FPS); } } catch{}
     }
 
     void Update()
     {
-       
+        FrameUpdate++;
+        if(Time.realtimeSinceStartup - LastUpdateShowTime >= UpdateShowDeltaTime)
+        {
+            FPS = FrameUpdate / (Time.realtimeSinceStartup - LastUpdateShowTime);
+            FrameUpdate = 0;
+            LastUpdateShowTime = Time.realtimeSinceStartup;
+        }
+
         if (preWid != Screen.width || preheight != Screen.height)
         {
             Resources.UnloadUnusedAssets();

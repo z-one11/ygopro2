@@ -6,6 +6,8 @@ public class Setting : WindowServant2D
 
     public LAZYsetting setting;
 
+    public bool ShowFPS;
+
     public override void initialize()
     {
         gameObject = createWindow(this, Program.I().new_ui_setting);
@@ -24,6 +26,11 @@ public class Setting : WindowServant2D
         UIHelper.getByName<UIToggle>(gameObject, "spyer_").value = UIHelper.fromStringToBool(Config.Get("spyer_", "1"));
         UIHelper.getByName<UIToggle>(gameObject, "resize_").value = UIHelper.fromStringToBool(Config.Get("resize_", "0"));
         UIHelper.getByName<UIToggle>(gameObject, "longField_").value = UIHelper.fromStringToBool(Config.Get("longField_", "0"));
+
+        //显示FPS
+        UIHelper.registEvent(gameObject, "ShowFPS_", onShowFPS);
+        ShowFPS = UIHelper.getByName<UIToggle>(gameObject, "ShowFPS_").value = UIHelper.fromStringToBool(Config.Get("ShowFPS_", "0"));
+
         if (QualitySettings.GetQualityLevel()<3)
         {
             UIHelper.getByName<UIToggle>(gameObject, "high_").value = false;
@@ -76,6 +83,12 @@ public class Setting : WindowServant2D
         onchangeMouse();
         onchangeCloud();
         setScreenSizeValue();
+    }
+
+    private void onShowFPS()
+    {
+        ShowFPS = !ShowFPS;
+        save();
     }
 
     private void readVales()
@@ -265,6 +278,7 @@ public class Setting : WindowServant2D
         Config.Set("handPosition_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "handPosition_").value));
         Config.Set("handmPosition_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "handmPosition_").value));
         Config.Set("spyer_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "spyer_").value));
+        Config.Set("ShowFPS_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ShowFPS_").value));
         if (UIHelper.getByName<UIToggle>(gameObject, "high_").value)
         {
             QualitySettings.SetQualityLevel(5);
