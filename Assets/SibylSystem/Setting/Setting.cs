@@ -6,6 +6,8 @@ public class Setting : WindowServant2D
 
     public LAZYsetting setting;
 
+    public UIToggle isBGMMute;
+
     public bool ShowFPS;
 
     public override void initialize()
@@ -26,6 +28,10 @@ public class Setting : WindowServant2D
         UIHelper.getByName<UIToggle>(gameObject, "spyer_").value = UIHelper.fromStringToBool(Config.Get("spyer_", "1"));
         UIHelper.getByName<UIToggle>(gameObject, "resize_").value = UIHelper.fromStringToBool(Config.Get("resize_", "0"));
         UIHelper.getByName<UIToggle>(gameObject, "longField_").value = UIHelper.fromStringToBool(Config.Get("longField_", "0"));
+
+        //BGM
+        isBGMMute = UIHelper.getByName<UIToggle>(gameObject, "muteBGM");
+        UIHelper.getByName<UIToggle>(gameObject, "muteBGM").value = UIHelper.fromStringToBool(Config.Get("muteBGMAudio", "0"));
 
         //显示与限制FPS
         UIHelper.registEvent(gameObject, "ShowFPS_", onShowFPS);
@@ -52,6 +58,7 @@ public class Setting : WindowServant2D
         UIHelper.registEvent(gameObject, "size_", onChangeSize);
         //UIHelper.registEvent(gameObject, "alpha_", onChangeAlpha);
         UIHelper.registEvent(gameObject, "vSize_", onChangeVsize);
+        UIHelper.registEvent(gameObject, "muteBGM", muteBGM);
         sliderSize = UIHelper.getByName<UISlider>(gameObject, "size_");
         //sliderAlpha = UIHelper.getByName<UISlider>(gameObject, "alpha_");
         sliderVsize = UIHelper.getByName<UISlider>(gameObject, "vSize_");
@@ -85,6 +92,25 @@ public class Setting : WindowServant2D
         onchangeMouse();
         onchangeCloud();
         setScreenSizeValue();
+    }
+
+    private void muteBGM()
+    {
+        if (!isBGMMute.value)
+        {
+            if (Program.I().bgm != null)
+            {
+                Program.I().bgm.Start();
+            }
+        }
+        else
+        {
+            if (Program.I().bgm != null && Program.I().bgm.audioSource != null)
+            {
+                Program.I().bgm.audioSource.Stop();
+            }
+        }
+        save();
     }
 
     private void onchangeFPS()
@@ -294,6 +320,7 @@ public class Setting : WindowServant2D
         Config.Set("handPosition_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "handPosition_").value));
         Config.Set("handmPosition_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "handmPosition_").value));
         Config.Set("spyer_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "spyer_").value));
+        Config.Set("muteBGMAudio", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "muteBGM").value));
         Config.Set("ShowFPS_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ShowFPS_").value));
         if (UIHelper.getByName<UIToggle>(gameObject, "high_").value)
         {
