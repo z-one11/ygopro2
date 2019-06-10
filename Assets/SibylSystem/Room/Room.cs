@@ -741,6 +741,7 @@ public class Room : WindowServantSP
                         RMSshow_onlyYes("", GameStringManager.get_unsafe(1406), null);
                         break;
                 }
+                ColorRed("ready_");//未准备
                 break;
             case 3:
                 RMSshow_onlyYes("", InterString.Get("更换副卡组失败，请检查卡片张数是否一致。"), null);
@@ -963,6 +964,30 @@ public class Room : WindowServantSP
                 }
             }
         }
+
+        if (mode != 2)
+        {
+            if (realPlayers[0].getIfPreped() && realPlayers[1].getIfPreped())
+            {
+                ColorGreen("start_");//已准备完成
+            }
+            else
+            {
+                ColorRed("start_");//未准备完成
+            }
+        }
+        else
+        {
+            if (realPlayers[0].getIfPreped() && realPlayers[1].getIfPreped() && realPlayers[2].getIfPreped() && realPlayers[3].getIfPreped())
+            {
+                ColorGreen("start_");//已准备完成
+            }
+            else
+            {
+                ColorRed("start_");//未准备完成
+            }
+        }
+
     }
 
     lazyRoom lazyRoom = null;
@@ -1037,11 +1062,13 @@ public class Room : WindowServantSP
         }
         if (arg2)
         {
+            ColorGreen("ready_");//已准备
             TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse","miaouwu") + ".ydk"));
             TcpHelper.CtosMessage_HsReady();
         }
         else
         {
+            ColorRed("ready_");//未准备
             TcpHelper.CtosMessage_HsNotReady();
         }
     }
@@ -1088,10 +1115,12 @@ public class Room : WindowServantSP
             {
                 if (realPlayers[selftype].getIfPreped())
                 {
+                    ColorRed("ready_");//未准备
                     TcpHelper.CtosMessage_HsNotReady();
                 }
                 else
                 {
+                    ColorGreen("ready_");//已准备
                     TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse", "wizard") + ".ydk"));
                     TcpHelper.CtosMessage_HsReady();
                 }
@@ -1109,6 +1138,22 @@ public class Room : WindowServantSP
         {
             TcpHelper.CtosMessage_HsStart();
         }
+    }
+
+    void ColorGreen(string button)
+    {
+        try {
+            UIHelper.getByName<UISprite>(gameObject, "Texture_" + button).color = new Color(0, 255, 0, 255);
+            UIHelper.getByName<UILabel>(gameObject, "!lable_" + button).color = new Color(0, 255, 0, 255);
+        } catch {}
+    }
+
+    void ColorRed(string button)
+    {
+        try {
+            UIHelper.getByName<UISprite>(gameObject, "Texture_" + button).color = new Color(255, 0, 0, 255);
+            UIHelper.getByName<UILabel>(gameObject, "!lable_" + button).color = new Color(255, 0, 0, 255);
+        } catch {}
     }
 
     #endregion

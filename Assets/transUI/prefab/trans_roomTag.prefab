@@ -508,7 +508,7 @@ GameObject:
   - component: {fileID: 467750}
   - component: {fileID: 11466566}
   m_Layer: 18
-  m_Name: Texture
+  m_Name: Texture_start_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -875,7 +875,7 @@ GameObject:
   - component: {fileID: 435944}
   - component: {fileID: 11486730}
   m_Layer: 18
-  m_Name: '!lable'
+  m_Name: '!lable_start_'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6164,7 +6164,7 @@ GameObject:
   - component: {fileID: 4773690323647522}
   - component: {fileID: 114118662358075054}
   m_Layer: 18
-  m_Name: Texture
+  m_Name: Texture_ready_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6215,7 +6215,7 @@ GameObject:
   - component: {fileID: 4017281997717674}
   - component: {fileID: 114545215240493402}
   m_Layer: 18
-  m_Name: '!lable'
+  m_Name: '!lable_ready_'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6354,7 +6354,7 @@ MonoBehaviour:
     relative: 1
     absolute: 0
   updateAnchors: 1
-  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mColor: {r: 1, g: 0, b: 0, a: 1}
   mPivot: 4
   mWidth: 32
   mHeight: 32
@@ -6404,7 +6404,7 @@ MonoBehaviour:
     relative: 1
     absolute: -4
   updateAnchors: 1
-  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mColor: {r: 1, g: 0, b: 0, a: 1}
   mPivot: 4
   mWidth: 74
   mHeight: 22
