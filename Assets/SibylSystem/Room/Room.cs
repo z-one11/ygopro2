@@ -87,7 +87,7 @@ public class Room : WindowServantSP
             Menu.deleteShell();
         }
         base.show();
-        Program.I().ocgcore.returnServant = Program.I().selectServer;
+        Program.I().ocgcore.setDefaultReturnServant();
         Program.I().ocgcore.handler = handler;
         UIHelper.registEvent(toolBar, "input_", onChat);
         Program.charge();
@@ -444,7 +444,6 @@ public class Room : WindowServantSP
             else if (Regex.IsMatch(roomname, @"(\w{1,}[,^]{1}T[,#])?(?(1)|(^T[#,]))"))
             {
                 tags.Add("[D14291][TAG] ");
-
             }
         }
         else
@@ -496,7 +495,7 @@ public class Room : WindowServantSP
     public void StocMessage_DuelStart(BinaryReader r)
     {
         try { BGMController.Instance.StartBGM(BGMController.BGMType.siding); } catch {}
-        Program.I().ocgcore.returnServant = Program.I().selectServer;
+        Program.I().ocgcore.setDefaultReturnServant();
         needSide = false;
         joinWithReconnect = true;
         if (Program.I().deckManager.isShowed)

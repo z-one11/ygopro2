@@ -450,7 +450,7 @@ public class Ocgcore : ServantWithCardDescription
             case Condition.duel:
                 SetBar(Program.I().new_bar_duel, 0, 0);
                 UIHelper.registEvent(toolBar, "input_", onChat);
-                UIHelper.registEvent(toolBar, "gg_", onDuelResultConfirmed);
+                UIHelper.registEvent(toolBar, "gg_", onSurrender);
                 UIHelper.registEvent(toolBar, "left_", on_left);
                 UIHelper.registEvent(toolBar, "right_", on_right);
                 UIHelper.registEvent(toolBar, "rush_", on_rush);
@@ -756,16 +756,35 @@ public class Ocgcore : ServantWithCardDescription
         }
     }
 
+    public void setDefaultReturnServant() {
+        returnServant = Program.I().selectServer;
+    }
+
     public void onExit()
     {
         if (TcpHelper.tcpClient != null)
         {
             if (TcpHelper.tcpClient.Connected)
             {
-                Program.I().ocgcore.returnServant = Program.I().selectServer;
+                setDefaultReturnServant();
                 TcpHelper.tcpClient.Client.Shutdown(0);
                 TcpHelper.tcpClient.Close();
             }
+            TcpHelper.tcpClient = null;
+        }
+        returnTo();
+    }
+
+    public void onEmergencyExit()
+    {
+        if (TcpHelper.tcpClient != null)
+        {
+            /*if (TcpHelper.tcpClient.Connected)
+            {
+                setDefaultReturnServant();
+                TcpHelper.tcpClient.Client.Shutdown(0);
+                TcpHelper.tcpClient.Close();
+            } */
             TcpHelper.tcpClient = null;
         }
         returnTo();
@@ -1209,10 +1228,6 @@ public class Ocgcore : ServantWithCardDescription
                 BGMController.Instance.StartBGM(BGMController.BGMType.advantage);
             else if (result == duelResult.disLink && life_1 >= life_0 * 2)
                 BGMController.Instance.StartBGM(BGMController.BGMType.disadvantage);
-            else if (result == duelResult.win)
-                BGMController.Instance.StartBGM(BGMController.BGMType.win);
-            else if (result == duelResult.lose || result == duelResult.draw)
-                BGMController.Instance.StartBGM(BGMController.BGMType.lose);
             else if(result == duelResult.disLink)
                 BGMController.Instance.StartBGM(BGMController.BGMType.duel);
         } catch {}
@@ -1286,11 +1301,13 @@ public class Ocgcore : ServantWithCardDescription
                 keys.Insert(0, currentMessageIndex);
                 if (player == 2)
                 {
+                    try { BGMController.Instance.StartBGM(BGMController.BGMType.lose); } catch {}
                     result = duelResult.draw;
                     printDuelLog(InterString.Get("游戏平局！"));
                 }
                 else if (player == 0 || winType == 4)
                 {
+                    try { BGMController.Instance.StartBGM(BGMController.BGMType.win); } catch {}
                     result = duelResult.win;
                     if (cookie_matchKill > 0)
                     {
@@ -1305,6 +1322,7 @@ public class Ocgcore : ServantWithCardDescription
                 }
                 else
                 {
+                    try { BGMController.Instance.StartBGM(BGMController.BGMType.lose); } catch {}
                     result = duelResult.lose;
                     if (cookie_matchKill > 0)
                     {
@@ -1317,7 +1335,6 @@ public class Ocgcore : ServantWithCardDescription
                         printDuelLog(InterString.Get("游戏败北，原因：[?]", winReason));
                     }
                 }
-                BGMController.Instance.StartCoroutine(BGMHandler());
                 break;
             case GameMessage.Start:
                 try { BGMController.Instance.StartBGM(BGMController.BGMType.duel); } catch {}
@@ -1407,7 +1424,7 @@ public class Ocgcore : ServantWithCardDescription
                         cards[i].p.location = (UInt32)CardLocation.Unknown;
                     }
                 cookie_matchKill = 0;
-                
+
                 if (Program.I().room.mode == 0)
                 {
                     printDuelLog(InterString.Get("单局模式 决斗开始！"));
@@ -3991,7 +4008,7 @@ public class Ocgcore : ServantWithCardDescription
                 int _field = ~r.ReadInt32();
                 if (Program.I().setting.setting.hand.value == true || Program.I().setting.setting.handm.value == true)
                 {
-                    
+
                     ES_min = min;
                     for (int i = 0; i < min; i++)
                     {
@@ -7229,7 +7246,7 @@ public class Ocgcore : ServantWithCardDescription
                     gameField.opPHole = false;
                 }
             }
-           
+
         }
         else
         {
@@ -7283,7 +7300,7 @@ public class Ocgcore : ServantWithCardDescription
             }
 
         }
-        
+
         for (int i = 0; i < cards.Count; i++) if (cards[i].gameObject.activeInHierarchy)
                 if (cards[i].cookie_cared == false)
                 {
@@ -7312,7 +7329,7 @@ public class Ocgcore : ServantWithCardDescription
                     cards[i].UA_flush_all_gived_witn_lock(rush);
                 }
 
-        
+
         if (Program.I().setting.setting.Vfield.value)
         {
             int code = 0;
@@ -8921,7 +8938,23 @@ public class Ocgcore : ServantWithCardDescription
             return;
         }
 
+        //RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        surrended = false;
+        Program.I().room.duelEnded = false;
+        Program.I().room.needSide = false;
+        Program.I().room.sideWaitingObserver = false;
+        onEmergencyExit();
+        return;
+    }
+
+    void onSurrender() {
+        if (Program.I().room.duelEnded == true || surrended || TcpHelper.tcpClient == null || TcpHelper.tcpClient.Connected == false || Program.I().room.needSide == true || condition != Condition.duel)
+        {
+            onDuelResultConfirmed();
+            return;
+        }
         RMSshow_yesOrNoForce(InterString.Get("你确定要投降吗？"), new messageSystemValue { value = "yes", hint = "yes" }, new messageSystemValue { value = "no", hint = "no" });
+        return;
     }
 
     private void sendSorted()

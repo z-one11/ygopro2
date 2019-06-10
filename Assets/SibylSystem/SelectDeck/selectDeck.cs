@@ -255,6 +255,10 @@ public class selectDeck : WindowServantSP
                 System.Diagnostics.Process.Start("open", "-e " + path);
             #elif UNITY_STANDALONE_LINUX //Linux
                 System.Diagnostics.Process.Start("gedit", path);
+            #elif UNITY_ANDROID //Android
+                AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
+                jo.Call("openFile", Program.ANDROID_GAME_PATH + path);
+            //#elif UNITY_IPHONE //iPhone
             #endif
         }
     }

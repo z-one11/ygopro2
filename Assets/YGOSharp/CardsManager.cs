@@ -20,7 +20,7 @@ namespace YGOSharp
         {
             nullName = InterString.Get("未知卡片");
             nullString = "";
-            nullString += "欢迎使用：\r\nYGOPro2 For Windows";
+            nullString += "欢迎使用：\r\nYGOPro2 For Android";
             nullString += "\r\n\r\n";
             nullString += "软件下载：";
             nullString += "\r\n①：[url=https://pan.baidu.com/s/1PEulJRq8ztugD7PtH0ZSlA][u]https://pan.baidu.com/s/1PEulJRq8ztugD7PtH0ZSlA[/u][/url]";

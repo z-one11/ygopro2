@@ -13,7 +13,8 @@ public class LAZYsetting : MonoBehaviour {
     public UIToggle closeUp;
     public UIToggle showoff;
     public UIToggle showoffWhenActived;
-    public UIToggle cloud;  
+    public UIToggle cloud;
+    public UIToggle autoPicDownload;
     public UIToggle Vbattle;
     public UIToggle Vmove;
     public UIToggle Vchain;

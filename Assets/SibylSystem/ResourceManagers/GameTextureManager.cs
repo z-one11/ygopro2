@@ -191,7 +191,7 @@ public class GameTextureManager
 
     public static Texture2D phase = null;
 
-
+    public static bool AutoPicDownload;
 
     public static Texture2D rs = null;
 
@@ -229,20 +229,20 @@ public class GameTextureManager
                         switch (pic.type)
                         {
                             case GameTextureType.card_feature:
-                                {
-                                    ProcessingCardFeature(pic);
-                                    break;
-                                }
+                            {
+                                ProcessingCardFeature(pic);
+                                break;
+                            }
                             case GameTextureType.card_picture:
-                                {
-                                    ProcessingCardPicture(pic);
-                                    break;
-                                }
+                            {
+                                ProcessingCardPicture(pic);
+                                break;
+                            }
                             case GameTextureType.card_verticle_drawing:
-                                {
-                                    ProcessingVerticleDrawing(pic);
-                                    break;
-                                }
+                            {
+                                ProcessingVerticleDrawing(pic);
+                                break;
+                            }
                         }
                     }
                 }
@@ -261,36 +261,47 @@ public class GameTextureManager
             if (File.Exists("picture/closeup/" + pic.code.ToString() + ".png"))
             {
                 string path = "picture/closeup/" + pic.code.ToString() + ".png";
-                BitmapHelper bitmap = new BitmapHelper(path);
-                int left;
-                int right;
-                int up;
-                int down;
-                CutTop(bitmap, out left, out right, out up, out down);
-                up = CutLeft(bitmap, up);
-                down = CutRight(bitmap, down);
-                right = CutButton(bitmap, right);
-                int width = right - left;
-                int height = down - up;
-                pic.hashed_data = new float[width, height, 4];
-                for (int w = 0; w < width; w++)
-                {
-                    for (int h = 0; h < height; h++)
+                if (Program.ANDROID_API_N) {
+                    BitmapHelper bitmap = new BitmapHelper(path);
+                    int left;
+                    int right;
+                    int up;
+                    int down;
+                    CutTop(bitmap, out left, out right, out up, out down);
+                    up = CutLeft(bitmap, up);
+                    down = CutRight(bitmap, down);
+                    right = CutButton(bitmap, right);
+                    int width = right - left;
+                    int height = down - up;
+                    pic.hashed_data = new float[width, height, 4];
+                    for (int w = 0; w < width; w++)
                     {
-                        System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
-                        float a = (float)color.A / 255f;
-                        if (w < 40) if (a > (float)w / (float)40) a = (float)w / (float)40;
-                        if (w > (width - 40)) if (a > 1f - (float)(w - (width - 40)) / (float)40) a = 1f - (float)(w - (width - 40)) / (float)40;
-                        if (h < 40) if (a > (float)h / (float)40) a = (float)h / (float)40;
-                        if (h > (height - 40)) if (a > 1f - (float)(h - (height - 40)) / (float)40) a = 1f - (float)(h - (height - 40)) / (float)40;
-                        pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
-                        pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
-                        pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
-                        pic.hashed_data[w, height - h - 1, 3] = a;
+                        for (int h = 0; h < height; h++)
+                        {
+                            System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
+                            float a = (float)color.A / 255f;
+                            if (w < 40) if (a > (float)w / (float)40) a = (float)w / (float)40;
+                            if (w > (width - 40)) if (a > 1f - (float)(w - (width - 40)) / (float)40) a = 1f - (float)(w - (width - 40)) / (float)40;
+                            if (h < 40) if (a > (float)h / (float)40) a = (float)h / (float)40;
+                            if (h > (height - 40)) if (a > 1f - (float)(h - (height - 40)) / (float)40) a = 1f - (float)(h - (height - 40)) / (float)40;
+                            pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
+                            pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
+                            pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
+                            pic.hashed_data[w, height - h - 1, 3] = a;
+                        }
                     }
+                    caculateK(pic);
+                } else {
+                    byte[] data;
+                    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        file.Seek(0, SeekOrigin.Begin);
+                        data = new byte[file.Length];
+                        file.Read(data, 0, (int)file.Length);
+                    }
+                    pic.data = data;
                 }
-                caculateK(pic);
-            
+
                 if (!loadedList.ContainsKey(hashPic(pic.code, pic.type)))
                 {
                     loadedList.Add(hashPic(pic.code, pic.type), pic);
@@ -307,12 +318,17 @@ public class GameTextureManager
                 if (!File.Exists(path))
                 {
                     Iam8 = true;
-                    path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
+                    path = "expansions/pics/" + pic.code.ToString() + ".jpg";
                 }
                 if (!File.Exists(path))
                 {
                     Iam8 = true;
-                    path = "expansions/pics/" + pic.code.ToString() + ".jpg";
+                    path = "pics/" + pic.code.ToString() + ".jpg";
+                }
+                if (!File.Exists(path))
+                {
+                    Iam8 = true;
+                    path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
                 }
                 if (!File.Exists(path))
                 {
@@ -334,7 +350,7 @@ public class GameTextureManager
                 }
                 else
                 {
-                    pic.hashed_data = getCuttedPic(path, pic.pCard, Iam8);
+                    pic.hashed_data = getCuttedPic(path, pic.pCard,Iam8);
                     int width = pic.hashed_data.GetLength(0);
                     int height = pic.hashed_data.GetLength(1);
                     int size = (int)(height * 0.8);
@@ -571,23 +587,45 @@ public class GameTextureManager
             string path = "picture/closeup/" + pic.code.ToString() + ".png";
             if (!File.Exists(path))
             {
-                path = "picture/card/" + pic.code.ToString() + ".png";
-                if (!File.Exists(path))
-                {
-                    path = "picture/card/" + pic.code.ToString() + ".jpg";
+                if (Program.ANDROID_API_N) {
+                    path = "picture/card/" + pic.code.ToString() + ".png";
+                    if (!File.Exists(path))
+                    {
+                        path = "picture/card/" + pic.code.ToString() + ".jpg";
+                    }
+                    bool Iam8 = false;
+                    if (!File.Exists(path))
+                    {
+                        Iam8 = true;
+                        path = "expansions/pics/" + pic.code.ToString() + ".jpg";
+                    }
+                    if (!File.Exists(path))
+                    {
+                        Iam8 = true;
+                        path = "pics/" + pic.code.ToString() + ".jpg";
+                    }
+                    if (!File.Exists(path))
+                    {
+                        Iam8 = true;
+                        path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
+                    }
+                    LoadCloseupFromCardPicture(pic, path, Iam8);
+                } else {
+                    path = "picture/null.png";
+                    byte[] data;
+                    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        file.Seek(0, SeekOrigin.Begin);
+                        data = new byte[file.Length];
+                        file.Read(data, 0, (int)file.Length);
+                    }
+                    pic.data = data;
+
+                    if (!loadedList.ContainsKey(hashPic(pic.code, pic.type)))
+                    {
+                        loadedList.Add(hashPic(pic.code, pic.type), pic);
+                    }
                 }
-                bool Iam8 = false;
-                if (!File.Exists(path))
-                {
-                    Iam8 = true;
-                    path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
-                }
-                if (!File.Exists(path))
-                {
-                    Iam8 = true;
-                    path = "expansions/pics/" + pic.code.ToString() + ".jpg";
-                }
-                LoadCloseupFromCardPicture(pic, path, Iam8);
             }
             else
             {
@@ -633,57 +671,68 @@ public class GameTextureManager
     {
         try
         {
-            BitmapHelper bitmap = new BitmapHelper(path);
-            int left;
-            int right;
-            int up;
-            int down;
-            CutTop(bitmap, out left, out right, out up, out down);
-            up = CutLeft(bitmap, up);
-            down = CutRight(bitmap, down);
-            right = CutButton(bitmap, right);
-            int width = right - left;
-            int height = down - up;
-            pic.hashed_data = new float[width, height, 4];
-            for (int w = 0; w < width; w++)
-            {
+            if (Program.ANDROID_API_N) {
+                BitmapHelper bitmap = new BitmapHelper(path);
+                int left;
+                int right;
+                int up;
+                int down;
+                CutTop(bitmap, out left, out right, out up, out down);
+                up = CutLeft(bitmap, up);
+                down = CutRight(bitmap, down);
+                right = CutButton(bitmap, right);
+                int width = right - left;
+                int height = down - up;
+                pic.hashed_data = new float[width, height, 4];
+                for (int w = 0; w < width; w++)
+                {
+                    for (int h = 0; h < height; h++)
+                    {
+                        System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
+                        pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
+                        pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
+                        pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
+                        pic.hashed_data[w, height - h - 1, 3] = (float)color.A / 255f;
+                    }
+                }
+                float wholeUNalpha = 0;
+                for (int w = 0; w < width; w++)
+                {
+                    if (pic.hashed_data[w, 0, 3] > 0.1f)
+                    {
+                        wholeUNalpha += ((float)Math.Abs(w - width / 2)) / ((float)(width / 2));
+                    }
+                    if (pic.hashed_data[w, height - 1, 3] > 0.1f)
+                    {
+                        wholeUNalpha += 1;
+                    }
+                }
                 for (int h = 0; h < height; h++)
                 {
-                    System.Drawing.Color color = bitmap.GetPixel(left + w, up + h);
-                    pic.hashed_data[w, height - h - 1, 0] = (float)color.R / 255f;
-                    pic.hashed_data[w, height - h - 1, 1] = (float)color.G / 255f;
-                    pic.hashed_data[w, height - h - 1, 2] = (float)color.B / 255f;
-                    pic.hashed_data[w, height - h - 1, 3] = (float)color.A / 255f;
+                    if (pic.hashed_data[0, h, 3] > 0.1f)
+                    {
+                        wholeUNalpha += 1;
+                    }
+                    if (pic.hashed_data[width - 1, h, 3] > 0.1f)
+                    {
+                        wholeUNalpha += 1;
+                    }
                 }
-            }
-            float wholeUNalpha = 0;
-            for (int w = 0; w < width; w++)
-            {
-                if (pic.hashed_data[w, 0, 3] > 0.1f)
+                if (wholeUNalpha >= ((width + height) * 0.5f * 0.12f))
                 {
-                    wholeUNalpha += ((float)Math.Abs(w - width / 2)) / ((float)(width / 2));
+                    softVtype(pic, 0.7f);
                 }
-                if (pic.hashed_data[w, height - 1, 3] > 0.1f)
+                caculateK(pic);
+            } else {
+                byte[] data;
+                using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
-                    wholeUNalpha += 1;
+                    file.Seek(0, SeekOrigin.Begin);
+                    data = new byte[file.Length];
+                    file.Read(data, 0, (int)file.Length);
                 }
+                pic.data = data;
             }
-            for (int h = 0; h < height; h++)
-            {
-                if (pic.hashed_data[0, h, 3] > 0.1f)
-                {
-                    wholeUNalpha += 1;
-                }
-                if (pic.hashed_data[width - 1, h, 3] > 0.1f)
-                {
-                    wholeUNalpha += 1;
-                }
-            }
-            if (wholeUNalpha >= ((width + height) * 0.5f * 0.12f))
-            {
-                softVtype(pic, 0.7f);
-            }
-            caculateK(pic);
 
             if (!loadedList.ContainsKey(hashPic(pic.code, pic.type)))
             {
@@ -729,7 +778,7 @@ public class GameTextureManager
                     if (a > alpha)
                         a = alpha;
                 }
-                
+
                 if (w < empWidth)
                     if (a > ((float)w) / (float)empWidth)
                         a = ((float)w) / (float)empWidth;
@@ -758,23 +807,27 @@ public class GameTextureManager
             }
             if (!File.Exists(path))
             {
-                path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
+                path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
             if (!File.Exists(path))
             {
+                path = "pics/" + pic.code.ToString() + ".jpg";
+            }
+            if (!File.Exists(path))
+            {
+                path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
+            }
+            if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
+            {
+                //YGOMobile (177x254)
+                df.Download("http://api.ygo2019.xyz/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
                 path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0)
+            if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
             {
-                //YGOPro2-CN (421x614)
-                df.Download("http://download.ygo2019.xyz/ygopro2-data/picture/card/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
-                path = "picture/card/" + pic.code.ToString() + ".jpg";
-            }
-            if (!File.Exists(path) && pic.code != 0)
-            {
-                //YGOPro2 先行卡
-                df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
-                path = "expansions/pics/" + pic.code.ToString() + ".jpg";
+                //先行卡 (177x254)
+                df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg");
+                path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
             }
             LoadCardPicture(pic, path);
         }

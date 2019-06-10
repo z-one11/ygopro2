@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Linq;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 
 public class Program : MonoBehaviour
 {
@@ -274,9 +275,88 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
+    public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygopro2/";
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
+    public static bool ANDROID_API_N = true;
+#elif UNITY_ANDROID || UNITY_IPHONE            //Mobile Platform
+    public static bool ANDROID_API_N = false;
+#endif
+
     void initialize()
     {
+#if !UNITY_EDITOR && UNITY_ANDROID
+        AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
+#endif
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
+        //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
+        //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
+#elif UNITY_ANDROID //Android
+        /**
+         *  public String GamePath(String path) {
+         *      GAME_DIR = Environment.getExternalStorageDirectory().toString() + path;
+         *      return GAME_DIR;
+         *  }
+         */
+        ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");
+
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.A.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+            //File.Create(ANDROID_GAME_PATH + ".nomedia");
+        }
+
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ui.txt") || !Directory.Exists(ANDROID_GAME_PATH + "textures/ui/"))
+        {
+            string filePath = Application.streamingAssetsPath + "/ui.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+        }
+
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/bgm_0.1.txt") || !Directory.Exists(ANDROID_GAME_PATH + "sound/bgm/"))
+        {
+            string filePath = Application.streamingAssetsPath + "/bgm.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+        }
+/*      //选择性更新(用于额外打补丁)
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.A-fix1.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/update.zip";
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] bytes = www.bytes;
+            ExtractZipFile(bytes, ANDROID_GAME_PATH);
+            //File.Create(ANDROID_GAME_PATH + ".nomedia");
+        }
+*/
+        Environment.CurrentDirectory = ANDROID_GAME_PATH;
+        System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
+
+#elif UNITY_IPHONE //iPhone
+        string GamePaths = Application.persistentDataPath + "/ygopro2/";
+        if (!File.Exists(GamePaths + "updates/ver_1.034.A.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
+        }
+        if (!File.Exists(GamePaths + "updates/bgm_0.1.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/bgm.zip";
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
+        }
+        Environment.CurrentDirectory = GamePaths;
+        System.IO.Directory.SetCurrentDirectory(GamePaths);
+#endif
         go(1, () =>
         {
             UIHelper.iniFaces();
@@ -288,12 +368,13 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            InterString.initialize("config/translation.conf");
+            InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            if (File.Exists("config/strings.conf"))
+            //GameStringManager.initialize("config/strings.conf");
+            if (File.Exists("config" + AppLanguage.LanguageDir() + "/strings.conf"))
             {
-                GameStringManager.initialize("config/strings.conf");
+                GameStringManager.initialize("config" + AppLanguage.LanguageDir() + "/strings.conf");
             }
             if (File.Exists("cdb/strings.conf"))
             {
@@ -305,21 +386,21 @@ public class Program : MonoBehaviour
             }
             YGOSharp.BanlistManager.initialize("config/lflist.conf");
 
-            var fileInfos = (new DirectoryInfo("cdb")).GetFiles();
+            FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
                 {
                     if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                     {
-                        YGOSharp.CardsManager.initialize("cdb/" + fileInfos[i].Name);
+                        YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
                     }
                 }
             }
 
             if (Directory.Exists("expansions"))
             {
-                fileInfos = (new DirectoryInfo("expansions")).GetFiles();
+                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
@@ -351,8 +432,86 @@ public class Program : MonoBehaviour
             initializeALLservants();
             loadResources();
 
+#if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
+            if (!File.Exists("updates/image_0.2.txt"))//用于检查更新
+            {
+                if (File.Exists("pics.zip")) {
+                    jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
+                    File.Copy("updates/ver_1.034.A.txt", "updates/image_0.2.txt", true);
+                } else {
+                    jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
+                }
+            }
+
+            /**
+             *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
+             *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
+             *  由于部分国产手机系统不够原生，就算是Android 6.0也用不起，只好抛弃能正常使用的手机，改为只支持：Android 7.+
+             *
+             *  public boolean APIVersion() {
+             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+             *          return true;
+             *      } else {
+             *          return false;
+             *      }
+             *  }
+             */
+            bool API_SUPPORT = jo.Call<bool>("APIVersion");
+
+            if (API_SUPPORT == true) {
+                ANDROID_API_N = true;
+            } else {
+                ANDROID_API_N = false;
+            }
+#endif
         });
 
+    }
+    public void ExtractZipFile(byte[] data, string outFolder)
+    {
+
+        ZipFile zf = null;
+        try
+        {
+            //use MemoryStream!!!!
+            using (MemoryStream mstrm = new MemoryStream(data))
+            {
+                zf = new ZipFile(mstrm);
+
+                foreach (ZipEntry zipEntry in zf)
+                {
+                    if (!zipEntry.IsFile)
+                    {
+                        continue;
+                    }
+
+                    String entryFileName = zipEntry.Name;
+                    byte[] buffer = new byte[4096];     // 4K is optimum
+                    Stream zipStream = zf.GetInputStream(zipEntry);
+
+                    String fullZipToPath = Path.Combine(outFolder, entryFileName);
+                    string directoryName = Path.GetDirectoryName(fullZipToPath);
+                    if (directoryName.Length > 0)
+                        Directory.CreateDirectory(directoryName);
+                    using (FileStream streamWriter = File.Create(fullZipToPath))
+                    {
+                        StreamUtils.Copy(zipStream, streamWriter, buffer);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
+        finally
+        {
+            if (zf != null)
+            {
+                zf.IsStreamOwner = true;
+                zf.Close();
+            }
+        }
     }
 
     public GameObject mouseParticle;
@@ -850,12 +1009,22 @@ public class Program : MonoBehaviour
 
     void Start()
     {
+        #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
         if (Screen.width < 100 || Screen.height < 100)
         {
             Screen.SetResolution(1300, 700, false);
         }
         QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 144;
+        #elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
+        Screen.SetResolution(1280, 720, true);
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
+        #endif
+
         mouseParticle = Instantiate(new_mouse);
         instance = this;
         initialize();
@@ -881,7 +1050,9 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 100, 100), "FPS: " + FPS); } } catch{}
+        string m_FPS = FPS.ToString();
+        try { m_FPS = m_FPS.Substring(0, 5); } catch{}
+        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.A-fix1] " + "FPS: " + FPS); } } catch{}
     }
 
     void Update()

@@ -38,7 +38,7 @@ public class Setting : WindowServant2D
         ShowFPS = UIHelper.getByName<UIToggle>(gameObject, "ShowFPS_").value = UIHelper.fromStringToBool(Config.Get("ShowFPS_", "0"));
         UIHelper.registEvent(setting.LimitFPS.gameObject, onchangeFPS);
 
-        if (QualitySettings.GetQualityLevel()<3)
+        if (QualitySettings.GetQualityLevel() < 3)
         {
             UIHelper.getByName<UIToggle>(gameObject, "high_").value = false;
         }
@@ -62,13 +62,13 @@ public class Setting : WindowServant2D
         sliderSize = UIHelper.getByName<UISlider>(gameObject, "size_");
         //sliderAlpha = UIHelper.getByName<UISlider>(gameObject, "alpha_");
         sliderVsize = UIHelper.getByName<UISlider>(gameObject, "vSize_");
-        Program.go(2000,readVales);
+        Program.go(2000, readVales);
         var collection = gameObject.GetComponentsInChildren<UIToggle>();
         for (int i = 0; i < collection.Length; i++)
         {
             if (collection[i].name.Length > 0 && collection[i].name[0] == '*')
             {
-                if (collection[i].name== "*mouseParticle" || collection[i].name == "*showOff" || collection[i].name == "*Efield") 
+                if (collection[i].name == "*mouseParticle" || collection[i].name == "*showOff" || collection[i].name == "*Efield" || collection[i].name == "*AutoPicDownload")
                 {
                     collection[i].value = UIHelper.fromStringToBool(Config.Get(collection[i].name, "1"));
                 }
@@ -78,14 +78,15 @@ public class Setting : WindowServant2D
                 }
             }
         }
-        setting.showoffATK.value = Config.Get("showoffATK","1800");
+        setting.showoffATK.value = Config.Get("showoffATK", "1800");
         setting.showoffStar.value = Config.Get("showoffStar", "5");
-        setting.LimitFPS.value = Config.Get("LimitFPS", "144");
+        setting.LimitFPS.value = Config.Get("LimitFPS", "60");
         UIHelper.registEvent(setting.showoffATK.gameObject, onchangeClose);
         UIHelper.registEvent(setting.showoffStar.gameObject, onchangeClose);
         UIHelper.registEvent(setting.mouseEffect.gameObject, onchangeMouse);
         UIHelper.registEvent(setting.closeUp.gameObject, onchangeCloseUp);
-        UIHelper.registEvent(setting.cloud.gameObject, onchangeCloud);  
+        UIHelper.registEvent(setting.cloud.gameObject, onchangeCloud);
+        UIHelper.registEvent(setting.autoPicDownload.gameObject, onchangeDownload);
         UIHelper.registEvent(setting.Vpedium.gameObject, onCP);
         UIHelper.registEvent(setting.Vfield.gameObject, onCP);
         UIHelper.registEvent(setting.Vlink.gameObject, onCP);
@@ -154,6 +155,11 @@ public class Setting : WindowServant2D
         Program.MonsterCloud = setting.cloud.value;
     }
 
+    public void onchangeDownload()
+    {
+        GameTextureManager.AutoPicDownload = setting.autoPicDownload.value;
+    }
+
     public void onchangeMouse()
     {
         Program.I().mouseParticle.SetActive(setting.mouseEffect.value);
@@ -164,7 +170,8 @@ public class Setting : WindowServant2D
     public void setScreenSizeValue()
     {
         //dontResizeTwice = 3;
-        UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Screen.width.ToString() + "*" + Screen.height.ToString();
+        //UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Screen.width.ToString() + "*" + Screen.height.ToString();
+        UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Config.Get("screen_", Screen.width.ToString() + "*" + Screen.height.ToString());
     }
 
     void onCP()
@@ -179,7 +186,7 @@ public class Setting : WindowServant2D
     }
 
 
-    public void onchangeCloseUp()   
+    public void onchangeCloseUp()
     {
         if (setting.closeUp.value == false)
         {
@@ -247,7 +254,7 @@ public class Setting : WindowServant2D
     }
 
     UISlider sliderSize;
-    void onChangeSize()  
+    void onChangeSize()
     {
         if (sliderSize != null)
         {
@@ -255,7 +262,7 @@ public class Setting : WindowServant2D
         }
     }
 
-    public float vol() 
+    public float vol()
     {
         return UIHelper.getByName<UISlider>(gameObject, "vol_").value;
     }
@@ -284,6 +291,7 @@ public class Setting : WindowServant2D
         string[] mats = UIHelper.getByName<UIPopupList>(gameObject, "screen_").value.Split(new string[] { "*" }, StringSplitOptions.RemoveEmptyEntries);
         if (mats.Length == 2)
         {
+            Config.Set("screen_", mats[0] + "*" + mats[1]);
             Screen.SetResolution(int.Parse(mats[0]), int.Parse(mats[1]), UIHelper.getByName<UIToggle>(gameObject, "full_").value);
         }
         Program.go(100, () => { Program.I().fixScreenProblems(); });
@@ -297,7 +305,7 @@ public class Setting : WindowServant2D
         //Config.Set("alpha_", ((int)(UIHelper.getByName<UISlider>(gameObject, "alpha_").value * 1000)).ToString());
         Config.Set("longField_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "longField_").value));
         var collection = gameObject.GetComponentsInChildren<UIToggle>();
-        for (int i = 0; i < collection.Length; i++) 
+        for (int i = 0; i < collection.Length; i++)
         {
             if (collection[i].name.Length > 0 && collection[i].name[0] == '*')
             {
@@ -313,7 +321,7 @@ public class Setting : WindowServant2D
 
     public void save()
     {
-        Config.Set("ignoreWatcher_",UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ignoreWatcher_").value));
+        Config.Set("ignoreWatcher_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ignoreWatcher_").value));
         Config.Set("ignoreOP_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "ignoreOP_").value));
         Config.Set("smartSelect_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "smartSelect_").value));
         Config.Set("autoChain_", UIHelper.fromBoolToString(UIHelper.getByName<UIToggle>(gameObject, "autoChain_").value));
