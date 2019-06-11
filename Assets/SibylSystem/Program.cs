@@ -311,7 +311,7 @@ public class Program : MonoBehaviour
             //File.Create(ANDROID_GAME_PATH + ".nomedia");
         }
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/ui.txt") || !Directory.Exists(ANDROID_GAME_PATH + "textures/ui/"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ui.txt") || !Directory.Exists(ANDROID_GAME_PATH + "texture/ui/"))
         {
             string filePath = Application.streamingAssetsPath + "/ui.zip";
             var www = new WWW(filePath);
