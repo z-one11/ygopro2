@@ -131,9 +131,9 @@ public class GameField : OCGobject
 
     public void loadOldField()
     {
-        if (File.Exists("texture/duel/field.png"))
+        if (File.Exists("textures/field2.png"))//YGOMobile Paths
         {
-            Texture2D textureField = UIHelper.getTexture2D("texture/duel/field.png");
+            Texture2D textureField = UIHelper.getTexture2D("textures/field2.png");//YGOMobile Paths
             Texture2D[] textureFieldSliced = UIHelper.sliceField(textureField);
             leftT.mainTexture = textureFieldSliced[0];
             midT.mainTexture = textureFieldSliced[1];
@@ -151,9 +151,9 @@ public class GameField : OCGobject
 
     public void loadNewField()
     {
-        if (File.Exists("texture/duel/newfield.png"))
+        if (File.Exists("textures/field3.png"))//YGOMobile Paths
         {
-            Texture2D textureField = UIHelper.getTexture2D("texture/duel/newfield.png");
+            Texture2D textureField = UIHelper.getTexture2D("textures/field3.png");//YGOMobile Paths
             Texture2D[] textureFieldSliced = UIHelper.sliceField(textureField);
             leftT.mainTexture = textureFieldSliced[0];
             midT.mainTexture = textureFieldSliced[1];

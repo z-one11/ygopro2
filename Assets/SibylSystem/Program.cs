@@ -275,7 +275,7 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
-    public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygopro2/";
+    public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygocore/";//YGOMobile Path
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
     public static bool ANDROID_API_N = true;
@@ -299,7 +299,7 @@ public class Program : MonoBehaviour
          *      return GAME_DIR;
          *  }
          */
-        ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");
+        ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
         if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.A.txt"))
         {
@@ -311,7 +311,7 @@ public class Program : MonoBehaviour
             //File.Create(ANDROID_GAME_PATH + ".nomedia");
         }
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/ui.txt") || !Directory.Exists(ANDROID_GAME_PATH + "texture/ui/"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ui.txt") || !Directory.Exists(ANDROID_GAME_PATH + "textures/ui/"))
         {
             string filePath = Application.streamingAssetsPath + "/ui.zip";
             var www = new WWW(filePath);
@@ -368,14 +368,10 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
+            InterString.initialize("config/translation.conf");
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
-            //GameStringManager.initialize("config/strings.conf");
-            if (File.Exists("config" + AppLanguage.LanguageDir() + "/strings.conf"))
-            {
-                GameStringManager.initialize("config" + AppLanguage.LanguageDir() + "/strings.conf");
-            }
+            GameStringManager.initialize("strings.conf");//YGOMobile Paths
             if (File.Exists("cdb/strings.conf"))
             {
                 GameStringManager.initialize("cdb/strings.conf");
@@ -384,23 +380,12 @@ public class Program : MonoBehaviour
             {
                 GameStringManager.initialize("expansions/strings.conf");
             }
-            YGOSharp.BanlistManager.initialize("config/lflist.conf");
-
-            FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
-            for (int i = 0; i < fileInfos.Length; i++)
-            {
-                if (fileInfos[i].Name.Length > 4)
-                {
-                    if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
-                    {
-                        YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
-                    }
-                }
-            }
+            YGOSharp.BanlistManager.initialize("lflist.conf");//YGOMobile Paths
+            YGOSharp.CardsManager.initialize("cards.cdb");//YGOMobile Paths
 
             if (Directory.Exists("expansions"))
             {
-                fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
+                FileInfo[] fileInfos = (new DirectoryInfo("expansions")).GetFiles().OrderByDescending(x => x.Name).ToArray();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 4)
@@ -415,7 +400,7 @@ public class Program : MonoBehaviour
 
             if (Directory.Exists("pack"))
             {
-                fileInfos = (new DirectoryInfo("pack")).GetFiles();
+                FileInfo[] fileInfos = (new DirectoryInfo("pack")).GetFiles();
                 for (int i = 0; i < fileInfos.Length; i++)
                 {
                     if (fileInfos[i].Name.Length > 3)
