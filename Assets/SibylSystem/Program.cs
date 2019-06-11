@@ -440,6 +440,7 @@ public class Program : MonoBehaviour
                     File.Copy("updates/ver_1.034.A.txt", "updates/image_0.2.txt", true);
                 } else {
                     jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
+                    File.Copy("updates/ver_1.034.A.txt", "updates/image_0.2.txt", true);
                 }
             }
 
