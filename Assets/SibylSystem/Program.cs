@@ -276,6 +276,11 @@ public class Program : MonoBehaviour
 
     void initialize()
     {
+#if !UNITY_EDITOR && UNITY_STANDALONE_OSX //Mac
+        string GamePaths = Application.streamingAssetsPath;// .app/Contents/Resources/Data/StreamingAssets/
+        Environment.CurrentDirectory = GamePaths;
+        System.IO.Directory.SetCurrentDirectory(GamePaths);
+#endif
 
         go(1, () =>
         {
@@ -295,6 +300,10 @@ public class Program : MonoBehaviour
             {
                 GameStringManager.initialize("config/strings.conf");
             }
+            //if (File.Exists("config" + AppLanguage.LanguageDir() + "/strings.conf"))
+            //{
+            //    GameStringManager.initialize("config" + AppLanguage.LanguageDir() + "/strings.conf");
+            //}
             if (File.Exists("cdb/strings.conf"))
             {
                 GameStringManager.initialize("cdb/strings.conf");
@@ -306,6 +315,7 @@ public class Program : MonoBehaviour
             YGOSharp.BanlistManager.initialize("config/lflist.conf");
 
             var fileInfos = (new DirectoryInfo("cdb")).GetFiles();
+            //var fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles();
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
@@ -313,6 +323,7 @@ public class Program : MonoBehaviour
                     if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                     {
                         YGOSharp.CardsManager.initialize("cdb/" + fileInfos[i].Name);
+                        //YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);
                     }
                 }
             }
