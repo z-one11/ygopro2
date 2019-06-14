@@ -274,6 +274,8 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
+    public string GAME_VERSION = "1.034.A";
+
     void initialize()
     {
 #if !UNITY_EDITOR && UNITY_STANDALONE_OSX //Mac
@@ -892,7 +894,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 100, 100), "FPS: " + FPS); } } catch{}
+        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + FPS); } } catch{}
     }
 
     void Update()
