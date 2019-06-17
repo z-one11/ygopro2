@@ -274,8 +274,6 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
-    public string GAME_VERSION = "1.034.A";
-
     void initialize()
     {
 #if !UNITY_EDITOR && UNITY_STANDALONE_OSX //Mac
@@ -286,6 +284,7 @@ public class Program : MonoBehaviour
 
         go(1, () =>
         {
+            GAME_VERSION = PRO_VERSION();
             UIHelper.iniFaces();
             initializeALLcameras();
             fixALLcamerasPreFrame();
@@ -1051,6 +1050,14 @@ public class Program : MonoBehaviour
         cardDescription.save();
         setting.save();
         setting.saveWhenQuit();
+    }
+
+    string GAME_VERSION;
+    public static string PRO_VERSION()
+    {
+        string version = Config.ClientVersion.ToString("X");
+        string VERSION_ = version.Substring(0, 1) + ".0" + version.Substring(1, 2) + "." + version.Substring(3, 1);
+        return VERSION_;
     }
 
     #endregion
