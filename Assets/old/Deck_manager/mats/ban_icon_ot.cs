@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class ban_icon_ot : MonoBehaviour
 {
@@ -20,12 +21,28 @@ public class ban_icon_ot : MonoBehaviour
         UITexture t = gameObject.GetComponent<UITexture>();
         if (t != null)
         {
-            t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+            if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
+            {
+                t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+            }
+            else
+            {
+                Texture2D icon =(Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                t.mainTexture = icon;
+            }
         }
         else
         {
             Renderer r = GetComponent<Renderer>();
-            r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+            if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
+            {
+                r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+            }
+            else
+            {
+                Texture2D icon =(Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                r.material.mainTexture = icon;
+            }
         }
     }
 }
