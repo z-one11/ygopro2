@@ -893,7 +893,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + FPS); } } catch{}
+        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + FPS.ToString("000")); } } catch{}
     }
 
     void Update()

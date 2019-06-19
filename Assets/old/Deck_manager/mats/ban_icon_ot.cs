@@ -21,26 +21,38 @@ public class ban_icon_ot : MonoBehaviour
         UITexture t = gameObject.GetComponent<UITexture>();
         if (t != null)
         {
-            if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
+            //if (i != 1 && i != 2 && i != 4)
+            if (i != 2 && i != 4)  //不显示OCG
+            {
+                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
+                t.mainTexture = icon;
+            }
+            else if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
             {
                 t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
             }
             else
             {
-                Texture2D icon =(Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
                 t.mainTexture = icon;
             }
         }
         else
         {
             Renderer r = GetComponent<Renderer>();
-            if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
+            //if (i != 1 && i != 2 && i != 4)
+            if (i != 2 && i != 4)  //不显示OCG
+            {
+                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
+                r.material.mainTexture = icon;
+            }
+            else if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
             {
                 r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
             }
             else
             {
-                Texture2D icon =(Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
                 r.material.mainTexture = icon;
             }
         }
