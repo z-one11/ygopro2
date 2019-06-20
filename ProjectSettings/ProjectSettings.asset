@@ -125,7 +125,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.034.10 (0611)
+  bundleVersion: 1.034.10 (0620)
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -143,14 +143,14 @@ PlayerSettings:
   protectGraphicsMemory: 0
   useHDRDisplay: 0
   applicationIdentifier:
-    Android: com.unicorn.ygopro2android
+    Android: cn.ygopro2.ygopro2android
     Standalone: cn.ygopro2.ygopro2android
     Tizen: cn.ygopro2.ygopro2android
     iOS: cn.ygopro2.ygopro2android
     tvOS: cn.ygopro2.ygopro2android
   buildNumber:
     iOS: 
-  AndroidBundleVersionCode: 22
+  AndroidBundleVersionCode: 24
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0

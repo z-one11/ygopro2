@@ -285,6 +285,7 @@ public class Program : MonoBehaviour
 
     void initialize()
     {
+        GAME_VERSION = PRO_VERSION() + "-2";
 #if !UNITY_EDITOR && UNITY_ANDROID
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
 #endif
@@ -294,6 +295,7 @@ public class Program : MonoBehaviour
         //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
 #elif UNITY_ANDROID //Android
         /**
+         *  Java 代码参考:
          *  public String GamePath(String path) {
          *      GAME_DIR = Environment.getExternalStorageDirectory().toString() + path;
          *      return GAME_DIR;
@@ -301,7 +303,7 @@ public class Program : MonoBehaviour
          */
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.A.txt"))
+        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_" +  GAME_VERSION + ".txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             var www = new WWW(filePath);
@@ -328,34 +330,28 @@ public class Program : MonoBehaviour
             byte[] bytes = www.bytes;
             ExtractZipFile(bytes, ANDROID_GAME_PATH);
         }
-/*      //选择性更新(用于额外打补丁)
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_1.034.A-fix1.txt"))
-        {
-            string filePath = Application.streamingAssetsPath + "/update.zip";
-            var www = new WWW(filePath);
-            while (!www.isDone) { }
-            byte[] bytes = www.bytes;
-            ExtractZipFile(bytes, ANDROID_GAME_PATH);
-            //File.Create(ANDROID_GAME_PATH + ".nomedia");
-        }
-*/
         Environment.CurrentDirectory = ANDROID_GAME_PATH;
         System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
 
 #elif UNITY_IPHONE //iPhone
-        string GamePaths = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(GamePaths + "updates/ver_1.034.A.txt"))
+        string IOS_GAME_PATH = Application.persistentDataPath + "/ygopro2/";
+        if (!File.Exists(IOS_GAME_PATH + "updates/ver_" +  GAME_VERSION + ".txt"))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
-            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), IOS_GAME_PATH);
         }
-        if (!File.Exists(GamePaths + "updates/bgm_0.1.txt"))
+        if (!File.Exists(IOS_GAME_PATH + "updates/ui.txt"))
+        {
+            string filePath = Application.streamingAssetsPath + "/ui.zip";
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), IOS_GAME_PATH);
+        }
+        if (!File.Exists(IOS_GAME_PATH + "updates/bgm_0.1.txt"))
         {
             string filePath = Application.streamingAssetsPath + "/bgm.zip";
-            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), GamePaths);
+            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), IOS_GAME_PATH);
         }
-        Environment.CurrentDirectory = GamePaths;
-        System.IO.Directory.SetCurrentDirectory(GamePaths);
+        Environment.CurrentDirectory = IOS_GAME_PATH;
+        System.IO.Directory.SetCurrentDirectory(IOS_GAME_PATH);
 #endif
         go(1, () =>
         {
@@ -422,18 +418,15 @@ public class Program : MonoBehaviour
             {
                 if (File.Exists("pics.zip")) {
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
-                    File.Copy("updates/ver_1.034.A.txt", "updates/image_0.2.txt", true);
+                    File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 } else {
                     jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
-                    File.Copy("updates/ver_1.034.A.txt", "updates/image_0.2.txt", true);
+                    File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 }
             }
 
             /**
-             *  使用Termux编译生成的：libgdiplus.so (https://github.com/Unicorn369/libgdiplus-Android)
-             *  经测试，只有Android 6.0以上才能正常使用。为了让Android 6.0以下的也能凑合使用立绘效果，需做判断
-             *  由于部分国产手机系统不够原生，就算是Android 6.0也用不起，只好抛弃能正常使用的手机，改为只支持：Android 7.+
-             *
+             *  Java 代码参考:
              *  public boolean APIVersion() {
              *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
              *          return true;
@@ -1036,9 +1029,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        string m_FPS = FPS.ToString();
-        try { m_FPS = m_FPS.Substring(0, 5); } catch{}
-        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver 1.034.A-fix1] " + "FPS: " + FPS); } } catch{}
+        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + FPS.ToString("000")); } } catch{}
     }
 
     void Update()
@@ -1195,6 +1186,14 @@ public class Program : MonoBehaviour
         cardDescription.save();
         setting.save();
         setting.saveWhenQuit();
+    }
+
+    string GAME_VERSION;
+    public static string PRO_VERSION()
+    {
+        string version = Config.ClientVersion.ToString("X");
+        string VERSION_ = version.Substring(0, 1) + ".0" + version.Substring(1, 2) + "." + version.Substring(3, 1);
+        return VERSION_;
     }
 
     #endregion
