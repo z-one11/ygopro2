@@ -143,6 +143,8 @@ public class DeckManager : ServantWithCardDescription
         cardPicLoader_.uiTexture = UIHelper.getByName<UITexture>(returnValue, "pic_");
         cardPicLoader_.ico = UIHelper.getByName<ban_icon>(returnValue);
         cardPicLoader_.ico.show(3);
+        cardPicLoader_.ico_ot = UIHelper.getByName<ban_icon_ot>(returnValue);
+        cardPicLoader_.ico_ot.show(3);
         return returnValue;
     }
 

@@ -32,6 +32,7 @@ public class Setting : WindowServant2D
         //BGM
         isBGMMute = UIHelper.getByName<UIToggle>(gameObject, "muteBGM");
         UIHelper.getByName<UIToggle>(gameObject, "muteBGM").value = UIHelper.fromStringToBool(Config.Get("muteBGMAudio", "0"));
+        UIHelper.registEvent(gameObject, "BGMvol_", onVolChange);
 
         //显示与限制FPS
         UIHelper.registEvent(gameObject, "ShowFPS_", onShowFPS);
@@ -114,6 +115,15 @@ public class Setting : WindowServant2D
         save();
     }
 
+    private void onVolChange()
+    {
+        try
+        {
+            Program.I().bgm.changeBGMVol(UIHelper.getByName<UISlider>(gameObject, "BGMvol_").value);
+        }
+        catch { }
+    }
+
     private void onchangeFPS()
     {
         try
@@ -137,6 +147,7 @@ public class Setting : WindowServant2D
     {
         try
         {
+            setting.sliderBGMVolum.forceValue(((float)(int.Parse(Config.Get("BGMvol_", "750")))) / 1000f);
             setting.sliderVolum.forceValue(((float)(int.Parse(Config.Get("vol_", "750")))) / 1000f);
             setting.sliderSize.forceValue(((float)(int.Parse(Config.Get("size_", "500")))) / 1000f);
             setting.sliderSizeDrawing.forceValue(((float)(int.Parse(Config.Get("vSize_", "500")))) / 1000f);
@@ -267,6 +278,11 @@ public class Setting : WindowServant2D
         return UIHelper.getByName<UISlider>(gameObject, "vol_").value;
     }
 
+    public float BGMvol()
+    {
+        return UIHelper.getByName<UISlider>(gameObject, "BGMvol_").value;
+    }
+
     public override void preFrameFunction()
     {
         base.preFrameFunction();
@@ -299,6 +315,7 @@ public class Setting : WindowServant2D
 
     public void saveWhenQuit()
     {
+        Config.Set("BGMvol_", ((int)(UIHelper.getByName<UISlider>(gameObject, "BGMvol_").value * 1000)).ToString());
         Config.Set("vol_", ((int)(UIHelper.getByName<UISlider>(gameObject, "vol_").value * 1000)).ToString());
         Config.Set("size_", ((int)(UIHelper.getByName<UISlider>(gameObject, "size_").value * 1000)).ToString());
         Config.Set("vSize_", ((int)(UIHelper.getByName<UISlider>(gameObject, "vSize_").value * 1000)).ToString());

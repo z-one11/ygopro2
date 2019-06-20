@@ -14,6 +14,8 @@ public class cardPicLoader : MonoBehaviour
 
     public ban_icon ico;
 
+    public ban_icon_ot ico_ot;
+
     public void clear()
     {
         loaded_code = 0;
@@ -65,6 +67,7 @@ public class cardPicLoader : MonoBehaviour
             }
             if (loaded_banlist != Program.I().deckManager.currentBanlist)
             {
+                YGOSharp.Card cardData = YGOSharp.CardsManager.Get(code);
                 loaded_banlist = Program.I().deckManager.currentBanlist;
                 if (ico != null)
                 {
@@ -75,6 +78,8 @@ public class cardPicLoader : MonoBehaviour
                     }
                     ico.show(loaded_banlist.GetQuantity(code));
                 }
+                //暂时就这样吧，以后再处理异常
+                try { ico_ot.show(cardData.Ot); } catch{}
             }
         }
     }

@@ -283,10 +283,9 @@ public class Program : MonoBehaviour
     public static bool ANDROID_API_N = false;
 #endif
 
-    public string GAME_VERSION = "1.034.A";
-
     void initialize()
     {
+        GAME_VERSION = PRO_VERSION() + "-2";
 #if !UNITY_EDITOR && UNITY_ANDROID
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
 #endif
@@ -1045,9 +1044,7 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        string m_FPS = FPS.ToString();
-        try { m_FPS = m_FPS.Substring(0, 5); } catch{}
-        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + m_FPS); } } catch{}
+        try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + FPS.ToString("000")); } } catch{}
     }
 
     void Update()
@@ -1204,6 +1201,14 @@ public class Program : MonoBehaviour
         cardDescription.save();
         setting.save();
         setting.saveWhenQuit();
+    }
+
+    string GAME_VERSION;
+    public static string PRO_VERSION()
+    {
+        string version = Config.ClientVersion.ToString("X");
+        string VERSION_ = version.Substring(0, 1) + ".0" + version.Substring(1, 2) + "." + version.Substring(3, 1);
+        return VERSION_;
     }
 
     #endregion

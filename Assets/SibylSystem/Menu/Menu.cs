@@ -22,6 +22,7 @@ public class Menu : WindowServantSP
         UIHelper.registEvent(gameObject, "ai_", Program.gugugu);
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "download_", onClickDownload);
+        UIHelper.getByName<UILabel>(gameObject, "version_").text = Config.VERSION;
         //(new Thread(up)).Start();
     }
 

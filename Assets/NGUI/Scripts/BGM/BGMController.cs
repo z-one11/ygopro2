@@ -50,11 +50,7 @@ public class BGMController : MonoBehaviour
     {
         audioSource = gameObject.AddComponent<AudioSource>();
 
-#if UNITY_IOS
-        multiplier = 0.08f;
-#else
         multiplier = 0.8f;
-#endif
     }
 
     public void StartBGM(BGMType kind)
@@ -169,7 +165,7 @@ public class BGMController : MonoBehaviour
     private void PlayAudioFile()
     {
         audioSource.clip = audioClip;
-        audioSource.volume = Program.I().setting.vol() * multiplier;
+        audioSource.volume = Program.I().setting.BGMvol() * multiplier;
         audioSource.loop = true;
         audioSource.Play();
     }
