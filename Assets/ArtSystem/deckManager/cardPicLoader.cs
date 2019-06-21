@@ -67,7 +67,6 @@ public class cardPicLoader : MonoBehaviour
             }
             if (loaded_banlist != Program.I().deckManager.currentBanlist)
             {
-                YGOSharp.Card cardData = YGOSharp.CardsManager.Get(code);
                 loaded_banlist = Program.I().deckManager.currentBanlist;
                 if (ico != null)
                 {
@@ -78,8 +77,15 @@ public class cardPicLoader : MonoBehaviour
                     }
                     ico.show(loaded_banlist.GetQuantity(code));
                 }
-                //暂时就这样吧，以后再处理异常
-                try { ico_ot.show(cardData.Ot); } catch{}
+                if (ico_ot != null)
+                {
+                    if (data.Ot != 2 && data.Ot != 4)
+                    {
+                        ico_ot.show(3);
+                        return;
+                    }
+                    ico_ot.show(data.Ot);
+                }
             }
         }
     }
