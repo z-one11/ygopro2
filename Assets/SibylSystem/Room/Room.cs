@@ -494,7 +494,7 @@ public class Room : WindowServantSP
 
     public void StocMessage_DuelStart(BinaryReader r)
     {
-        try { BGMController.Instance.StartBGM(BGMController.BGMType.siding); } catch {}
+        BGMController.Instance.StartBGM(BGMController.BGMType.siding);
         Program.I().ocgcore.setDefaultReturnServant();
         needSide = false;
         joinWithReconnect = true;

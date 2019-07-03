@@ -63,40 +63,67 @@ public class BGMController : MonoBehaviour
         switch (kind)
         {
             case BGMType.duel:
-                bgmNumber = rnd.Next(0, duel.Count);
-                PlayRandomBGM(duel[bgmNumber]);
+                if (duel.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, duel.Count);
+                    PlayRandomBGM(duel[bgmNumber]);
+                }
                 break;
             case BGMType.advantage:
-                bgmNumber = rnd.Next(0, advantage.Count);
-                PlayRandomBGM(advantage[bgmNumber]);
+                if (advantage.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, advantage.Count);
+                    PlayRandomBGM(advantage[bgmNumber]);
+                }
                 break;
             case BGMType.disadvantage:
-                bgmNumber = rnd.Next(0, disadvantage.Count);
-                PlayRandomBGM(disadvantage[bgmNumber]);
+                if (disadvantage.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, disadvantage.Count);
+                    PlayRandomBGM(disadvantage[bgmNumber]);
+                }
                 break;
             case BGMType.deck:
-                bgmNumber = rnd.Next(0, deck.Count);
-                PlayRandomBGM(deck[bgmNumber]);
+                if (deck.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, deck.Count);
+                    PlayRandomBGM(deck[bgmNumber]);
+                }
                 break;
             case BGMType.lobby:
-                bgmNumber = rnd.Next(0, lobby.Count);
-                PlayRandomBGM(lobby[bgmNumber]);
+                if (lobby.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, lobby.Count);
+                    PlayRandomBGM(lobby[bgmNumber]);
+                }
                 break;
             case BGMType.lose:
-                bgmNumber = rnd.Next(0, lose.Count);
-                PlayRandomBGM(lose[bgmNumber]);
+                if (lose.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, lose.Count);
+                    PlayRandomBGM(lose[bgmNumber]);
+                }
                 break;
             case BGMType.menu:
-                bgmNumber = rnd.Next(0, menu.Count);
-                PlayRandomBGM(menu[bgmNumber]);
+                if (menu.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, menu.Count);
+                    PlayRandomBGM(menu[bgmNumber]);
+                }
                 break;
             case BGMType.siding:
-                bgmNumber = rnd.Next(0, siding.Count);
-                PlayRandomBGM(siding[bgmNumber]);
+                if (siding.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, siding.Count);
+                    PlayRandomBGM(siding[bgmNumber]);
+                }
                 break;
             case BGMType.win:
-                bgmNumber = rnd.Next(0, win.Count);
-                PlayRandomBGM(win[bgmNumber]);
+                if (win.Count != 0)
+                {
+                    bgmNumber = rnd.Next(0, win.Count);
+                    PlayRandomBGM(win[bgmNumber]);
+                }
                 break;
         }
 
@@ -129,16 +156,41 @@ public class BGMController : MonoBehaviour
         win = new List<string>();
 
         string soundPath = "sound/bgm/";
+        dirPath(soundPath);
         //Unity 能使用的音频格式：.aif .wav .mp3 .ogg
-        try { duel.AddRange(Directory.GetFiles(string.Concat(soundPath, "duel"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { advantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "advantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { disadvantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "disadvantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { deck.AddRange(Directory.GetFiles(string.Concat(soundPath, "deck"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { lobby.AddRange(Directory.GetFiles(string.Concat(soundPath, "lobby"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { lose.AddRange(Directory.GetFiles(string.Concat(soundPath, "lose"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { menu.AddRange(Directory.GetFiles(string.Concat(soundPath, "menu"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { siding.AddRange(Directory.GetFiles(string.Concat(soundPath, "siding"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
-        try { win.AddRange(Directory.GetFiles(string.Concat(soundPath, "win"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));} catch {}
+        //注: PC平台不支持外部加载MP3，移动平台才能正常使用
+        duel.AddRange(Directory.GetFiles(string.Concat(soundPath, "duel"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        advantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "advantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        disadvantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "disadvantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        deck.AddRange(Directory.GetFiles(string.Concat(soundPath, "deck"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        lobby.AddRange(Directory.GetFiles(string.Concat(soundPath, "lobby"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        lose.AddRange(Directory.GetFiles(string.Concat(soundPath, "lose"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        menu.AddRange(Directory.GetFiles(string.Concat(soundPath, "menu"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        siding.AddRange(Directory.GetFiles(string.Concat(soundPath, "siding"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        win.AddRange(Directory.GetFiles(string.Concat(soundPath, "win"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+    }
+
+    public void dirPath(string path)
+    {
+        List<string> BGMdir = new List<string>();
+        //音乐文件夹
+        BGMdir.Add("duel/");
+        BGMdir.Add("advantage/");
+        BGMdir.Add("disadvantage/");
+        BGMdir.Add("deck/");
+        BGMdir.Add("lobby/");
+        BGMdir.Add("lose/");
+        BGMdir.Add("menu/");
+        BGMdir.Add("siding/");
+        BGMdir.Add("win/");
+        //创建文件夹
+        for(int i = 0; i < BGMdir.Count; i++)
+        {
+            if (!Directory.Exists(Path.GetDirectoryName(path + BGMdir[i])))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path + BGMdir[i]));
+            }
+        }
     }
 
     public void changeBGMVol(float vol)
