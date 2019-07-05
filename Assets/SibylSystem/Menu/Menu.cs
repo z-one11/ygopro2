@@ -147,7 +147,7 @@ public class Menu : WindowServantSP
                 jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.3.zip");
             }
         } else {
-            jo.Call("showToast", "已是最新，无需再次下载！");
+            jo.Call("showToast", "已是最新，无需再次下载！");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
             Program.PrintToChat(InterString.Get("已是最新，无需再次下载！"));
         }
 #endif
