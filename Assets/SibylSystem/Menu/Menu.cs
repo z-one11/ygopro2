@@ -138,16 +138,16 @@ public class Menu : WindowServantSP
         Application.OpenURL("https://github.com/Unicorn369/closeup_mobile/releases/tag/0.1");
 #elif UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-        if (!File.Exists("updates/closeup_0.3.txt")) {//用于检查更新
-            if (File.Exists("closeup_0.3.zip")) {//如果有则直接解压
-                jo.Call("doExtractZipFile", "closeup_0.3.zip", Program.ANDROID_GAME_PATH);
-            } else if (File.Exists("updates/closeup_0.2.txt")){//如果有则下载更新包
-                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.3.zip");
+        if (!File.Exists("updates/closeup_0.4.txt")) {//用于检查更新
+            if (File.Exists("closeup_0.4.zip")) {//如果有则直接解压
+                jo.Call("doExtractZipFile", "closeup_0.4.zip", Program.ANDROID_GAME_PATH);
+            } else if (File.Exists("updates/closeup_0.3.txt")){//如果有则下载更新包
+                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.4.zip");
             } else {//否则下载并解压，锁定目录：ANDROID_GAME_PATH
-                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.3.zip");
+                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.4.zip");
             }
         } else {
-            jo.Call("showToast", "已是最新，无需再次下载！");
+            jo.Call("showToast", "已是最新，无需再次下载！");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
             Program.PrintToChat(InterString.Get("已是最新，无需再次下载！"));
         }
 #endif

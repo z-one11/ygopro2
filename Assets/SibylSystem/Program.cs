@@ -285,7 +285,7 @@ public class Program : MonoBehaviour
 
     void initialize()
     {
-        GAME_VERSION = PRO_VERSION() + "-2";
+        GAME_VERSION = PRO_VERSION();
 #if !UNITY_EDITOR && UNITY_ANDROID
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
 #endif
@@ -294,14 +294,7 @@ public class Program : MonoBehaviour
         //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
         //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
 #elif UNITY_ANDROID //Android
-        /**
-         *  Java 代码参考:
-         *  public String GamePath(String path) {
-         *      GAME_DIR = Environment.getExternalStorageDirectory().toString() + path;
-         *      return GAME_DIR;
-         *  }
-         */
-        ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");
+        ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygocore/");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
 
         if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_" +  GAME_VERSION + ".txt"))
         {
@@ -425,17 +418,7 @@ public class Program : MonoBehaviour
                 }
             }
 
-            /**
-             *  Java 代码参考:
-             *  public boolean APIVersion() {
-             *      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-             *          return true;
-             *      } else {
-             *          return false;
-             *      }
-             *  }
-             */
-            bool API_SUPPORT = jo.Call<bool>("APIVersion");
+            bool API_SUPPORT = jo.Call<bool>("APIVersion");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
 
             if (API_SUPPORT == true) {
                 ANDROID_API_N = true;
@@ -1202,4 +1185,13 @@ public class Program : MonoBehaviour
     {
         PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
     }
+
+#if !UNITY_EDITOR && UNITY_ANDROID
+    // Java 回调测试 (https://github.com/Unicorn369/YGO2_Android_Library/commit/b44518f1f3a1adf0d66c8126cddbce1a734db83f)
+    public void showToast(string content)
+    {
+        PrintToChat(InterString.Get(content));
+    }
+#endif
+
 }
