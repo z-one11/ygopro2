@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 public static class Config
 {
-    public static uint ClientVersion = 0x134a;
-    public static string VERSION = "YGOPro2 1.034.A (TEST)";
+    public static uint ClientVersion = 0x134b;
+    public static string VERSION = "YGOPro2 1.034.B (TEST)";
 
     class oneString
     {

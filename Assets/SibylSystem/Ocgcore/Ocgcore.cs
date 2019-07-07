@@ -1104,7 +1104,6 @@ public class Ocgcore : ServantWithCardDescription
             case GameMessage.AnnounceAttrib:
             case GameMessage.AnnounceCard:
             case GameMessage.AnnounceNumber:
-            case GameMessage.AnnounceCardFilter:
             case GameMessage.SelectDisfield:
             case GameMessage.SelectPlace:
                 if (inIgnoranceReplay() || currentMessageIndex + 1 < theWorldIndex)
@@ -5274,22 +5273,6 @@ public class Ocgcore : ServantWithCardDescription
                 destroy(waitObject, 0, false, true);
                 player = localPlayer(r.ReadByte());
                 ES_searchCode.Clear();
-                ES_searchCode.Add(r.ReadInt32());
-                ES_searchCode.Add((int)searchCode.OPCODE_ISTYPE);
-                RMSshow_input("AnnounceCard", InterString.Get("请输入关键字。"),"");
-                break;
-            case GameMessage.AnnounceCardFilter:
-                if (inIgnoranceReplay() || inTheWorld())
-                {
-                    break;
-                }
-                if (condition == Condition.record)
-                {
-                    Sleep(60);
-                }
-                destroy(waitObject, 0, false, true);
-                player = localPlayer(r.ReadByte());
-                ES_searchCode.Clear();
                 count = r.ReadByte();
                 for (int i = 0; i < count; i++) 
                 {
@@ -8314,7 +8297,6 @@ public class Ocgcore : ServantWithCardDescription
             case GameMessage.AnnounceAttrib:
                 break;
             case GameMessage.AnnounceCard:
-            case GameMessage.AnnounceCardFilter:
                 break;
             case GameMessage.AnnounceNumber:
                 break;
@@ -8388,7 +8370,6 @@ public class Ocgcore : ServantWithCardDescription
             case GameMessage.AnnounceAttrib:
                 break;
             case GameMessage.AnnounceCard:
-            case GameMessage.AnnounceCardFilter:
                 clearResponse();
                 realize();
                 toNearest();
@@ -8675,7 +8656,6 @@ public class Ocgcore : ServantWithCardDescription
             case GameMessage.AnnounceAttrib:
                 break;
             case GameMessage.AnnounceCard:
-            case GameMessage.AnnounceCardFilter:
                 if (card.forSelect)
                 {
                     BinaryMaster binaryMaster = new BinaryMaster();
