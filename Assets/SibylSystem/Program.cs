@@ -285,7 +285,7 @@ public class Program : MonoBehaviour
 
     void initialize()
     {
-        GAME_VERSION = PRO_VERSION() + "-2";
+        GAME_VERSION = PRO_VERSION();
 #if !UNITY_EDITOR && UNITY_ANDROID
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
 #endif
