@@ -75,6 +75,13 @@ public class Menu : WindowServantSP
         {
             Application.OpenURL(upurl);
         }
+        if (hashCode == "onCheckUpgrade")
+        {
+            if (result[0].value == "yes")
+            {
+                Application.OpenURL("https://pan.baidu.com/s/1PEulJRq8ztugD7PtH0ZSlA");
+            }
+        }
     }
 
     bool outed = false;
@@ -125,6 +132,22 @@ public class Menu : WindowServantSP
     void onClickSelectDeck()
     {
         Program.I().shiftToServant(Program.I().selectDeck);
+    }
+
+    public void onCheckUpgrade()
+    {
+        RMSshow_yesOrNo
+        (
+            "onCheckUpgrade",
+            InterString.Get("发现新版本，是否立即下载？"),
+            new messageSystemValue { hint = "yes", value = "yes" },
+            new messageSystemValue { hint = "no", value = "no" }
+        );
+    }
+
+    public void showToast(string content)
+    {
+        RMSshow_onlyYes("showToast", InterString.Get(content), null);
     }
 
     public static void deleteShell()
