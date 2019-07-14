@@ -1052,7 +1052,7 @@ public class Program : MonoBehaviour
         setting.saveWhenQuit();
     }
 
-    static string GAME_VERSION;
+    public static string GAME_VERSION;
     public static string PRO_VERSION()
     {
         string version = Config.ClientVersion.ToString("X");
@@ -1087,7 +1087,7 @@ public class Program : MonoBehaviour
         {
             string ver = File.ReadAllText("config/ver.txt");
             string[] lines = ver.Replace("\r", "").Split("\n");
-            if (lines[0] == GAME_VERSION)
+            if (lines[0] != GAME_VERSION)
             {
                 Menu.upurl_ = lines[1];
                 Program.I().menu.onCheckUpgrade();

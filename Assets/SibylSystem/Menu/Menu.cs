@@ -22,7 +22,7 @@ public class Menu : WindowServantSP
         UIHelper.registEvent(gameObject, "ai_", Program.gugugu);
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.getByName<UILabel>(gameObject, "version_").text = Config.VERSION;
-        //(new Thread(up)).Start();
+        (new Thread(up)).Start();
     }
 
     public override void show()
@@ -43,7 +43,8 @@ public class Menu : WindowServantSP
     {
         try
         {
-            string url = "http://ygoforge.com/update.asp";
+            ServicePointManager.ServerCertificateValidationCallback = HttpDldFile.MyRemoteCertificateValidationCallback;//支持https
+            string url = "https://api.ygo2019.xyz/ygopro2/ver.txt";
             WebClient wc = new WebClient();
             Stream s = wc.OpenRead(url);
             StreamReader sr = new StreamReader(s, Encoding.UTF8);
@@ -51,6 +52,12 @@ public class Menu : WindowServantSP
             sr.Close();
             s.Close();
             string[] lines = result.Replace("\r", "").Split("\n");
+            if (lines[0] != Program.GAME_VERSION)
+            {
+                upurl = lines[1];
+            }
+
+            /*
             if (lines.Length > 0)
             {
                 string[] mats = lines[0].Split(":.:");
@@ -62,6 +69,7 @@ public class Menu : WindowServantSP
                     }
                 }
             }
+            */
         }
         catch (System.Exception e)
         {
@@ -74,7 +82,10 @@ public class Menu : WindowServantSP
         base.ES_RMS(hashCode, result);
         if (hashCode == "RMSshow_onlyYes")
         {
-            Application.OpenURL(upurl);
+            if (result[0].value == "yes")
+            {
+                Application.OpenURL(upurl);
+            }
         }
         if (hashCode == "onCheckUpgrade")
         {
@@ -92,7 +103,7 @@ public class Menu : WindowServantSP
         if (upurl != "" && outed == false)
         {
             outed = true;
-            RMSshow_onlyYes("RMSshow_onlyYes", InterString.Get("发现更新!@n你可以免费下载"), null);
+            RMSshow_yesOrNo("RMSshow_onlyYes", InterString.Get("发现更新!@n是否要下载更新？"), new messageSystemValue { hint = "yes", value = "yes" }, new messageSystemValue { hint = "no", value = "no" });
         }
         Menu.checkCommend();
     }
