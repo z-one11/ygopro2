@@ -1052,7 +1052,7 @@ public class Program : MonoBehaviour
         setting.saveWhenQuit();
     }
 
-    string GAME_VERSION;
+    static string GAME_VERSION;
     public static string PRO_VERSION()
     {
         string version = Config.ClientVersion.ToString("X");
@@ -1066,4 +1066,35 @@ public class Program : MonoBehaviour
     {
         PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
     }
+
+    public static void CheckUpgrade()
+    {
+        PrintToChat(InterString.Get("正在检测是否有新版本！"));
+        if (File.Exists("config/ver.txt"))
+        {
+            File.Delete("config/ver.txt");
+        }
+
+        HttpDldFile df = new HttpDldFile();
+        df.Download("https://api.ygo2019.xyz/ygopro2/ver.txt", "config/ver.txt");
+
+        if (File.Exists("config/ver.txt"))
+        {
+            string ver = File.ReadAllText("config/ver.txt");
+            if (ver != GAME_VERSION)
+            {
+                PrintToChat(InterString.Get("发现新版本！正在唤起浏览器..."));
+                Application.OpenURL("https://pan.baidu.com/s/1PEulJRq8ztugD7PtH0ZSlA");
+            }
+            else
+            {
+                PrintToChat(InterString.Get("已是最新版本！"));
+            }
+        }
+        else
+        {
+            PrintToChat(InterString.Get("检查更新失败！"));
+        }
+    }
+
 }

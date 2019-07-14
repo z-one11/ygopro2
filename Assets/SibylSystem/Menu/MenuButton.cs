@@ -16,9 +16,14 @@ public class MenuButton : MonoBehaviour
         button = GameObject.Find("Button");
     }
 
-    public void onClickJoinQQ()
+    public void onJoinQQ()
     {
         Application.OpenURL("https://jq.qq.com/?_wv=1027&k=5YrX11n");
+    }
+
+    public void onCheckUpgrade()
+    {
+        Program.CheckUpgrade();
     }
 
     // Update is called once per frame
