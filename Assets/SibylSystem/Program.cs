@@ -1085,9 +1085,16 @@ public class Program : MonoBehaviour
 
         if (File.Exists("config/ver.txt"))
         {
+            List<string> list = new List<string>();
             string ver = File.ReadAllText("config/ver.txt");
-            if (ver != GAME_VERSION)
+            string[] lines = ver.Replace("\r", "").Split("\n");
+            for (int i = 0; i < lines.Length; i++)
             {
+                list.Add(lines[i]);
+            }
+            if (lines[0] != Program.GAME_VERSION)
+            {
+                Menu.upurl_ = lines[1];
                 Program.I().menu.onCheckUpgrade();
             }
             else

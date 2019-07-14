@@ -38,6 +38,7 @@ public class Menu : WindowServantSP
 
     static int Version = 0;
     string upurl = "";
+    public static string upurl_ = "";
     void up()
     {
         try
@@ -79,7 +80,7 @@ public class Menu : WindowServantSP
         {
             if (result[0].value == "yes")
             {
-                Application.OpenURL("https://pan.baidu.com/s/1PEulJRq8ztugD7PtH0ZSlA");
+                Application.OpenURL(upurl_);
             }
         }
     }
