@@ -46,6 +46,7 @@ public class SelectServer : WindowServantSP
         serversList.items.Add("[Ser2] 23333先行服");
         serversList.items.Add("[Ser3] 2Pick轮抽服");
         serversList.items.Add("[Ser4] Koishi Server (TCG)");
+        serversList.items.Add("[Ser5] Koishi Server (高速决斗)");
         serversList.items.Add("[自定义]");
 
         SetActiveFalse();
@@ -94,6 +95,17 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
                 Config.Set("serversPicker", "[Ser4] Koishi Server (TCG)");
+                save();
+
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[Ser5] Koishi Server (高速决斗)":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7373";
+                Config.Set("serversPicker", "[Ser5] Koishi Server (高速决斗)");
                 save();
 
                 inputIP_.enabled = false;
