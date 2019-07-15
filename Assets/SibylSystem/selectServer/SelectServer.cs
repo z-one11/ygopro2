@@ -49,12 +49,14 @@ public class SelectServer : WindowServantSP
         }
 
         //方便免修改 [selectServerWithRoomlist.prefab]
-        serversList.items.Add("[OCG]Mercury233");
-        serversList.items.Add("[OCG]Koishi");
-        serversList.items.Add("[TCG]Koishi");
-        serversList.items.Add("[轮抽服]2Pick");
+        serversList.items.Add("[OCG]233 Server");
+        serversList.items.Add("[OCG]Koishi Server");
+        serversList.items.Add("[TCG]Koishi Server");
         serversList.items.Add("[OCG&TCG]한국서버 (KR)");
         serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
+        serversList.items.Add("--------------------");
+        serversList.items.Add("[2Pick]轮抽服");
+        serversList.items.Add("[SP Duel]Koishi Server");
         if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
         {
             serversList.items.Add("[自定义]");
@@ -70,44 +72,33 @@ public class SelectServer : WindowServantSP
         string server = serversList.value;
         switch (server)
         {
-            case "[OCG]Mercury233":
+            case "[OCG]233 Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
-                Config.Set("serversPicker", "[OCG]Mercury233");
+                Config.Set("serversPicker", "[OCG]233 Server");
                 save();
 
                 inputIP_.enabled = false;
                 inputPort_.enabled = true;
                 break;
             }
-            case "[OCG]Koishi":
+            case "[OCG]Koishi Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
-                Config.Set("serversPicker", "[OCG]Koishi");
+                Config.Set("serversPicker", "[OCG]Koishi Server");
                 save();
 
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
             }
-            case "[TCG]Koishi":
+            case "[TCG]Koishi Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
-                Config.Set("serversPicker", "[TCG]Koishi");
-                save();
-
-                inputIP_.enabled = false;
-                inputPort_.enabled = false;
-                break;
-            }
-            case "[轮抽服]2Pick":
-            {
-                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
-                UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
-                Config.Set("serversPicker", "[轮抽服]2Pick");
+                Config.Set("serversPicker", "[TCG]Koishi Server");
                 save();
 
                 inputIP_.enabled = false;
@@ -130,6 +121,36 @@ public class SelectServer : WindowServantSP
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "ygosvrjp.tk";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7911";
                 Config.Set("serversPicker", "[OCG&TCG]YGOhollow (JP)");
+                save();
+
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[SP Duel]Koishi Server":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7373";
+                Config.Set("serversPicker", "[SP Duel]Koishi Server");
+                save();
+
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "--------------------":
+            {
+                Config.Set("serversPicker", "--------------------");
+                save();
+                inputIP_.enabled = true;
+                inputPort_.enabled = true;
+                break;
+            }
+            case "[2Pick]轮抽服":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
+                Config.Set("serversPicker", "[2Pick]轮抽服");
                 save();
 
                 inputIP_.enabled = false;
