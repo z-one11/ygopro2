@@ -161,9 +161,9 @@ public class Menu : WindowServantSP
             if (File.Exists("closeup_0.4.zip")) {//如果有则直接解压
                 jo.Call("doExtractZipFile", "closeup_0.4.zip", Program.ANDROID_GAME_PATH);
             } else if (File.Exists("updates/closeup_0.3.txt")){//如果有则下载更新包
-                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.4.zip");
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.4.zip");
             } else {//否则下载并解压，锁定目录：ANDROID_GAME_PATH
-                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.4.zip");
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.4.zip");
             }
         } else {
             jo.Call("showToast", "已是最新，无需再次下载！");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library

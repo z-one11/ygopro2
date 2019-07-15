@@ -428,7 +428,7 @@ public class Program : MonoBehaviour
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
                     File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 } else {
-                    jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
+                    jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
                     File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 }
             }
@@ -1236,5 +1236,12 @@ public class Program : MonoBehaviour
             showToast("检查更新失败！");
         }
     }
+
+#if !UNITY_EDITOR && UNITY_ANDROID
+    public void doShowToast(string content)
+    {
+        I().menu.showToast(content);
+    }
+#endif
 
 }
