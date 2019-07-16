@@ -16,7 +16,7 @@ public class MenuButton : MonoBehaviour
         button = GameObject.Find("Button");
     }
 
-    public void onClickJoinQQ()
+    public void onJoinQQ()
     {
 #if !UNITY_EDITOR && UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
@@ -24,6 +24,11 @@ public class MenuButton : MonoBehaviour
 #else
         Application.OpenURL("https://jq.qq.com/?_wv=1027&k=50MZVQA");
 #endif
+    }
+
+    public void onCheckUpgrade()
+    {
+        Program.CheckUpgrade();
     }
 
     // Update is called once per frame

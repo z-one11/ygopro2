@@ -23,7 +23,7 @@ public class Menu : WindowServantSP
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "download_", onClickDownload);
         UIHelper.getByName<UILabel>(gameObject, "version_").text = Config.VERSION;
-        //(new Thread(up)).Start();
+        (new Thread(up)).Start();
     }
 
     public override void show()
@@ -39,11 +39,13 @@ public class Menu : WindowServantSP
 
     static int Version = 0;
     string upurl = "";
+    public static string upurl_ = "";
     void up()
     {
         try
         {
-            string url = "http://ygoforge.com/update.asp";
+            ServicePointManager.ServerCertificateValidationCallback = HttpDldFile.MyRemoteCertificateValidationCallback;//支持https
+            string url = "https://api.ygo2019.xyz/ygopro2/android_ver.txt";
             WebClient wc = new WebClient();
             Stream s = wc.OpenRead(url);
             StreamReader sr = new StreamReader(s, Encoding.UTF8);
@@ -51,6 +53,12 @@ public class Menu : WindowServantSP
             sr.Close();
             s.Close();
             string[] lines = result.Replace("\r", "").Split("\n");
+            if (lines[0] != Program.GAME_VERSION)
+            {
+                upurl = lines[1];
+            }
+
+            /*
             if (lines.Length > 0)
             {
                 string[] mats = lines[0].Split(":.:");
@@ -62,6 +70,7 @@ public class Menu : WindowServantSP
                     }
                 }
             }
+            */
         }
         catch (System.Exception e)
         {
@@ -72,9 +81,16 @@ public class Menu : WindowServantSP
     public override void ES_RMS(string hashCode, List<messageSystemValue> result)
     {
         base.ES_RMS(hashCode, result);
-        if (hashCode == "RMSshow_onlyYes")
+        if (hashCode == "RMSshow_onlyYes" || hashCode == "onCheckUpgrade")
         {
-            Application.OpenURL(upurl);
+            if (result[0].value == "yes")
+            {
+                //Application.OpenURL(upurl);
+#if !UNITY_EDITOR && UNITY_ANDROID //Android
+                AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
+                jo.Call("doJoinQQGroup", "UHm3h3hSrmgp-iYqMiZcc2zO5J1Q8OyW");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
+#endif
+            }
         }
     }
 
@@ -85,7 +101,7 @@ public class Menu : WindowServantSP
         if (upurl != "" && outed == false)
         {
             outed = true;
-            RMSshow_onlyYes("RMSshow_onlyYes", InterString.Get("发现更新!@n你可以免费下载"), null);
+            RMSshow_yesOrNo("RMSshow_onlyYes", InterString.Get("发现更新!@n是否要下载更新？"), new messageSystemValue { hint = "yes", value = "yes" }, new messageSystemValue { hint = "no", value = "no" });
         }
         Menu.checkCommend();
     }
@@ -142,15 +158,36 @@ public class Menu : WindowServantSP
             if (File.Exists("closeup_0.4.zip")) {//如果有则直接解压
                 jo.Call("doExtractZipFile", "closeup_0.4.zip", Program.ANDROID_GAME_PATH);
             } else if (File.Exists("updates/closeup_0.3.txt")){//如果有则下载更新包
-                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.4.zip");
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.4.zip");
             } else {//否则下载并解压，锁定目录：ANDROID_GAME_PATH
-                jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.4.zip");
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.4.zip");
             }
         } else {
-            jo.Call("showToast", "已是最新，无需再次下载！");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
-            Program.PrintToChat(InterString.Get("已是最新，无需再次下载！"));
+            string[] lines = {Program.ANDROID_GAME_PATH + "updates/ver_" + Program.GAME_VERSION + ".txt",
+                              Program.ANDROID_GAME_PATH + "updates/bgm_0.1.txt",
+                              Program.ANDROID_GAME_PATH + "updates/closeup_0.4.txt",
+                              Program.ANDROID_GAME_PATH + "updates/image_0.2.txt",
+                              Program.ANDROID_GAME_PATH + "updates/ui.txt"};
+            Program.DeleteTxt(lines);
+            showToast("已是最新，无需再次下载！");
         }
 #endif
+    }
+
+    public void onCheckUpgrade()
+    {
+        RMSshow_yesOrNo
+        (
+            "onCheckUpgrade",
+            InterString.Get("发现新版本，是否立即下载？"),
+            new messageSystemValue { hint = "yes", value = "yes" },
+            new messageSystemValue { hint = "no", value = "no" }
+        );
+    }
+
+    public void showToast(string content)
+    {
+        RMSshow_onlyYes("showToast", InterString.Get(content), null);
     }
 
     public static void deleteShell()

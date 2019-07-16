@@ -413,7 +413,7 @@ public class Program : MonoBehaviour
                     jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
                     File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 } else {
-                    jo.Call("doDownloadZipFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
+                    jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
                     File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 }
             }
@@ -1171,7 +1171,7 @@ public class Program : MonoBehaviour
         setting.saveWhenQuit();
     }
 
-    string GAME_VERSION;
+    public static string GAME_VERSION;
     public static string PRO_VERSION()
     {
         string version = Config.ClientVersion.ToString("X");
@@ -1186,11 +1186,62 @@ public class Program : MonoBehaviour
         PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
     }
 
-#if !UNITY_EDITOR && UNITY_ANDROID
-    // Java 回调测试 (https://github.com/Unicorn369/YGO2_Android_Library/commit/b44518f1f3a1adf0d66c8126cddbce1a734db83f)
-    public void showToast(string content)
+    public static void showToast(string content)
     {
-        PrintToChat(InterString.Get(content));
+        Program.I().menu.showToast(content);
+    }
+
+    public static void CheckUpgrade()
+    {
+        PrintToChat(InterString.Get("正在检测是否有新版本！"));
+        if (File.Exists("config/ver.txt"))
+        {
+            File.Delete("config/ver.txt");
+        }
+
+        HttpDldFile df = new HttpDldFile();
+        df.Download("https://api.ygo2019.xyz/ygopro2/android_ver.txt", "config/ver.txt");
+
+        if (File.Exists("config/ver.txt"))
+        {
+            string ver = File.ReadAllText("config/ver.txt");
+            string[] lines = ver.Replace("\r", "").Split("\n");
+            if (lines[0] != GAME_VERSION)
+            {
+                Menu.upurl_ = lines[1];
+                Program.I().menu.onCheckUpgrade();
+            }
+            else
+            {
+                showToast("已是最新版本！");
+            }
+        }
+        else
+        {
+            showToast("检查更新失败！");
+        }
+    }
+
+#if !UNITY_EDITOR && UNITY_ANDROID
+    //用于删除历史更新文件
+    public static void DeleteTxt(string[] lines)
+    {
+        List<string> file = new List<string>();
+        string path = ANDROID_GAME_PATH + "updates/";
+        file.AddRange(Directory.GetFiles(string.Concat(ANDROID_GAME_PATH, "updates/"), "*.txt", SearchOption.TopDirectoryOnly));
+
+        for(int i = 0; i < file.Count; i++)
+        {
+            if (file[i] != lines[0] && file[i] != lines[1] && file[i] != lines[2] && file[i] != lines[3] && file[i] != lines[4])
+            {
+                File.Delete(file[i]);
+            }
+        }
+    }
+    //用于Java回调
+    public void doShowToast(string content)
+    {
+        I().menu.showToast(content);
     }
 #endif
 
