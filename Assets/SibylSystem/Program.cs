@@ -1238,6 +1238,22 @@ public class Program : MonoBehaviour
     }
 
 #if !UNITY_EDITOR && UNITY_ANDROID
+    //用于删除历史更新文件
+    public static void DeleteTxt(string[] lines)
+    {
+        List<string> file = new List<string>();
+        string path = ANDROID_GAME_PATH + "updates/";
+        file.AddRange(Directory.GetFiles(string.Concat(ANDROID_GAME_PATH, "updates/"), "*.txt", SearchOption.TopDirectoryOnly));
+
+        for(int i = 0; i < file.Count; i++)
+        {
+            if (file[i] != lines[0] && file[i] != lines[1] && file[i] != lines[2] && file[i] != lines[3])
+            {
+                File.Delete(file[i]);
+            }
+        }
+    }
+    //用于Java回调
     public void doShowToast(string content)
     {
         I().menu.showToast(content);
