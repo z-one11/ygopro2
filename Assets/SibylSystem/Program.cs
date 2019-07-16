@@ -1247,7 +1247,7 @@ public class Program : MonoBehaviour
 
         for(int i = 0; i < file.Count; i++)
         {
-            if (file[i] != lines[0] && file[i] != lines[1] && file[i] != lines[2] && file[i] != lines[3])
+            if (file[i] != lines[0] && file[i] != lines[1] && file[i] != lines[2] && file[i] != lines[3] && file[i] != lines[4])
             {
                 File.Delete(file[i]);
             }

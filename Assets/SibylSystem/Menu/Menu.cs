@@ -167,9 +167,10 @@ public class Menu : WindowServantSP
             }
         } else {
             string[] lines = {Program.ANDROID_GAME_PATH + "updates/ver_" + Program.GAME_VERSION + ".txt",
-                              Program.ANDROID_GAME_PATH + "updates/ui.txt",
                               Program.ANDROID_GAME_PATH + "updates/bgm_0.1.txt",
-                              Program.ANDROID_GAME_PATH + "updates/closeup_0.4.txt"};
+                              Program.ANDROID_GAME_PATH + "updates/closeup_0.4.txt",
+                              Program.ANDROID_GAME_PATH + "updates/image_0.2.txt",
+                              Program.ANDROID_GAME_PATH + "updates/ui.txt"};
             Program.DeleteTxt(lines);
             showToast("已是最新，无需再次下载！");
         }
