@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using YGOSharp.OCGWrapper.Enums;
@@ -751,6 +752,7 @@ public class GameTextureManager
     {
         try
         {
+            int[] OT = {1, 2, 3};//对应: OCG、TCG、OCG&TCG
             string path = "picture/card/" + pic.code.ToString() + ".png";
             if (!File.Exists(path))
             {
@@ -764,13 +766,13 @@ public class GameTextureManager
             {
                 path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0)
+            if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
             {
                 //YGOPro2-CN (421x614)
                 df.Download("http://download.ygo2019.xyz/ygopro2-data/picture/card/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
                 path = "picture/card/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0)
+            if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
             {
                 //YGOPro2 先行卡
                 df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
