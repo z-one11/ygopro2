@@ -277,24 +277,26 @@ public class Program : MonoBehaviour
 
     public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygopro2/";
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN       //编译器、Windows
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN                //编译器、Windows
     public static bool ANDROID_API_N = true;
-#elif UNITY_ANDROID || UNITY_IPHONE            //Mobile Platform
+#elif !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE)  //Mobile Platform
     public static bool ANDROID_API_N = false;
 #endif
 
     void initialize()
     {
         GAME_VERSION = PRO_VERSION();
-#if !UNITY_EDITOR && UNITY_ANDROID
-        AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-#endif
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
-        //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
-        //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
-#elif UNITY_ANDROID //Android
+#if !UNITY_EDITOR && UNITY_ANDROID //Android
+        AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
         ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
+
+        bool API_SUPPORT = jo.Call<bool>("APIVersion");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
+        if (API_SUPPORT == true) {
+            ANDROID_API_N = true;
+        } else {
+            ANDROID_API_N = false;
+        }
 
         if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_" +  GAME_VERSION + ".txt"))
         {
@@ -326,7 +328,7 @@ public class Program : MonoBehaviour
         Environment.CurrentDirectory = ANDROID_GAME_PATH;
         System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
 
-#elif UNITY_IPHONE //iPhone
+#elif !UNITY_EDITOR && UNITY_IPHONE //iPhone
         string IOS_GAME_PATH = Application.persistentDataPath + "/ygopro2/";
         if (!File.Exists(IOS_GAME_PATH + "updates/ver_" +  GAME_VERSION + ".txt"))
         {
@@ -345,6 +347,9 @@ public class Program : MonoBehaviour
         }
         Environment.CurrentDirectory = IOS_GAME_PATH;
         System.IO.Directory.SetCurrentDirectory(IOS_GAME_PATH);
+#else //UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
+        //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
+        //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
 #endif
         go(1, () =>
         {
@@ -431,14 +436,6 @@ public class Program : MonoBehaviour
                     jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
                     File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 }
-            }
-
-            bool API_SUPPORT = jo.Call<bool>("APIVersion");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
-
-            if (API_SUPPORT == true) {
-                ANDROID_API_N = true;
-            } else {
-                ANDROID_API_N = false;
             }
 #endif
         });
@@ -992,7 +989,7 @@ public class Program : MonoBehaviour
             Screen.SetResolution(1300, 700, false);
         }
         QualitySettings.vSyncCount = 0;
-        #elif UNITY_ANDROID || UNITY_IPHONE //Android、iPhone
+        #elif !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE) //Android、iPhone
         Screen.SetResolution(1280, 720, true);
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         Screen.orientation = ScreenOrientation.AutoRotation;
@@ -1242,7 +1239,6 @@ public class Program : MonoBehaviour
     public static void DeleteTxt(string[] lines)
     {
         List<string> file = new List<string>();
-        string path = ANDROID_GAME_PATH + "updates/";
         file.AddRange(Directory.GetFiles(string.Concat(ANDROID_GAME_PATH, "updates/"), "*.txt", SearchOption.TopDirectoryOnly));
 
         for(int i = 0; i < file.Count; i++)
