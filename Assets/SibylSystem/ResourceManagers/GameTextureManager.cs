@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using YGOSharp.OCGWrapper.Enums;
@@ -350,7 +351,7 @@ public class GameTextureManager
                 }
                 else
                 {
-                    pic.hashed_data = getCuttedPic(path, pic.pCard,Iam8);
+                    pic.hashed_data = getCuttedPic(path, pic.pCard, Iam8);
                     int width = pic.hashed_data.GetLength(0);
                     int height = pic.hashed_data.GetLength(1);
                     int size = (int)(height * 0.8);
@@ -800,6 +801,7 @@ public class GameTextureManager
     {
         try
         {
+            int[] OT = {1, 2, 3};//对应: OCG、TCG、OCG&TCG
             string path = "picture/card/" + pic.code.ToString() + ".png";
             if (!File.Exists(path))
             {
@@ -817,13 +819,13 @@ public class GameTextureManager
             {
                 path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
+            if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
             {
                 //YGOMobile (177x254)
                 df.Download("http://api.ygo2019.xyz/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
                 path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0 && AutoPicDownload)
+            if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
             {
                 //先行卡 (177x254)
                 df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg");

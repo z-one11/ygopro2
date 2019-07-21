@@ -116,6 +116,8 @@ public class Menu : WindowServantSP
         TcpHelper.SaveRecord();
 #if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE) // IL2CPP 使用此方法才能退出
         Application.Quit();
+#elif UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
 #else
         Process.GetCurrentProcess().Kill();
 #endif
@@ -154,7 +156,7 @@ public class Menu : WindowServantSP
     void onClickDownload()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
-        Application.OpenURL("https://github.com/Unicorn369/closeup_mobile/releases/tag/0.1");
+        showToast("已是最新，无需再次下载！");
 #elif UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
         if (!File.Exists("updates/closeup_0.4.txt")) {//用于检查更新
