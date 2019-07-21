@@ -275,7 +275,7 @@ public class Program : MonoBehaviour
 
     public static float verticleScale = 5f;
 
-    public static string ANDROID_GAME_PATH = "/storage/emulated/0/ygopro2/";
+    public static string GAME_PATH = "/storage/emulated/0/ygopro2/";
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN                //编译器、Windows
     public static bool ANDROID_API_N = true;
@@ -289,7 +289,8 @@ public class Program : MonoBehaviour
 
 #if !UNITY_EDITOR && UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-        ANDROID_GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
+        GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
+        UpdateClientData(GAME_PATH);
 
         bool API_SUPPORT = jo.Call<bool>("APIVersion");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
         if (API_SUPPORT == true) {
@@ -298,58 +299,17 @@ public class Program : MonoBehaviour
             ANDROID_API_N = false;
         }
 
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/ver_" +  GAME_VERSION + ".txt"))
-        {
-            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
-            var www = new WWW(filePath);
-            while (!www.isDone) { }
-            byte[] bytes = www.bytes;
-            ExtractZipFile(bytes, ANDROID_GAME_PATH);
-            //File.Create(ANDROID_GAME_PATH + ".nomedia");
-        }
-
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/ui.txt") || !Directory.Exists(ANDROID_GAME_PATH + "texture/ui/"))
-        {
-            string filePath = Application.streamingAssetsPath + "/ui.zip";
-            var www = new WWW(filePath);
-            while (!www.isDone) { }
-            byte[] bytes = www.bytes;
-            ExtractZipFile(bytes, ANDROID_GAME_PATH);
-        }
-
-        if (!File.Exists(ANDROID_GAME_PATH + "updates/bgm_0.1.txt") || !Directory.Exists(ANDROID_GAME_PATH + "sound/bgm/"))
-        {
-            string filePath = Application.streamingAssetsPath + "/bgm.zip";
-            var www = new WWW(filePath);
-            while (!www.isDone) { }
-            byte[] bytes = www.bytes;
-            ExtractZipFile(bytes, ANDROID_GAME_PATH);
-        }
-        Environment.CurrentDirectory = ANDROID_GAME_PATH;
-        System.IO.Directory.SetCurrentDirectory(ANDROID_GAME_PATH);
-
+        Environment.CurrentDirectory = GAME_PATH;
+        System.IO.Directory.SetCurrentDirectory(GAME_PATH);
 #elif !UNITY_EDITOR && UNITY_IPHONE //iPhone
-        string IOS_GAME_PATH = Application.persistentDataPath + "/ygopro2/";
-        if (!File.Exists(IOS_GAME_PATH + "updates/ver_" +  GAME_VERSION + ".txt"))
-        {
-            string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
-            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), IOS_GAME_PATH);
-        }
-        if (!File.Exists(IOS_GAME_PATH + "updates/ui.txt"))
-        {
-            string filePath = Application.streamingAssetsPath + "/ui.zip";
-            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), IOS_GAME_PATH);
-        }
-        if (!File.Exists(IOS_GAME_PATH + "updates/bgm_0.1.txt"))
-        {
-            string filePath = Application.streamingAssetsPath + "/bgm.zip";
-            ExtractZipFile(System.IO.File.ReadAllBytes(filePath), IOS_GAME_PATH);
-        }
-        Environment.CurrentDirectory = IOS_GAME_PATH;
-        System.IO.Directory.SetCurrentDirectory(IOS_GAME_PATH);
+        GAME_PATH = Application.persistentDataPath + "/ygopro2/";
+        UpdateClientData(GAME_PATH);
+
+        Environment.CurrentDirectory = GAME_PATH;
+        System.IO.Directory.SetCurrentDirectory(GAME_PATH);
 #else //UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
-        //Environment.CurrentDirectory = System.Windows.Forms.Application.StartupPath;
-        //System.IO.Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
+        GAME_PATH = Environment.CurrentDirectory + "/";
+        UpdateClientData(GAME_PATH);
 #endif
         go(1, () =>
         {
@@ -430,7 +390,7 @@ public class Program : MonoBehaviour
             if (!File.Exists("updates/image_0.2.txt"))//用于检查更新
             {
                 if (File.Exists("pics.zip")) {
-                    jo.Call("doExtractZipFile", "pics.zip", ANDROID_GAME_PATH);
+                    jo.Call("doExtractZipFile", "pics.zip", GAME_PATH);
                     File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
                 } else {
                     jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
@@ -441,12 +401,40 @@ public class Program : MonoBehaviour
         });
 
     }
-    public void ExtractZipFile(byte[] data, string outFolder)
-    {
 
+    public void UpdateClientData(string path)
+    {
+            if (!File.Exists(path + "updates/ver_" +  GAME_VERSION + ".txt"))
+            {
+                string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
+                ExtractZipFile(filePath, path);
+            }
+
+            if (!File.Exists(path + "updates/ui.txt") || !Directory.Exists(path + "texture/ui/"))
+            {
+                string filePath = Application.streamingAssetsPath + "/ui.zip";
+                ExtractZipFile(filePath, path);
+            }
+
+            if (!File.Exists(path + "updates/bgm_0.1.txt") || !Directory.Exists(path + "sound/bgm/"))
+            {
+                string filePath = Application.streamingAssetsPath + "/bgm.zip";
+                ExtractZipFile(filePath, path);
+            }
+    }
+
+    public void ExtractZipFile(string filePath, string outFolder)
+    {
         ZipFile zf = null;
         try
         {
+#if !UNITY_EDITOR && UNITY_ANDROID //Android
+            var www = new WWW(filePath);
+            while (!www.isDone) { }
+            byte[] data = www.bytes;
+#else
+            byte[] data = System.IO.File.ReadAllBytes(filePath);
+#endif
             //use MemoryStream!!!!
             using (MemoryStream mstrm = new MemoryStream(data))
             {
@@ -1234,12 +1222,11 @@ public class Program : MonoBehaviour
         }
     }
 
-#if !UNITY_EDITOR && UNITY_ANDROID
     //用于删除历史更新文件
     public static void DeleteTxt(string[] lines)
     {
         List<string> file = new List<string>();
-        file.AddRange(Directory.GetFiles(string.Concat(ANDROID_GAME_PATH, "updates/"), "*.txt", SearchOption.TopDirectoryOnly));
+        file.AddRange(Directory.GetFiles(string.Concat(GAME_PATH, "updates/"), "*.txt", SearchOption.TopDirectoryOnly));
 
         for(int i = 0; i < file.Count; i++)
         {
@@ -1249,6 +1236,8 @@ public class Program : MonoBehaviour
             }
         }
     }
+
+#if !UNITY_EDITOR && UNITY_ANDROID
     //用于Java回调
     public void doShowToast(string content)
     {
