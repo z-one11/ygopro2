@@ -113,7 +113,11 @@ public class Menu : WindowServantSP
         Program.I().quit();
         Program.Running = false;
         TcpHelper.SaveRecord();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Process.GetCurrentProcess().Kill();
+#endif
     }
 
     void onClickOnline()
