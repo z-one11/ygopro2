@@ -290,27 +290,26 @@ public class Program : MonoBehaviour
 #if !UNITY_EDITOR && UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
         GAME_PATH = jo.Call<string>("GamePath", "/ygopro2/");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
-        UpdateClientData(GAME_PATH);
 
-        bool API_SUPPORT = jo.Call<bool>("APIVersion");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
+        bool API_SUPPORT = jo.Call<bool>("APIVersion");        // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
         if (API_SUPPORT == true) {
             ANDROID_API_N = true;
         } else {
             ANDROID_API_N = false;
         }
-
-        Environment.CurrentDirectory = GAME_PATH;
-        System.IO.Directory.SetCurrentDirectory(GAME_PATH);
 #elif !UNITY_EDITOR && UNITY_IPHONE //iPhone
         GAME_PATH = Application.persistentDataPath + "/ygopro2/";
-        UpdateClientData(GAME_PATH);
-
-        Environment.CurrentDirectory = GAME_PATH;
-        System.IO.Directory.SetCurrentDirectory(GAME_PATH);
 #else //UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
         GAME_PATH = Environment.CurrentDirectory + "/";
-        UpdateClientData(GAME_PATH);
 #endif
+
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE)
+        Environment.CurrentDirectory = GAME_PATH;
+        System.IO.Directory.SetCurrentDirectory(GAME_PATH);
+#endif
+
+        UpdateClientData(GAME_PATH);
+
         go(1, () =>
         {
             UIHelper.iniFaces();
