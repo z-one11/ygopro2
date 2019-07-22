@@ -21,7 +21,7 @@ public class Menu : WindowServantSP
         UIHelper.registEvent(gameObject, "single_", Program.gugugu);
         UIHelper.registEvent(gameObject, "ai_", Program.gugugu);
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
-        UIHelper.getByName<UILabel>(gameObject, "version_").text = Config.VERSION;
+        UIHelper.getByName<UILabel>(gameObject, "version_").text = "YGOPro2 " + Program.GAME_VERSION + " (Test)";
         (new Thread(up)).Start();
     }
 
