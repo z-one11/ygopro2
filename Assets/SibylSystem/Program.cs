@@ -386,14 +386,17 @@ public class Program : MonoBehaviour
             loadResources();
 
 #if !UNITY_EDITOR && UNITY_ANDROID //Android Java Test
-            if (!File.Exists("updates/image_0.2.txt"))//用于检查更新
+            if (!File.Exists(AppUpdateLog.GAME_IMAGE_VERSION))//用于检查更新
             {
-                if (File.Exists("pics.zip")) {
+                if (File.Exists("pics.zip"))
+                {
                     jo.Call("doExtractZipFile", "pics.zip", GAME_PATH);
-                    File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
-                } else {
+                    File.Copy(AppUpdateLog.GAME_DATA_VERSION, AppUpdateLog.GAME_IMAGE_VERSION, true);
+                }
+                else
+                {
                     jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
-                    File.Copy("updates/ver_" +  GAME_VERSION + ".txt", "updates/image_0.2.txt", true);
+                    File.Copy(AppUpdateLog.GAME_DATA_VERSION, AppUpdateLog.GAME_IMAGE_VERSION, true);
                 }
             }
 #endif
@@ -403,21 +406,21 @@ public class Program : MonoBehaviour
 
     public void UpdateClientData(string path)
     {
-        if (!File.Exists(path + "updates/ver_" +  GAME_VERSION + ".txt"))
+        if (!File.Exists(AppUpdateLog.GAME_DATA_VERSION))
         {
             string filePath = Application.streamingAssetsPath + "/ygopro2-data.zip";
             ExtractZipFile(filePath, path);
         }
 
-        if (!File.Exists(path + "updates/ui.txt") || !Directory.Exists(path + "texture/ui/"))
+        if (!File.Exists(AppUpdateLog.GAME_BGM_VERSION))
         {
-            string filePath = Application.streamingAssetsPath + "/ui.zip";
+            string filePath = Application.streamingAssetsPath + "/bgm.zip";
             ExtractZipFile(filePath, path);
         }
 
-        if (!File.Exists(path + "updates/bgm_0.1.txt") || !Directory.Exists(path + "sound/bgm/"))
+        if (!File.Exists(AppUpdateLog.GAME_UI_VERSION))
         {
-            string filePath = Application.streamingAssetsPath + "/bgm.zip";
+            string filePath = Application.streamingAssetsPath + "/ui.zip";
             ExtractZipFile(filePath, path);
         }
     }

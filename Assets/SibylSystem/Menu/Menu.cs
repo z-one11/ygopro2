@@ -155,26 +155,29 @@ public class Menu : WindowServantSP
 
     void onClickDownload()
     {
-        string[] lines = {Program.GAME_PATH + "updates/ver_" + Program.GAME_VERSION + ".txt",
-                          Program.GAME_PATH + "updates/bgm_0.1.txt",
-                          Program.GAME_PATH + "updates/closeup_0.4.txt",
-                          Program.GAME_PATH + "updates/image_0.2.txt",
-                          Program.GAME_PATH + "updates/ui.txt"};
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
-        Program.DeleteTxt(lines);
+        Program.DeleteTxt(AppUpdateLog.File);
         showToast("已是最新，无需再次下载！");
 #elif UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-        if (!File.Exists("updates/closeup_0.4.txt")) {//用于检查更新
-            if (File.Exists("closeup_0.4.zip")) {//如果有则直接解压
-                jo.Call("doExtractZipFile", "closeup_0.4.zip", Program.GAME_PATH);
-            } else if (File.Exists("updates/closeup_0.3.txt")){//如果有则下载更新包
-                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.4.zip");
-            } else {//否则下载并解压，锁定目录：GAME_PATH
-                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.4.zip");
+        if (!File.Exists(AppUpdateLog.GAME_CLOSEUP_VERSION))       //用于检查更新
+        {
+            if (File.Exists(AppUpdateLog.MAIN_CLOSEUP_ZIP))        //如果有则直接解压
+            {
+                jo.Call("doExtractZipFile", AppUpdateLog.MAIN_CLOSEUP_ZIP, Program.GAME_PATH);
             }
-        } else {
-            Program.DeleteTxt(lines);
+            else if (File.Exists(AppUpdateLog.OLD_CLOSEUP_VERSION))//如果有则下载更新补丁
+            {
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/" + AppUpdateLog.PATCH_CLOSEUP_ZIP);
+            }
+            else                                                   //否则直接下载完整补丁
+            {
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/" + AppUpdateLog.MAIN_CLOSEUP_ZIP);
+            }
+        }
+        else
+        {
+            Program.DeleteTxt(AppUpdateLog.File);
             showToast("已是最新，无需再次下载！");
         }
 #endif
