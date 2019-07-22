@@ -22,7 +22,7 @@ public class Menu : WindowServantSP
         UIHelper.registEvent(gameObject, "ai_", Program.gugugu);
         UIHelper.registEvent(gameObject, "exit_", onClickExit);
         UIHelper.registEvent(gameObject, "download_", onClickDownload);
-        UIHelper.getByName<UILabel>(gameObject, "version_").text = Config.VERSION;
+        UIHelper.getByName<UILabel>(gameObject, "version_").text = "YGOPro2 Android " + Program.GAME_VERSION;
         (new Thread(up)).Start();
     }
 
@@ -113,6 +113,8 @@ public class Menu : WindowServantSP
         TcpHelper.SaveRecord();
 #if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE) // IL2CPP 使用此方法才能退出
         Application.Quit();
+#elif UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
 #else
         Process.GetCurrentProcess().Kill();
 #endif
@@ -151,24 +153,28 @@ public class Menu : WindowServantSP
     void onClickDownload()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN //编译器、Windows
-        Application.OpenURL("https://github.com/Unicorn369/closeup_mobile/releases/tag/0.1");
+        Program.DeleteTxt(AppUpdateLog.File);
+        showToast("已是最新，无需再次下载！");
 #elif UNITY_ANDROID //Android
         AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-        if (!File.Exists("updates/closeup_0.4.txt")) {//用于检查更新
-            if (File.Exists("closeup_0.4.zip")) {//如果有则直接解压
-                jo.Call("doExtractZipFile", "closeup_0.4.zip", Program.ANDROID_GAME_PATH);
-            } else if (File.Exists("updates/closeup_0.3.txt")){//如果有则下载更新包
-                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/up_closeup_0.4.zip");
-            } else {//否则下载并解压，锁定目录：ANDROID_GAME_PATH
-                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/closeup_0.4.zip");
+        if (!File.Exists(AppUpdateLog.GAME_CLOSEUP_VERSION))       //用于检查更新
+        {
+            if (File.Exists(AppUpdateLog.MAIN_CLOSEUP_ZIP))        //如果有则直接解压
+            {
+                jo.Call("doExtractZipFile", AppUpdateLog.MAIN_CLOSEUP_ZIP, Program.GAME_PATH);
             }
-        } else {
-            string[] lines = {Program.ANDROID_GAME_PATH + "updates/ver_" + Program.GAME_VERSION + ".txt",
-                              Program.ANDROID_GAME_PATH + "updates/bgm_0.1.txt",
-                              Program.ANDROID_GAME_PATH + "updates/closeup_0.4.txt",
-                              Program.ANDROID_GAME_PATH + "updates/image_0.2.txt",
-                              Program.ANDROID_GAME_PATH + "updates/ui.txt"};
-            Program.DeleteTxt(lines);
+            else if (File.Exists(AppUpdateLog.OLD_CLOSEUP_VERSION))//如果有则下载更新补丁
+            {
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/" + AppUpdateLog.PATCH_CLOSEUP_ZIP);
+            }
+            else                                                   //否则直接下载完整补丁
+            {
+                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/" + AppUpdateLog.MAIN_CLOSEUP_ZIP);
+            }
+        }
+        else
+        {
+            Program.DeleteTxt(AppUpdateLog.File);
             showToast("已是最新，无需再次下载！");
         }
 #endif

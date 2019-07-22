@@ -50,11 +50,10 @@ public class SelectServer : WindowServantSP
 
         //方便免修改 [selectServerWithRoomlist.prefab]
         serversList.items.Add("[OCG]233 Server");
-        serversList.items.Add("[OCG]Koishi Server");
         serversList.items.Add("[TCG]Koishi Server");
         serversList.items.Add("[OCG&TCG]한국서버 (KR)");
         serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
-        serversList.items.Add("--------------------");
+        serversList.items.Add("----------------------------------------------");
         serversList.items.Add("[2Pick]轮抽服");
         serversList.items.Add("[SP Duel]Koishi Server");
         if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
@@ -83,17 +82,6 @@ public class SelectServer : WindowServantSP
                 inputPort_.enabled = true;
                 break;
             }
-            case "[OCG]Koishi Server":
-            {
-                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
-                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7210";
-                Config.Set("serversPicker", "[OCG]Koishi Server");
-                save();
-
-                inputIP_.enabled = false;
-                inputPort_.enabled = false;
-                break;
-            }
             case "[TCG]Koishi Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
@@ -102,7 +90,7 @@ public class SelectServer : WindowServantSP
                 save();
 
                 inputIP_.enabled = false;
-                inputPort_.enabled = false;
+                inputPort_.enabled = true;
                 break;
             }
             case "[OCG&TCG]한국서버 (KR)":
@@ -138,9 +126,9 @@ public class SelectServer : WindowServantSP
                 inputPort_.enabled = false;
                 break;
             }
-            case "--------------------":
+            case "----------------------------------------------":
             {
-                Config.Set("serversPicker", "--------------------");
+                Config.Set("serversPicker", "----------------------------------------------");
                 save();
                 inputIP_.enabled = true;
                 inputPort_.enabled = true;

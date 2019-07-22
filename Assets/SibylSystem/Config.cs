@@ -4,7 +4,6 @@ using System.IO;
 public static class Config
 {
     public static uint ClientVersion = 0x134b;
-    public static string VERSION = "YGOPro2 Android 1.034.B";
 
     class oneString
     {
