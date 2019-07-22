@@ -27,7 +27,7 @@ public class ban_icon_ot : MonoBehaviour
                 Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
                 t.mainTexture = icon;
             }
-            else if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
+            else if (File.Exists("texture/ui/ban_ot_" + i.ToString() + ".png"))
             {
                 t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
             }
@@ -46,7 +46,7 @@ public class ban_icon_ot : MonoBehaviour
                 Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
                 r.material.mainTexture = icon;
             }
-            else if (File.Exists("texture/ui/ban_ot_" + i.ToString()))
+            else if (File.Exists("texture/ui/ban_ot_" + i.ToString() + ".png"))
             {
                 r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
             }
