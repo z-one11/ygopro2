@@ -43,6 +43,7 @@ public class CardDescription : Servant
         UIHelper.registEvent(gameObject, "next_", onNext); 
         UIHelper.registEvent(gameObject, "big_", onb);
         UIHelper.registEvent(gameObject, "small_", ons);
+        UIHelper.registEvent(gameObject, "wiki_", onwiki);
         picSprite = UIHelper.getByName<UITexture>(gameObject, "pic_");
         lineSprite = UIHelper.getByName<UISprite>(gameObject, "line");
         try
@@ -94,6 +95,18 @@ public class CardDescription : Servant
     {
         current++;
         loadData();
+    }
+
+    void onwiki()
+    {
+        if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional || Application.systemLanguage == SystemLanguage.Chinese)
+        {
+            Application.OpenURL("https://www.ourocg.cn/S.aspx?key=" + currentCard.Id.ToString());
+        }
+        else
+        {
+            Application.OpenURL("https://yugipedia.com/wiki/" + currentCard.Id.ToString());
+        }
     }
 
     public override void applyHideArrangement()
