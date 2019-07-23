@@ -31,6 +31,15 @@ public class MenuButton : MonoBehaviour
         Program.CheckUpgrade();
     }
 
+    public void onChangeLog()
+    {
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE)
+        InAppBrowser.OpenLocalFile("/changelog.html");// StreamingAssets/changelog.html
+#else
+        Application.OpenURL(Application.streamingAssetsPath + "/changelog.html");
+#endif
+    }
+
     // Update is called once per frame
     void Update()
     {
