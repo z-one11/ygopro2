@@ -101,11 +101,19 @@ public class CardDescription : Servant
     {
         if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional || Application.systemLanguage == SystemLanguage.Chinese)
         {
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE)
+            InAppBrowser.OpenURL("https://www.ourocg.cn/S.aspx?key=" + currentCard.Id.ToString());
+#else
             Application.OpenURL("https://www.ourocg.cn/S.aspx?key=" + currentCard.Id.ToString());
+#endif
         }
         else
         {
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE)
+            InAppBrowser.OpenURL("https://yugipedia.com/wiki/" + currentCard.Id.ToString());
+#else
             Application.OpenURL("https://yugipedia.com/wiki/" + currentCard.Id.ToString());
+#endif
         }
     }
 
