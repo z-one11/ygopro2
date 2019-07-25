@@ -38,14 +38,14 @@ public class Menu : WindowServantSP
     }
 
     static int Version = 0;
+    string url = "https://api.ygo2019.xyz/ygopro2/android_ver.txt";
     string upurl = "";
-    public static string upurl_ = "";
+    string upurl_ = "";
     void up()
     {
         try
         {
             ServicePointManager.ServerCertificateValidationCallback = HttpDldFile.MyRemoteCertificateValidationCallback;//支持https
-            string url = "https://api.ygo2019.xyz/ygopro2/android_ver.txt";
             WebClient wc = new WebClient();
             Stream s = wc.OpenRead(url);
             StreamReader sr = new StreamReader(s, Encoding.UTF8);
@@ -88,11 +88,26 @@ public class Menu : WindowServantSP
                 Application.OpenURL(upurl);
             }
         }
-        if (hashCode == "onCheckUpgrade")
+        if (hashCode == "CheckUpgrade")
         {
             if (result[0].value == "yes")
             {
                 Application.OpenURL(upurl_);
+            }
+        }
+        if (hashCode == "RMSshow_menu")
+        {
+            if (result[0].value == "left")
+            {
+                onJoinQQ();
+            }
+            if (result[0].value == "centre")
+            {
+                onChangeLog();
+            }
+            if (result[0].value == "right")
+            {
+                onCheckUpgrade();
             }
         }
     }
@@ -183,14 +198,70 @@ public class Menu : WindowServantSP
 #endif
     }
 
-    public void onCheckUpgrade()
+    void onJoinQQ()
     {
-        RMSshow_yesOrNo
+#if !UNITY_EDITOR && UNITY_ANDROID //Android
+        AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
+        jo.Call("doJoinQQGroup", "UHm3h3hSrmgp-iYqMiZcc2zO5J1Q8OyW");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
+#else
+        Application.OpenURL("https://jq.qq.com/?_wv=1027&k=50MZVQA");
+#endif
+    }
+
+    void onChangeLog()
+    {
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE)
+        InAppBrowser.OpenLocalFile("/changelog.html");// StreamingAssets/changelog.html
+#else
+        Application.OpenURL(Application.streamingAssetsPath + "/changelog.html");
+#endif
+    }
+
+    void onCheckUpgrade()
+    {
+        Program.PrintToChat(InterString.Get("正在检测是否有新版本！"));
+        if (File.Exists("config/ver.txt"))
+        {
+            File.Delete("config/ver.txt");
+        }
+
+        HttpDldFile df = new HttpDldFile();
+        df.Download(url, "config/ver.txt");
+
+        if (File.Exists("config/ver.txt"))
+        {
+            string ver = File.ReadAllText("config/ver.txt");
+            string[] lines = ver.Replace("\r", "").Split("\n");
+            if (lines[0] != Program.GAME_VERSION)
+            {
+                upurl_ = lines[1];
+                RMSshow_yesOrNo
+                (
+                    "CheckUpgrade",
+                    InterString.Get("发现新版本，是否立即下载？"),
+                    new messageSystemValue { hint = "yes", value = "yes" },
+                    new messageSystemValue { hint = "no", value = "no" }
+                );
+            }
+            else
+            {
+                showToast("已是最新版本！");
+            }
+        }
+        else
+        {
+            showToast("检查更新失败！");
+        }
+    }
+
+    public void onMenu()
+    {
+        RMSshow_menu
         (
-            "onCheckUpgrade",
-            InterString.Get("发现新版本，是否立即下载？"),
-            new messageSystemValue { hint = "yes", value = "yes" },
-            new messageSystemValue { hint = "no", value = "no" }
+            "RMSshow_menu",
+            new messageSystemValue { hint = "left", value = "left" },
+            new messageSystemValue { hint = "centre", value = "centre" },
+            new messageSystemValue { hint = "right", value = "right" }
         );
     }
 

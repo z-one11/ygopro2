@@ -16,28 +16,9 @@ public class MenuButton : MonoBehaviour
         button = GameObject.Find("Button");
     }
 
-    public void onJoinQQ()
+    public void onMenu()
     {
-#if !UNITY_EDITOR && UNITY_ANDROID //Android
-        AndroidJavaObject jo = new AndroidJavaObject("cn.unicorn369.library.API");
-        jo.Call("doJoinQQGroup", "UHm3h3hSrmgp-iYqMiZcc2zO5J1Q8OyW");  // Java 代码参考: https://github.com/Unicorn369/YGO2_Android_Library
-#else
-        Application.OpenURL("https://jq.qq.com/?_wv=1027&k=50MZVQA");
-#endif
-    }
-
-    public void onCheckUpgrade()
-    {
-        Program.CheckUpgrade();
-    }
-
-    public void onChangeLog()
-    {
-#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE)
-        InAppBrowser.OpenLocalFile("/changelog.html");// StreamingAssets/changelog.html
-#else
-        Application.OpenURL(Application.streamingAssetsPath + "/changelog.html");
-#endif
+        Program.I().menu.onMenu();
     }
 
     // Update is called once per frame
