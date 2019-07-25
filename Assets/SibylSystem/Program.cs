@@ -120,6 +120,7 @@ public class Program : MonoBehaviour
     public GameObject ES_3cancle;
     public GameObject ES_Single_multiple_window;
     public GameObject ES_Single_option;
+    public GameObject ES_Menu;
     public GameObject ES_multiple_option;
     public GameObject ES_input;
     public GameObject ES_position;
@@ -1070,37 +1071,6 @@ public class Program : MonoBehaviour
     public static void showToast(string content)
     {
         Program.I().menu.showToast(content);
-    }
-
-    public static void CheckUpgrade()
-    {
-        PrintToChat(InterString.Get("正在检测是否有新版本！"));
-        if (File.Exists("config/ver.txt"))
-        {
-            File.Delete("config/ver.txt");
-        }
-
-        HttpDldFile df = new HttpDldFile();
-        df.Download("https://api.ygo2019.xyz/ygopro2/ver.txt", "config/ver.txt");
-
-        if (File.Exists("config/ver.txt"))
-        {
-            string ver = File.ReadAllText("config/ver.txt");
-            string[] lines = ver.Replace("\r", "").Split("\n");
-            if (lines[0] != GAME_VERSION)
-            {
-                Menu.upurl_ = lines[1];
-                Program.I().menu.onCheckUpgrade();
-            }
-            else
-            {
-                showToast("已是最新版本！");
-            }
-        }
-        else
-        {
-            showToast("检查更新失败！");
-        }
     }
 
 }
