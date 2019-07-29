@@ -53,7 +53,7 @@ public class Menu : WindowServantSP
             sr.Close();
             s.Close();
             string[] lines = result.Replace("\r", "").Split("\n");
-            if (lines[0] != Program.GAME_VERSION)
+            if (lines[0] != AppUpdateLog.GAME_VERSION)
             {
                 upurl = lines[1];
             }
@@ -232,7 +232,7 @@ public class Menu : WindowServantSP
         {
             string ver = File.ReadAllText("config/ver.txt");
             string[] lines = ver.Replace("\r", "").Split("\n");
-            if (lines[0] != Program.GAME_VERSION)
+            if (lines[0] != AppUpdateLog.GAME_VERSION)
             {
                 upurl_ = lines[1];
                 RMSshow_yesOrNo
