@@ -56,20 +56,6 @@ public class Menu : WindowServantSP
             {
                 upurl = lines[1];
             }
-
-            /*
-            if (lines.Length > 0)
-            {
-                string[] mats = lines[0].Split(":.:");
-                if (mats.Length == 2)
-                {
-                    if (Version.ToString() != mats[0])
-                    {
-                        upurl = mats[1];
-                    }
-                }
-            }
-            */
         }
         catch (System.Exception e)
         {

@@ -230,20 +230,20 @@ public class GameTextureManager
                         switch (pic.type)
                         {
                             case GameTextureType.card_feature:
-                                {
-                                    ProcessingCardFeature(pic);
-                                    break;
-                                }
+                            {
+                                ProcessingCardFeature(pic);
+                                break;
+                            }
                             case GameTextureType.card_picture:
-                                {
-                                    ProcessingCardPicture(pic);
-                                    break;
-                                }
+                            {
+                                ProcessingCardPicture(pic);
+                                break;
+                            }
                             case GameTextureType.card_verticle_drawing:
-                                {
-                                    ProcessingVerticleDrawing(pic);
-                                    break;
-                                }
+                            {
+                                ProcessingVerticleDrawing(pic);
+                                break;
+                            }
                         }
                     }
                 }

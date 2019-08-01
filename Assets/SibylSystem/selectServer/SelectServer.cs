@@ -135,46 +135,8 @@ public class SelectServer : WindowServantSP
 
     private void readString(string str)
     {
-/*
-        str = str.Substring(1, str.Length - 1);
-        string version = "", remain = "";
-        string[] splited;
-        splited = str.Split(")");
-        try
-        {
-            version = splited[0];
-            remain = splited[1];
-        }
-        catch (Exception)
-        {
-        }
-        splited = remain.Split(":");
-        string ip = "";
-        try
-        {
-            ip = splited[0];
-            remain = splited[1];
-        }
-        catch (Exception)
-        {
-        }
-        splited = remain.Split(" ");
-        string psw = "", port = "";
-        try
-        {
-            port = splited[0];
-            psw = splited[1];
-        }
-        catch (Exception)
-        {
-        }
-        inputIP.value = ip;
-        inputPort.value = port;
-        inputPsw.value = psw;
-*/
         str = str.Substring(5, str.Length - 5);
         inputPsw.value = str;
-        //inputVersion.value = version;
     }
 
     void onClearPsw()
@@ -289,7 +251,6 @@ public class SelectServer : WindowServantSP
         {
             if (name != "")
             {
-                //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
                 string fantasty = "psw: " + pswString;
                 list.items.Remove(fantasty);
                 list.items.Insert(0, fantasty);
