@@ -41,12 +41,7 @@ public class SelectServer : WindowServantSP
 
         inputIP.value = Config.Get("ip_", "s1.ygo233.com");
         inputPort.value = Config.Get("port_", "233");
-        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-        {
-            serversList.value = Config.Get("serversPicker", "[自定义]");
-        } else {
-            serversList.value = Config.Get("serversPicker", "[Custom]");
-        }
+        serversList.value = Config.Get("serversPicker", "[OCG]233 Server");
 
         //方便免修改 [selectServerWithRoomlist.prefab]
         serversList.items.Add("[OCG]233 Server");
@@ -56,13 +51,7 @@ public class SelectServer : WindowServantSP
         serversList.items.Add("----------------------------------------------");
         serversList.items.Add("[2Pick]轮抽服");
         serversList.items.Add("[SP Duel]Koishi Server");
-        if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-        {
-            serversList.items.Add("[自定义]");
-        } else {
-            serversList.items.Add("[Custom]");
-        }
-
+        //
         SetActiveFalse();
     }
 
@@ -115,6 +104,7 @@ public class SelectServer : WindowServantSP
                 inputPort_.enabled = false;
                 break;
             }
+            //----------------------------------------------
             case "[SP Duel]Koishi Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
@@ -124,14 +114,6 @@ public class SelectServer : WindowServantSP
 
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
-                break;
-            }
-            case "----------------------------------------------":
-            {
-                Config.Set("serversPicker", "----------------------------------------------");
-                save();
-                inputIP_.enabled = true;
-                inputPort_.enabled = true;
                 break;
             }
             case "[2Pick]轮抽服":
@@ -147,20 +129,13 @@ public class SelectServer : WindowServantSP
             }
             default:
             {
-                if (Application.systemLanguage == SystemLanguage.Chinese || Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-                {
-                    Config.Set("serversPicker", "[自定义]");
-                } else {
-                    Config.Set("serversPicker", "[Custom]");
-                }
+                Config.Set("serversPicker", "----------------------------------------------");
                 save();
-
                 inputIP_.enabled = true;
                 inputPort_.enabled = true;
                 break;
             }
         }
-
     }
 
     void onSelected()
@@ -173,46 +148,8 @@ public class SelectServer : WindowServantSP
 
     private void readString(string str)
     {
-/*
-        str = str.Substring(1, str.Length - 1);
-        string version = "", remain = "";
-        string[] splited;
-        splited = str.Split(")");
-        try
-        {
-            version = splited[0];
-            remain = splited[1];
-        }
-        catch (Exception)
-        {
-        }
-        splited = remain.Split(":");
-        string ip = "";
-        try
-        {
-            ip = splited[0];
-            remain = splited[1];
-        }
-        catch (Exception)
-        {
-        }
-        splited = remain.Split(" ");
-        string psw = "", port = "";
-        try
-        {
-            port = splited[0];
-            psw = splited[1];
-        }
-        catch (Exception)
-        {
-        }
-        inputIP.value = ip;
-        inputPort.value = port;
-        inputPsw.value = psw;
-*/
         str = str.Substring(5, str.Length - 5);
         inputPsw.value = str;
-        //inputVersion.value = version;
     }
 
     void onClearPsw()
@@ -327,7 +264,6 @@ public class SelectServer : WindowServantSP
         {
             if (name != "")
             {
-                //string fantasty = "(" + versionString + ")" + ipString + ":" + portString + " " + pswString;
                 string fantasty = "psw: " + pswString;
                 list.items.Remove(fantasty);
                 list.items.Insert(0, fantasty);
