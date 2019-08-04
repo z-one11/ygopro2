@@ -22,8 +22,8 @@ public class AppUpdateLog
     public static string PATCH_CLOSEUP_ZIP = "up_closeup_0.5.zip";//更新包
 
     //MD5
-    public static string MD5_GAME_CLOSEUP = "64337778f5c55434f49c1c79385b641f";//主数据
-    public static string MD5_OLD_CLOSEUP = "64337778f5c55434f49c1c79385b641f"; //(暂无更新包，下次移除)
+    public static string MD5_MAIN_CLOSEUP = "64337778f5c55434f49c1c79385b641f";//主数据
+    public static string MD5_PATCH_CLOSEUP = "64337778f5c55434f49c1c79385b641f"; //(暂无更新包，下次移除)
     //public static string MD5_OLD_CLOSEUP = "8a8bf2e69e1b0198b0a8231ec3b7bf10"; //更新包
     public static string MD5_IMAGE = "5d8b494c835806383f3b4db3d1d13913";
 
