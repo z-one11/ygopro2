@@ -39,27 +39,33 @@ public class Menu : WindowServantSP
     static int Version = 0;
     string url = "https://api.ygo2019.xyz/ygopro2/ver.txt";
     string upurl = "";
-    string upurl_ = "";
+    string VERSION = "";
     void up()
     {
         try
         {
-            ServicePointManager.ServerCertificateValidationCallback = HttpDldFile.MyRemoteCertificateValidationCallback;//支持https
-            WebClient wc = new WebClient();
-            Stream s = wc.OpenRead(url);
-            StreamReader sr = new StreamReader(s, Encoding.UTF8);
-            string result = sr.ReadToEnd();
-            sr.Close();
-            s.Close();
-            string[] lines = result.Replace("\r", "").Split("\n");
-            if (lines[0] != Program.GAME_VERSION)
-            {
-                upurl = lines[1];
-            }
+            CheckUpgrade();
         }
         catch (System.Exception e)
         {
             UnityEngine.Debug.Log(e);
+        }
+    }
+
+    void CheckUpgrade()
+    {
+        ServicePointManager.ServerCertificateValidationCallback = HttpDldFile.MyRemoteCertificateValidationCallback;//支持https
+        WebClient wc = new WebClient();
+        Stream s = wc.OpenRead(url);
+        StreamReader sr = new StreamReader(s, Encoding.UTF8);
+        string result = sr.ReadToEnd();
+        sr.Close();
+        s.Close();
+        string[] lines = result.Replace("\r", "").Split("\n");
+        VERSION = lines[0];
+        if (lines[0] != Program.GAME_VERSION)
+        {
+            upurl = lines[1];
         }
     }
 
@@ -71,13 +77,6 @@ public class Menu : WindowServantSP
             if (result[0].value == "yes")
             {
                 Application.OpenURL(upurl);
-            }
-        }
-        if (hashCode == "CheckUpgrade")
-        {
-            if (result[0].value == "yes")
-            {
-                Application.OpenURL(upurl_);
             }
         }
         if (hashCode == "RMSshow_menu")
@@ -155,24 +154,14 @@ public class Menu : WindowServantSP
     void onCheckUpgrade()
     {
         Program.PrintToChat(InterString.Get("正在检测是否有新版本！"));
-        if (File.Exists("config/ver.txt"))
+        try
         {
-            File.Delete("config/ver.txt");
-        }
-
-        HttpDldFile df = new HttpDldFile();
-        df.Download(url, "config/ver.txt");
-
-        if (File.Exists("config/ver.txt"))
-        {
-            string ver = File.ReadAllText("config/ver.txt");
-            string[] lines = ver.Replace("\r", "").Split("\n");
-            if (lines[0] != Program.GAME_VERSION)
+            CheckUpgrade();
+            if (VERSION != Program.GAME_VERSION)
             {
-                upurl_ = lines[1];
                 RMSshow_yesOrNo
                 (
-                    "CheckUpgrade",
+                    "RMSshow_onlyYes",
                     InterString.Get("发现新版本，是否立即下载？"),
                     new messageSystemValue { hint = "yes", value = "yes" },
                     new messageSystemValue { hint = "no", value = "no" }
@@ -183,7 +172,7 @@ public class Menu : WindowServantSP
                 showToast("已是最新版本！");
             }
         }
-        else
+        catch (System.Exception e)
         {
             showToast("检查更新失败！");
         }
