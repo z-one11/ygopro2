@@ -69,6 +69,7 @@ public class DeckManager : ServantWithCardDescription
         UIHelper.registEvent(gameObjectSearch, "detailed_", onClickDetail);
         UIHelper.registEvent(gameObjectSearch, "search_", onClickSearch);
         UIHelper.registEvent(gameObjectDetailedSearch, "LinkHide_", linkHide);
+        UIHelper.registEvent(gameObjectDetailedSearch, "linkMarker_", linkHide);
         UIPopupList_main = UIHelper.getByName<UIPopupList>(gameObjectDetailedSearch, "main_");
         UIPopupList_ban = UIHelper.getByName<UIPopupList>(gameObjectDetailedSearch, "ban_");
         UIPopupList_second = UIHelper.getByName<UIPopupList>(gameObjectDetailedSearch, "second_");
@@ -451,12 +452,10 @@ public class DeckManager : ServantWithCardDescription
         if (detailShowed)
         {
             hideDetail();
-            linkHide(!detailShowed);
         }
         else
         {
             showDetail();
-            linkHide(!detailShowed);
         }
     }
 
@@ -517,6 +516,8 @@ public class DeckManager : ServantWithCardDescription
             UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomLeft_").value = false;
             UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Bottom_").value = false;
             UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomRight_").value = false;
+
+            linkHide(true);
         }
         catch (System.Exception e)
         {
@@ -1915,19 +1916,22 @@ public class DeckManager : ServantWithCardDescription
         }
     }
 
+    bool LinkMarkerHide = true;
     void linkHide()
     {
-        linkHide(true);
+        linkHide(LinkMarkerHide);
     }
     void linkHide(bool Bool)
     {
         if (Bool)
         {
+            LinkMarkerHide = false;
             UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-2048, 0, 0);
         }
         else
         {
-            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-335, 0, 0);
+            LinkMarkerHide = true;
+            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-500, 0, 0);
         }
     }
 }
