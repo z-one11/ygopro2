@@ -68,6 +68,7 @@ public class DeckManager : ServantWithCardDescription
         shiftCondition(Condition.editDeck);
         UIHelper.registEvent(gameObjectSearch, "detailed_", onClickDetail);
         UIHelper.registEvent(gameObjectSearch, "search_", onClickSearch);
+        UIHelper.registEvent(gameObjectDetailedSearch, "LinkHide_", linkHide);
         UIPopupList_main = UIHelper.getByName<UIPopupList>(gameObjectDetailedSearch, "main_");
         UIPopupList_ban = UIHelper.getByName<UIPopupList>(gameObjectDetailedSearch, "ban_");
         UIPopupList_second = UIHelper.getByName<UIPopupList>(gameObjectDetailedSearch, "second_");
@@ -450,10 +451,12 @@ public class DeckManager : ServantWithCardDescription
         if (detailShowed)
         {
             hideDetail();
+            linkHide(!detailShowed);
         }
         else
         {
             showDetail();
+            linkHide(!detailShowed);
         }
     }
 
@@ -506,6 +509,14 @@ public class DeckManager : ServantWithCardDescription
             UIHelper.getByName<UIInput>(gameObjectDetailedSearch, "def_UP").value = "";
             UIHelper.getByName<UIInput>(gameObjectDetailedSearch, "year_UP").value = "";
 
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "TopLeft_").value = false;
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Top_").value = false;
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "TopRight_").value = false;
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Left_").value = false;
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Right_").value = false;
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomLeft_").value = false;
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Bottom_").value = false;
+            UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomRight_").value = false;
         }
         catch (System.Exception e)
         {
@@ -642,6 +653,7 @@ public class DeckManager : ServantWithCardDescription
                     getP_UP(),
                     getYear_UP(),
                     getOT(),
+                    getLinkMarker(),
                     getPack(),
                     getBanFilter(),
                     currentBanlist,
@@ -860,6 +872,44 @@ public class DeckManager : ServantWithCardDescription
         if (UIPopupList_ban.value == GameStringManager.get_unsafe(1243))
         {
             returnValue = 4;
+        }
+        return returnValue;
+    }
+
+    int getLinkMarker()
+    {
+        int returnValue = 0;
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "TopLeft_").value)
+        {
+            returnValue += (int)CardLinkMarker.TopLeft;
+        }
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Top_").value)
+        {
+            returnValue += (int)CardLinkMarker.Top;
+        }
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "TopRight_").value)
+        {
+            returnValue += (int)CardLinkMarker.TopRight;
+        }
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Left_").value)
+        {
+            returnValue += (int)CardLinkMarker.Left;
+        }
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Right_").value)
+        {
+            returnValue += (int)CardLinkMarker.Right;
+        }
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomLeft_").value)
+        {
+            returnValue += (int)CardLinkMarker.BottomLeft;
+        }
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Bottom_").value)
+        {
+            returnValue += (int)CardLinkMarker.Bottom;
+        }
+        if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomRight_").value)
+        {
+            returnValue += (int)CardLinkMarker.BottomRight;
         }
         return returnValue;
     }
@@ -1862,6 +1912,22 @@ public class DeckManager : ServantWithCardDescription
         {
             UIInput_search.value = "";
             UIInput_search.isSelected = true;
+        }
+    }
+
+    void linkHide()
+    {
+        linkHide(true);
+    }
+    void linkHide(bool Bool)
+    {
+        if (Bool)
+        {
+            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-2048, 0, 0);
+        }
+        else
+        {
+            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-335, 0, 0);
         }
     }
 }
