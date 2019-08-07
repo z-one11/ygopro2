@@ -480,21 +480,21 @@ public class GameStringHelper
     {
         string LinkMarker = "\n" + GameStringManager.get_unsafe(1374) + ":";
         if (data.HasLinkMarker(CardLinkMarker.TopLeft))
-            LinkMarker += " [\u2196]";
+            LinkMarker += " [\u2196]";  //↖
         if (data.HasLinkMarker(CardLinkMarker.Top))
-            LinkMarker += " [\u2191]";
+            LinkMarker += " [\u2191]";  //↑
         if (data.HasLinkMarker(CardLinkMarker.TopRight))
-            LinkMarker += " [\u2197]";
+            LinkMarker += " [\u2197]";  //↗
         if (data.HasLinkMarker(CardLinkMarker.Left))
-            LinkMarker += " [\u2190]";
+            LinkMarker += " [\u2190]";  //←
         if (data.HasLinkMarker(CardLinkMarker.Right))
-            LinkMarker += " [\u2192]";
+            LinkMarker += " [\u2192]";  //→
         if (data.HasLinkMarker(CardLinkMarker.BottomLeft))
-            LinkMarker += " [\u2199]";
+            LinkMarker += " [\u2199]";  //↙
         if (data.HasLinkMarker(CardLinkMarker.Bottom))
-            LinkMarker += " [\u2193]";
+            LinkMarker += " [\u2193]";  //↓
         if (data.HasLinkMarker(CardLinkMarker.BottomRight))
-            LinkMarker += " [\u2198]";
+            LinkMarker += " [\u2198]";  //↘
         return LinkMarker;
     }
 }
