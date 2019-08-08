@@ -450,12 +450,10 @@ public class DeckManager : ServantWithCardDescription
         if (detailShowed)
         {
             hideDetail();
-            linkHide(!detailShowed);
         }
         else
         {
             showDetail();
-            linkHide(!detailShowed);
         }
     }
 
@@ -516,6 +514,8 @@ public class DeckManager : ServantWithCardDescription
             UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomLeft_").value = false;
             UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Bottom_").value = false;
             UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomRight_").value = false;
+
+            linkHide(true);
         }
         catch (System.Exception e)
         {
@@ -554,12 +554,15 @@ public class DeckManager : ServantWithCardDescription
                 }
                 UIPopupList_second.value = all;
             }
+            LinkMarkerHide = false;
         }
         else
         {
             seconds.Clear();
             seconds.Add(UIPopupList_second.value);
+            LinkMarkerHide = true;
         }
+        linkHide(LinkMarkerHide);
     }
 
     void tempStep2()
@@ -1914,6 +1917,7 @@ public class DeckManager : ServantWithCardDescription
         }
     }
 
+    bool LinkMarkerHide = true;
     void linkHide()
     {
         linkHide(true);
@@ -1922,7 +1926,7 @@ public class DeckManager : ServantWithCardDescription
     {
         if (Bool)
         {
-            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-2048, 0, 0);
+            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(0, 4096, 0);
         }
         else
         {
