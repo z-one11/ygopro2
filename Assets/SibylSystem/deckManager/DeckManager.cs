@@ -883,35 +883,35 @@ public class DeckManager : ServantWithCardDescription
         int returnValue = 0;
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "TopLeft_").value)
         {
-            returnValue += (int)CardLinkMarker.TopLeft;
+            returnValue |= (int)CardLinkMarker.TopLeft;
         }
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Top_").value)
         {
-            returnValue += (int)CardLinkMarker.Top;
+            returnValue |= (int)CardLinkMarker.Top;
         }
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "TopRight_").value)
         {
-            returnValue += (int)CardLinkMarker.TopRight;
+            returnValue |= (int)CardLinkMarker.TopRight;
         }
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Left_").value)
         {
-            returnValue += (int)CardLinkMarker.Left;
+            returnValue |= (int)CardLinkMarker.Left;
         }
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Right_").value)
         {
-            returnValue += (int)CardLinkMarker.Right;
+            returnValue |= (int)CardLinkMarker.Right;
         }
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomLeft_").value)
         {
-            returnValue += (int)CardLinkMarker.BottomLeft;
+            returnValue |= (int)CardLinkMarker.BottomLeft;
         }
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "Bottom_").value)
         {
-            returnValue += (int)CardLinkMarker.Bottom;
+            returnValue |= (int)CardLinkMarker.Bottom;
         }
         if (UIHelper.getByName<UIToggle>(gameObjectDetailedSearch, "BottomRight_").value)
         {
-            returnValue += (int)CardLinkMarker.BottomRight;
+            returnValue |= (int)CardLinkMarker.BottomRight;
         }
         return returnValue;
     }
