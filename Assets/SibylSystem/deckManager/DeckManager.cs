@@ -1926,7 +1926,7 @@ public class DeckManager : ServantWithCardDescription
         if (Bool)
         {
             LinkMarkerHide = false;
-            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-2048, 0, 0);
+            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(0, 4096, 0);
         }
         else
         {

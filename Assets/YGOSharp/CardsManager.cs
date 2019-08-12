@@ -149,7 +149,7 @@ namespace YGOSharp
                                                             {
                                                                 if (getOT == 0 || getOT == card.Ot)
                                                                 {
-                                                                    if (getLinkMarker == 0 || getLinkMarker == card.LinkMarker)
+                                                                    if (getLinkMarker == 0 || (card.Type & (int)CardType.Link) != 0 && (card.LinkMarker & getLinkMarker) == getLinkMarker)
                                                                     {
                                                                         if (getPack == "" || card.packFullName == getPack)
                                                                         {
