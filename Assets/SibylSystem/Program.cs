@@ -382,7 +382,7 @@ public class Program : MonoBehaviour
                 }
                 else
                 {
-                    jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip");
+                    jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip", AppUpdateLog.MD5_IMAGE);
                     File.Copy(AppUpdateLog.GAME_DATA_VERSION, AppUpdateLog.GAME_IMAGE_VERSION, true);
                 }
             }

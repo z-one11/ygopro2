@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)/../../..
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := sqlite3
-LOCAL_SRC_FILES := ocgcore/sqlite3/sqlite3.c
+LOCAL_SRC_FILES := sqlite3/sqlite3.c
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -23,42 +23,42 @@ LOCAL_CFLAGS += -mno-unaligned-access
 endif
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/ocgcore
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/ocgcore/lua
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/ocgcore/sqlite3
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/lua
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/sqlite3
 
-LOCAL_SRC_FILES := ocgcore/lua/lapi.c \
-                   ocgcore/lua/lauxlib.c \
-                   ocgcore/lua/lbaselib.c \
-                   ocgcore/lua/lbitlib.c \
-                   ocgcore/lua/lcode.c \
-                   ocgcore/lua/lcorolib.c \
-                   ocgcore/lua/lctype.c \
-                   ocgcore/lua/ldblib.c \
-                   ocgcore/lua/ldebug.c \
-                   ocgcore/lua/ldo.c \
-                   ocgcore/lua/ldump.c \
-                   ocgcore/lua/lfunc.c \
-                   ocgcore/lua/lgc.c \
-                   ocgcore/lua/linit.c \
-                   ocgcore/lua/liolib.c \
-                   ocgcore/lua/llex.c \
-                   ocgcore/lua/lmathlib.c \
-                   ocgcore/lua/lmem.c \
-                   ocgcore/lua/loadlib.c \
-                   ocgcore/lua/lobject.c \
-                   ocgcore/lua/lopcodes.c \
-                   ocgcore/lua/loslib.c \
-                   ocgcore/lua/lparser.c \
-                   ocgcore/lua/lstate.c \
-                   ocgcore/lua/lstring.c \
-                   ocgcore/lua/lstrlib.c \
-                   ocgcore/lua/ltable.c \
-                   ocgcore/lua/ltablib.c \
-                   ocgcore/lua/ltm.c \
-                   ocgcore/lua/lundump.c \
-                   ocgcore/lua/lutf8lib.c \
-                   ocgcore/lua/lvm.c \
-                   ocgcore/lua/lzio.c \
+LOCAL_SRC_FILES := lua/lapi.c \
+                   lua/lauxlib.c \
+                   lua/lbaselib.c \
+                   lua/lbitlib.c \
+                   lua/lcode.c \
+                   lua/lcorolib.c \
+                   lua/lctype.c \
+                   lua/ldblib.c \
+                   lua/ldebug.c \
+                   lua/ldo.c \
+                   lua/ldump.c \
+                   lua/lfunc.c \
+                   lua/lgc.c \
+                   lua/linit.c \
+                   lua/liolib.c \
+                   lua/llex.c \
+                   lua/lmathlib.c \
+                   lua/lmem.c \
+                   lua/loadlib.c \
+                   lua/lobject.c \
+                   lua/lopcodes.c \
+                   lua/loslib.c \
+                   lua/lparser.c \
+                   lua/lstate.c \
+                   lua/lstring.c \
+                   lua/lstrlib.c \
+                   lua/ltable.c \
+                   lua/ltablib.c \
+                   lua/ltm.c \
+                   lua/lundump.c \
+                   lua/lutf8lib.c \
+                   lua/lvm.c \
+                   lua/lzio.c \
                    ocgcore/card.cpp \
                    ocgcore/duel.cpp \
                    ocgcore/effect.cpp \

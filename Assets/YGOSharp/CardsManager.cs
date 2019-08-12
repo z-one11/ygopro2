@@ -104,6 +104,7 @@ namespace YGOSharp
             int getP_UP,
             int getYear_UP,
             int getOT,
+            int getLinkMarker,
             string getPack,
             int getBAN,
             Banlist banlist,
@@ -148,9 +149,12 @@ namespace YGOSharp
                                                             {
                                                                 if (getOT == 0 || getOT == card.Ot)
                                                                 {
-                                                                    if (getPack == "" || card.packFullName == getPack)
+                                                                    if (getLinkMarker == 0 || (card.Type & (int)CardType.Link) != 0 && (card.LinkMarker & getLinkMarker) == getLinkMarker)
                                                                     {
-                                                                        returnValue.Add(card);
+                                                                        if (getPack == "" || card.packFullName == getPack)
+                                                                        {
+                                                                            returnValue.Add(card);
+                                                                        }
                                                                     }
                                                                 }
                                                             }
