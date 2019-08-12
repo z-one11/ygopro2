@@ -394,6 +394,11 @@ public class Program : MonoBehaviour
                     jo.Call("doExtractZipFile", "pics.zip", GAME_PATH);
                     File.Copy(AppUpdateLog.GAME_DATA_VERSION, AppUpdateLog.GAME_IMAGE_VERSION, true);
                 }
+                else if (File.Exists("../ygocore/pics.zip"))
+                {
+                    jo.Call("doExtractZipFile", "../ygocore/pics.zip", GAME_PATH);
+                    File.Copy(AppUpdateLog.GAME_DATA_VERSION, AppUpdateLog.GAME_IMAGE_VERSION, true);
+                }
                 else
                 {
                     jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2-data/picture/pics.zip", AppUpdateLog.MD5_IMAGE);
