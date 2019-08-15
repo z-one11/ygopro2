@@ -344,7 +344,7 @@ public class Program : MonoBehaviour
                     }
                 }
             }
-
+#if (!UNITY_ANDROID || !UNITY_IPHONE)  //移动端显示问题，此功能不使用
             if (Directory.Exists("pack"))
             {
                 fileInfos = (new DirectoryInfo("pack")).GetFiles();
@@ -360,6 +360,7 @@ public class Program : MonoBehaviour
                 }
                 YGOSharp.PacksManager.initializeSec();
             }
+#endif
 
             initializeALLservants();
             loadResources();
