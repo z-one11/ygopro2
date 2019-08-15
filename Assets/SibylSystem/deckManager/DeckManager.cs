@@ -1926,11 +1926,11 @@ public class DeckManager : ServantWithCardDescription
     {
         if (Bool)
         {
-            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(0, 4096, 0);
+            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.position = new Vector3(0, 5, 0);
         }
         else
         {
-            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.localPosition = new Vector3(-335, 0, 0);
+            UIHelper.getByName(gameObjectDetailedSearch, "link_").transform.position = new Vector3(0, 0, 0);
         }
     }
 }
