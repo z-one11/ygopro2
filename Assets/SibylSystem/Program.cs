@@ -895,6 +895,12 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
+        if (Event.current.Equals(Event.KeyboardEvent("F12")) || (Event.current.isMouse && Event.current.type == EventType.MouseDown && Event.current.clickCount == 2))
+        {   //按下F12或双击屏幕时启动
+            //Application.CaptureScreenshot("screenshots.png"); //移动端可能无法使用
+            StartCoroutine(OnScreenCapture());
+        }
+
         try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + FPS.ToString("000")); } } catch{}
     }
 
@@ -1072,6 +1078,30 @@ public class Program : MonoBehaviour
     public static void showToast(string content)
     {
         Program.I().menu.showToast(content);
+    }
+
+    IEnumerator OnScreenCapture()
+    {
+        yield return new WaitForEndOfFrame();
+        try
+        {
+            if (!Directory.Exists("screenshots/")) Directory.CreateDirectory("screenshots/");
+            string imageName = "screenshots/" + DateTime.Now.ToString("yyyy-MM-dd(HH’mm’ss)") + ".png";
+
+            int width = Screen.width;
+            int height = Screen.height;
+            Texture2D tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+            tex.ReadPixels (new Rect (0, 0, width, height), 0, 0, true);
+            byte[] imageBytes = tex.EncodeToPNG();
+            tex.Compress(false);
+            File.WriteAllBytes(imageName, imageBytes);
+
+            PrintToChat(InterString.Get("触发截屏，文件位于资源目录下：screenshots/"));
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
 }
