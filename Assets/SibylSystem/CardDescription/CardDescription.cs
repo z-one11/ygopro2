@@ -44,6 +44,7 @@ public class CardDescription : Servant
         UIHelper.registEvent(gameObject, "big_", onb);
         UIHelper.registEvent(gameObject, "small_", ons);
         UIHelper.registEvent(gameObject, "wiki_", onwiki);
+        UIHelper.registEvent(gameObject, "reset_", onReset);
         picSprite = UIHelper.getByName<UITexture>(gameObject, "pic_");
         lineSprite = UIHelper.getByName<UISprite>(gameObject, "line");
         try
@@ -117,6 +118,28 @@ public class CardDescription : Servant
         }
     }
 
+    void onReset()
+    {
+        if (Screen.width >= 1900)
+        {
+            underSprite.width = 350;
+            picSprite.height = 400;
+            description.textLabel.fontSize = 25;
+        }
+        else if (Screen.width >= 1500)
+        {
+            underSprite.width = 300;
+            picSprite.height = 350;
+            description.textLabel.fontSize = 20;
+        }
+        else
+        {
+            underSprite.width = 250;
+            picSprite.height = 300;
+            description.textLabel.fontSize = 15;
+        }
+    }
+
     public override void applyHideArrangement()
     {
         if (gameObject != null)
@@ -154,6 +177,7 @@ public class CardDescription : Servant
     {
         Config.Set("CA", underSprite.width.ToString());
         Config.Set("CB", picSprite.height.ToString());
+        Config.Set("fontSize", description.textLabel.fontSize.ToString());
     }
 
     class data

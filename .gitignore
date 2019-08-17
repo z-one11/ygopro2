@@ -46,6 +46,7 @@ pics/
 picture/
 puzzle/
 replay/
+screenshots/
 script/
 single/
 sound/
@@ -57,13 +58,10 @@ bin/
 Release/
 UnityPackageManager/
 .nomedia
-cards.cdb
-lflist.conf
-strings.conf
+*.cdb
+*.conf
 commamd.shell
 AI_core_vs2017solution/core.VC.db
 AI_core_vs2017solution/core.VC.VC.opendb
 AI_core_vs2017solution/System.Servicemodel.Faltexception.dll
 [Ll]ibrary_/
-Assets_/
-Temp/

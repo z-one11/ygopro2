@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System;
@@ -366,7 +367,7 @@ public class Program : MonoBehaviour
                     }
                 }
             }
-
+#if (!UNITY_ANDROID || !UNITY_IPHONE)  //移动端显示问题，此功能不使用
             if (Directory.Exists("pack"))
             {
                 fileInfos = (new DirectoryInfo("pack")).GetFiles();
@@ -382,6 +383,7 @@ public class Program : MonoBehaviour
                 }
                 YGOSharp.PacksManager.initializeSec();
             }
+#endif
 
             initializeALLservants();
             loadResources();
@@ -1020,6 +1022,11 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
+        if (Event.current.Equals(Event.KeyboardEvent("F12")))
+        {
+            StartCoroutine(OnScreenCapture());
+        }
+
         try { if (!setting.ShowFPS) { GUI.Label(new Rect(10, 5, 200, 200), "[Ver " + GAME_VERSION + "] FPS: " + FPS.ToString("000")); } } catch{}
     }
 
@@ -1194,9 +1201,37 @@ public class Program : MonoBehaviour
         PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
     }
 
-    public static void showToast(string content)
+    public void doShowToast(string content)
     {
-        Program.I().menu.showToast(content);
+        I().menu.showToast(content);
+    }
+
+    public void ScreenCapture()
+    {
+        StartCoroutine(OnScreenCapture());
+    }
+    IEnumerator OnScreenCapture()
+    {
+        yield return new WaitForEndOfFrame();
+        try
+        {
+            if (!Directory.Exists("screenshots/")) Directory.CreateDirectory("screenshots/");
+            string imageName = "screenshots/" + DateTime.Now.ToString("yyyy-MM-dd(HH’mm’ss)") + ".png";
+
+            int width = Screen.width;
+            int height = Screen.height;
+            Texture2D tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+            tex.ReadPixels (new Rect (0, 0, width, height), 0, 0, true);
+            byte[] imageBytes = tex.EncodeToPNG();
+            tex.Compress(false);
+            File.WriteAllBytes(imageName, imageBytes);
+
+            PrintToChat(InterString.Get("触发截屏，文件位于资源目录下：screenshots/"));
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
     //用于删除历史更新文件
@@ -1213,13 +1248,5 @@ public class Program : MonoBehaviour
             }
         }
     }
-
-#if !UNITY_EDITOR && UNITY_ANDROID
-    //用于Java回调
-    public void doShowToast(string content)
-    {
-        I().menu.showToast(content);
-    }
-#endif
 
 }
