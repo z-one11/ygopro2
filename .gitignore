@@ -33,6 +33,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.jks
 
 # ygopro
 ai/
@@ -46,6 +47,7 @@ picture/
 puzzle/
 replay/
 screenshots/
+script/
 single/
 sound/
 texture/
@@ -54,8 +56,12 @@ update/
 updates/
 bin/
 Release/
+UnityPackageManager/
+.nomedia
+*.cdb
+*.conf
+commamd.shell
 AI_core_vs2017solution/core.VC.db
 AI_core_vs2017solution/core.VC.VC.opendb
 AI_core_vs2017solution/System.Servicemodel.Faltexception.dll
 [Ll]ibrary_/
-AI_core_vs2017solution/.vs

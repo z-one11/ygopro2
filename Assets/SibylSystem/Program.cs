@@ -895,9 +895,8 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
-        if (Event.current.Equals(Event.KeyboardEvent("F12")) || (Event.current.isMouse && Event.current.type == EventType.MouseDown && Event.current.clickCount == 2))
-        {   //按下F12或双击屏幕时启动
-            //Application.CaptureScreenshot("screenshots.png"); //移动端可能无法使用
+        if (Event.current.Equals(Event.KeyboardEvent("F12")))
+        {
             StartCoroutine(OnScreenCapture());
         }
 
@@ -1075,11 +1074,15 @@ public class Program : MonoBehaviour
         PrintToChat(InterString.Get("非常抱歉，因为技术原因，此功能暂时无法使用。请关注官方网站获取更多消息。"));
     }
 
-    public static void showToast(string content)
+    public void doShowToast(string content)
     {
-        Program.I().menu.showToast(content);
+        I().menu.showToast(content);
     }
 
+    public void ScreenCapture()
+    {
+        StartCoroutine(OnScreenCapture());
+    }
     IEnumerator OnScreenCapture()
     {
         yield return new WaitForEndOfFrame();
