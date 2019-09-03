@@ -895,6 +895,12 @@ public class Program : MonoBehaviour
             _padScroll = 0;
         }
 
+        #if !UNITY_EDITOR && UNITY_STANDALONE_LINUX
+        if (Event.current.Equals(Event.KeyboardEvent("F11")))
+        {
+            System.Diagnostics.Process.Start("sh", Application.streamingAssetsPath + "/Linux_Chinese_inpu.sh");
+        }
+        #endif
         if (Event.current.Equals(Event.KeyboardEvent("F12")))
         {
             StartCoroutine(OnScreenCapture());
