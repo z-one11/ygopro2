@@ -69,6 +69,25 @@ public class CardDescription : Servant
         monitor.gameObject.SetActive(false);
     }
 
+    public override void ES_RMS(string hashCode, List<messageSystemValue> result)
+    {
+        base.ES_RMS(hashCode, result);
+        if (hashCode == "RMSshow_onWiki")
+        {
+            if (result[0].value == "yes")
+            {
+                if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional || Application.systemLanguage == SystemLanguage.Chinese)
+                {
+                    Application.OpenURL("https://www.ourocg.cn/S.aspx?key=" + currentCard.Id.ToString());
+                }
+                else
+                {
+                    Application.OpenURL("https://yugipedia.com/wiki/" + currentCard.Id.ToString());
+                }
+            }
+        }
+    }
+
     public float width = 0;
     public float cHeight = 0;
 
@@ -100,19 +119,18 @@ public class CardDescription : Servant
 
     void onwiki()
     {
-        if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional || Application.systemLanguage == SystemLanguage.Chinese)
-        {
-            Application.OpenURL("https://www.ourocg.cn/S.aspx?key=" + currentCard.Id.ToString());
-        }
-        else
-        {
-            Application.OpenURL("https://yugipedia.com/wiki/" + currentCard.Id.ToString());
-        }
+        RMSshow_yesOrNo("RMSshow_onWiki", InterString.Get("是否在线查询卡片调整？"), new messageSystemValue { hint = "yes", value = "yes" }, new messageSystemValue { hint = "no", value = "no" });
     }
 
     void onReset()
     {
-        if (Screen.width >= 1900)
+        if (Screen.width >= 2300)
+        {
+            underSprite.width = 400;
+            picSprite.height = 450;
+            description.textLabel.fontSize = 30;
+        }
+        else if (Screen.width >= 1900)
         {
             underSprite.width = 350;
             picSprite.height = 400;
@@ -130,6 +148,7 @@ public class CardDescription : Servant
             picSprite.height = 300;
             description.textLabel.fontSize = 15;
         }
+        Program.PrintToChat(InterString.Get("已重置调整，如不合适请自行调整"));
     }
 
     public override void applyHideArrangement()
