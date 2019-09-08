@@ -126,26 +126,26 @@ public class CardDescription : Servant
     {
         if (Screen.width >= 2300)
         {
-            underSprite.width = 400;
-            picSprite.height = 450;
+            underSprite.width = 420;
+            picSprite.height = 525;
             description.textLabel.fontSize = 30;
         }
         else if (Screen.width >= 1900)
         {
-            underSprite.width = 350;
-            picSprite.height = 400;
+            underSprite.width = 360;
+            picSprite.height = 445;
             description.textLabel.fontSize = 25;
         }
         else if (Screen.width >= 1500)
         {
             underSprite.width = 300;
-            picSprite.height = 350;
+            picSprite.height = 365;
             description.textLabel.fontSize = 20;
         }
         else
         {
-            underSprite.width = 250;
-            picSprite.height = 300;
+            underSprite.width = 240;
+            picSprite.height = 285;
             description.textLabel.fontSize = 15;
         }
         Program.PrintToChat(InterString.Get("已重置调整，如不合适请自行调整"));
@@ -408,6 +408,8 @@ public class CardDescription : Servant
                 realizeMonitor();
             }
         }
+        if (underSprite.width < 240) { underSprite.width = 240; }
+        if (picSprite.height < 285) { picSprite.height = 285; }
     }
 
     public void setData(YGOSharp.Card card, Texture2D def, string tail = "",bool force=false)
