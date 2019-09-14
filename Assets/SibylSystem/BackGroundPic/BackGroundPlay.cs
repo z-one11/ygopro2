@@ -24,21 +24,16 @@ public class BackGroundPlay : MonoBehaviour
         StartCoroutine(PlayOGV());
     }
 
-    private WWW GetFile(string pathToFile)
-    {
-        WWW request = new WWW(pathToFile);
-        return request;
-    }
-
     IEnumerator PlayOGV()
     {
-        WWW request = GetFile(bgFilePath);
-        movieTexture = (MovieTexture)request.GetMovieTexture();
+        WWW request = new WWW(bgFilePath);
+        movieTexture = request.GetMovieTexture();
 
         while(!movieTexture.isReadyToPlay)
             yield return request;
 
         BackGroundPic.backGround.GetComponent<UITexture>().mainTexture = movieTexture;
+        BackGroundPic.backGround.GetComponent<UITexture>().depth = -100;
 
         movieTexture.loop = true;
         movieTexture.Play();
