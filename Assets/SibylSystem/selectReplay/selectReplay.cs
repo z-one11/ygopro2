@@ -440,6 +440,8 @@ public class selectReplay : WindowServantSP
             {
                 if (name.Length>4&&name.Substring(name.Length - 4, 4) == ".yrp")
                 {
+                    Program.I().doShowToast("抱歉！不支持播放旧版录像@n但您仍可以使用“提取卡组”");
+                    /*
                     if (File.Exists("replay/" + name))
                     {
                         RMSshow_none(InterString.Get("您正在观看旧版的录像（上帝视角），不保证稳定性。"));
@@ -449,6 +451,7 @@ public class selectReplay : WindowServantSP
                         var collections = TcpHelper.getPackages(precy.ygopro.getYRP3dBuffer(getYRP(File.ReadAllBytes("replay/" + name))));
                         pushCollection(collections);
                     }
+                    */
                 }
             }
         }
