@@ -9,7 +9,7 @@ public class AppUpdateLog
     //音效文件
     public static string GAME_BGM_VERSION = "updates/bgm_0.1.txt";
     //图片数据
-    public static string GAME_IMAGE_VERSION = "updates/image_0.3.txt";
+    public static string GAME_IMAGE_VERSION = "updates/image_0.4.txt";
     //UI数据
     public static string GAME_UI_VERSION = "updates/ui.txt";
 
