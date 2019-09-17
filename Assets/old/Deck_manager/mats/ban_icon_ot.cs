@@ -21,38 +21,42 @@ public class ban_icon_ot : MonoBehaviour
         UITexture t = gameObject.GetComponent<UITexture>();
         if (t != null)
         {
-            //if (i != 1 && i != 2 && i != 4)
-            if (i != 2 && i != 4)  //不显示OCG
+            if (i == 2 || i == 4)  //[1: OCG]、[2: TCG]、[3: OCG&TCG]、[4: Anime]
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
-                t.mainTexture = icon;
-            }
-            else if (File.Exists("textures/ui/ban_ot_" + i.ToString() + ".png"))
-            {
-                t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+                if (File.Exists("textures/ui/ban_ot_" + i.ToString() + ".png"))
+                {
+                    t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+                }
+                else
+                {
+                    Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                    t.mainTexture = icon;
+                }
             }
             else
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
                 t.mainTexture = icon;
             }
         }
         else
         {
             Renderer r = GetComponent<Renderer>();
-            //if (i != 1 && i != 2 && i != 4)
-            if (i != 2 && i != 4)  //不显示OCG
+            if (i == 2 || i == 4)  //[1: OCG]、[2: TCG]、[3: OCG&TCG]、[4: Anime]
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
-                r.material.mainTexture = icon;
-            }
-            else if (File.Exists("textures/ui/ban_ot_" + i.ToString() + ".png"))
-            {
-                r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+                if (File.Exists("textures/ui/ban_ot_" + i.ToString() + ".png"))
+                {
+                    r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
+                }
+                else
+                {
+                    Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                    r.material.mainTexture = icon;
+                }
             }
             else
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
                 r.material.mainTexture = icon;
             }
         }

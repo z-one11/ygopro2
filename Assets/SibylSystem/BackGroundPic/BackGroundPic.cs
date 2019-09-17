@@ -3,11 +3,35 @@ using System;
 using System.IO;
 public class BackGroundPic : Servant
 {
-    GameObject backGround;
+    public static GameObject backGround;
     public override void initialize()
     {
         backGround = create(Program.I().mod_simple_ngui_background_texture, Vector3.zero, Vector3.zero, false, Program.ui_back_ground_2d);
-        FileStream file = new FileStream("textures/bg.jpg", FileMode.Open, FileAccess.Read);//YGOMobile Paths
+        string fileName = "textures/bg";
+        /*
+        if (File.Exists(fileName + ".ogv"))
+        {
+            //移动端无法使用
+            fileName += ".ogv";
+            BackGroundPlay.Instance.LoadOGV(fileName);
+        }
+        else if (File.Exists(fileName + ".png"))
+        */
+        if (File.Exists(fileName + ".png"))
+        {
+            fileName += ".png";
+            LoadJpgOrPng(fileName);
+        }
+        else if (File.Exists(fileName + ".jpg"))
+        {
+            fileName += ".jpg";
+            LoadJpgOrPng(fileName);
+        }
+    }
+
+    public void LoadJpgOrPng(string fileName)
+    {
+        FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
         file.Seek(0, SeekOrigin.Begin);
         byte[] data = new byte[file.Length];
         file.Read(data, 0, (int)file.Length);

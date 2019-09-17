@@ -802,7 +802,7 @@ public class Servant
         string path = "textures/face/" + faceName + ".jpg";
         //开始下载
         HttpDldFile df = new HttpDldFile();
-        if (inputUrl.value.Length >= 4 && inputUrl.value.Substring(0, 4) == "http")
+        if (inputUrl.value.StartsWith("http"))
         {
             url = inputUrl.value;
             df.Download(url, path);         //使用自定义Url

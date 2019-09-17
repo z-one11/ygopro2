@@ -79,12 +79,13 @@ public class cardPicLoader : MonoBehaviour
                 }
                 if (ico_ot != null)
                 {
-                    if (data.Ot != 2 && data.Ot != 4)
+                    //[1: OCG]、[2: TCG]、[3: OCG&TCG]、[4: Anime]
+                    if (data.Ot == 2 || data.Ot == 4)
                     {
-                        ico_ot.show(3);
+                        ico_ot.show(data.Ot);
                         return;
                     }
-                    ico_ot.show(data.Ot);
+                    ico_ot.show(3);
                 }
             }
         }
