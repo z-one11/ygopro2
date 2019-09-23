@@ -8,11 +8,20 @@ public class BackGroundPic : Servant
     {
         backGround = create(Program.I().mod_simple_ngui_background_texture, Vector3.zero, Vector3.zero, false, Program.ui_back_ground_2d);
         string fileName = "texture/common/desk";
+        LoadPic();
         if (File.Exists(fileName + ".ogv"))
         {
-            //超吃配置，谨用
+            //不支持移动平台 (原因：MovieTexture)
             fileName += ".ogv";
-            BackGroundPlay.Instance.LoadOGV(fileName);
+            backGround.AddComponent<BackGroundPlayOGV>();
+            BackGroundPlayOGV.Instance.LoadOGV(fileName);
+        }
+        else if (File.Exists(fileName + ".gif"))
+        {
+            //不支持移动平台 (原因：System.Drawing)
+            fileName += ".gif";
+            backGround.AddComponent<BackGroundPlayGIF>();
+            BackGroundPlayGIF.Instance.LoadGIF(fileName);
         }
         else if (File.Exists(fileName + ".png"))
         {
@@ -24,6 +33,12 @@ public class BackGroundPic : Servant
             fileName += ".jpg";
             LoadJpgOrPng(fileName);
         }
+    }
+
+    public void LoadPic()
+    {
+        Texture2D pic = (Texture2D)Resources.Load("bg_menu");
+        backGround.GetComponent<UITexture>().mainTexture = pic;
     }
 
     public void LoadJpgOrPng(string fileName)

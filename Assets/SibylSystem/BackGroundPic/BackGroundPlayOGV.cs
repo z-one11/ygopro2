@@ -3,17 +3,16 @@ using System;
 using System.Collections;
 using UnityEngine.UI;
 
-public class BackGroundPlay : MonoBehaviour
+public class BackGroundPlayOGV : MonoBehaviour
 {
     public MovieTexture movieTexture;
-
-    public static BackGroundPlay Instance;
     string bgFilePath;
     Uri fileURI;
 
-    public BackGroundPlay()
+    public static BackGroundPlayOGV Instance;
+    public BackGroundPlayOGV()
     {
-        BackGroundPlay.Instance = this;
+        BackGroundPlayOGV.Instance = this;
     }
 
     public void LoadOGV(string fileName)
