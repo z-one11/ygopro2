@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using UnityEngine.UI;
 
 public class BackGroundPlayGIF : MonoBehaviour
 {
-    UnityEngine.UI.Image image;
     public float Mytime = 0.05f;
     List<Texture2D> bg;
     int dex = 0;
@@ -21,8 +19,8 @@ public class BackGroundPlayGIF : MonoBehaviour
 
     public void LoadGIF(string fileName)
     {
-        image = GetComponent<UnityEngine.UI.Image>();
-        bg = GifToTexture(System.Drawing.Image.FromFile(fileName));
+        Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(fileName);
+        bg = GifToTexture(bitmap);
     }
 
     void Update()
@@ -42,19 +40,19 @@ public class BackGroundPlayGIF : MonoBehaviour
         }
     }
 
-    List<Texture2D> GifToTexture(System.Drawing.Image image)
+    List<Texture2D> GifToTexture(Bitmap bitmap)
     {
         List<Texture2D> texture2D = null;
-        if (image != null)
+        if (bitmap != null)
         {
             texture2D = new List<Texture2D>();
-            FrameDimension frameDimension = new FrameDimension(image.FrameDimensionsList[0]);
-            int framCount = image.GetFrameCount(frameDimension);
+            FrameDimension frameDimension = new FrameDimension(bitmap.FrameDimensionsList[0]);
+            int framCount = bitmap.GetFrameCount(frameDimension);
             for (int i = 0; i < framCount; i++)
             {
-                image.SelectActiveFrame(frameDimension, i);
-                var framBitmap = new Bitmap(image.Width, image.Height);
-                System.Drawing.Graphics.FromImage(framBitmap).DrawImage(image, Point.Empty);
+                bitmap.SelectActiveFrame(frameDimension, i);
+                var framBitmap = new Bitmap(bitmap.Width, bitmap.Height);
+                System.Drawing.Graphics.FromImage(framBitmap).DrawImage(bitmap, Point.Empty);
                 var frameTexture2D = new Texture2D(framBitmap.Width, framBitmap.Height);
                 for (int x = 0; x < framBitmap.Width; x++)
                 {
