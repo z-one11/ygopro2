@@ -9,7 +9,13 @@ public class BackGroundPic : Servant
         backGround = create(Program.I().mod_simple_ngui_background_texture, Vector3.zero, Vector3.zero, false, Program.ui_back_ground_2d);
         string fileName = "texture/common/desk";
         LoadPic();
-        if (File.Exists(fileName + ".ogv"))
+        if (File.Exists(fileName + ".mp4"))
+        {
+            fileName += ".mp4";
+            backGround.AddComponent<BackGroundPlayMP4>();
+            BackGroundPlayMP4.Instance.LoadMP4(fileName);
+        }
+        else if (File.Exists(fileName + ".ogv"))
         {
             //不支持移动平台 (原因：MovieTexture)
             fileName += ".ogv";
