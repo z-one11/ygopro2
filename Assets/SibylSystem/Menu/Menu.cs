@@ -38,7 +38,7 @@ public class Menu : WindowServantSP
     }
 
     static int Version = 0;
-    string url = "https://api.ygo2019.xyz/ygopro2/ver_android.txt";
+    string url = "http://api.ygo2019.xyz/ygopro2/ver_android.txt";
     string upurl = "";
     string VERSION = "";
     void up()
