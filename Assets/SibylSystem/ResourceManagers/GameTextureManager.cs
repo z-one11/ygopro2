@@ -769,13 +769,13 @@ public class GameTextureManager
             if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
             {
                 //YGOPro2-CN (421x614)
-                df.Download("http://download.ygo2019.xyz/ygopro2-data/picture/card/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
+                df.Download("http://api.ygo2019.xyz/ygopro2/picture/card/" + pic.code.ToString() + ".jpg", "picture/card/" + pic.code.ToString() + ".jpg");
                 path = "picture/card/" + pic.code.ToString() + ".jpg";
             }
             if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
             {
-                //YGOPro2 先行卡
-                df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
+                //YGOMobile-JP (177x254)
+                df.Download("http://api.ygo2019.xyz/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
                 path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
             LoadCardPicture(pic, path);
