@@ -1058,7 +1058,7 @@ public class Room : WindowServantSP
     }
 
     UIPopupList decksList;
-    string DECK_PATH = "deck";
+    string DECK_PATH = "deck/";
     void loadCategory()
     {
         DirectoryInfo[] directoryInfos = (new DirectoryInfo("deck")).GetDirectories();
@@ -1069,12 +1069,14 @@ public class Room : WindowServantSP
     }
     private void deckCategory()
     {
-        if (decksList.value != "[null]")
+        if (decksList.value != "[---------------]")
         {
-            DECK_PATH = "deck/" + decksList.value;
+            DECK_PATH = "deck/" + decksList.value + "/";
             printFile();
-        } else {
-            DECK_PATH = "deck";
+        }
+        else
+        {
+            DECK_PATH = "deck/";
             printFile();
         }
     }
