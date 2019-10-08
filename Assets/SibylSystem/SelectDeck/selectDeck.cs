@@ -162,7 +162,8 @@ public class selectDeck : WindowServantSP
             {
                 Directory.CreateDirectory("deck/" + result[0].value);
                 RMSshow_none(InterString.Get("「[?]」创建完毕。", result[0].value));
-                decksList.items.Add(result[0].value);
+				if (!decksList.items.Contains(result[0].value))
+                    decksList.items.Add(result[0].value);
                 decksList.value = result[0].value;
                 onDeckCategory();
             }
