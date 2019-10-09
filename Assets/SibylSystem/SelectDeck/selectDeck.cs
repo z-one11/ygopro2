@@ -32,6 +32,7 @@ public class selectDeck : WindowServantSP
         );
         UIHelper.registEvent(gameObjectDeckCategory, "exit_", onDeckCategory);
         UIHelper.registEvent(gameObjectDeckCategory, "new_", onNewCategory);
+        UIHelper.registEvent(gameObjectDeckCategory, "rename_", onRenameCategory);
         UIHelper.registEvent(gameObjectDeckCategory, "delete_", onDeleteCategory);
         UIHelper.registEvent(gameObjectDeckCategory, "decks", deckCategory);
         decksList = UIHelper.getByName<UIPopupList>(gameObjectDeckCategory, "decks");
@@ -173,6 +174,29 @@ public class selectDeck : WindowServantSP
                 RMSshow_none(InterString.Get("非法输入！请检查输入的文件名。"));
             }
         }
+        if (hashCode == "onRenameCategory")
+        {
+            try
+            {
+                if (!Directory.Exists("deck/" + result[0].value))
+                {
+                    Directory.Move("deck/" + decksList.value, "deck/" + result[0].value);
+                    RMSshow_none(InterString.Get("「[?]」重命名完毕。", result[0].value));
+                    decksList.items.Remove(decksList.value);
+                    decksList.items.Add(result[0].value);
+                    decksList.value = result[0].value;
+                    onDeckCategory();
+                }
+                else
+                {
+                    RMSshow_none(InterString.Get("「[?]」该分类已存在，重命名失败。", result[0].value));
+                }
+            }
+            catch (Exception)
+            {
+                RMSshow_none(InterString.Get("非法输入！请检查输入的文件名。"));
+            }
+        }
         if (hashCode == "onDispose")
         {
             if (result[0].value == "yes")
@@ -217,6 +241,12 @@ public class selectDeck : WindowServantSP
                 RMSshow_none(InterString.Get("非法输入！请检查输入的文件名。"));
             }
         }
+    }
+
+    void showToast(string content)
+    {
+        onHideCategory();
+        RMSshow_onlyYes("showToast", InterString.Get(content), null);
     }
 
     void onNew()
@@ -579,11 +609,28 @@ public class selectDeck : WindowServantSP
         RMSshow_input("onNewCategory", InterString.Get("请输入卡组分类名"), UIHelper.getTimeString());
     }
 
+    void onRenameCategory()
+    {
+        if (decksList.value != "[---------------]")
+        {
+            onDeckCategory();
+            RMSshow_input("onRenameCategory", InterString.Get("请输入新的卡组分类名"), UIHelper.getTimeString());
+        }
+        else
+        {
+            showToast("默认分类，无法重命名！");
+        }
+    }
+
     void onDeleteCategory()
     {
         if (decksList.value != "[---------------]")
         {
             DeleteDir("deck/" + decksList.value);
+        }
+        else
+        {
+            showToast("默认分类，无法删除！");
         }
     }
 
