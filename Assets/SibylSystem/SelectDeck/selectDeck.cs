@@ -78,6 +78,7 @@ public class selectDeck : WindowServantSP
         {
             return;
         }
+        onHideCategory();
         KF_editDeck(superScrollView.selectedString);
     }
 
@@ -162,7 +163,7 @@ public class selectDeck : WindowServantSP
             {
                 Directory.CreateDirectory("deck/" + result[0].value);
                 RMSshow_none(InterString.Get("「[?]」创建完毕。", result[0].value));
-				if (!decksList.items.Contains(result[0].value))
+                if (!decksList.items.Contains(result[0].value))
                     decksList.items.Add(result[0].value);
                 decksList.value = result[0].value;
                 onDeckCategory();
@@ -543,14 +544,23 @@ public class selectDeck : WindowServantSP
 
     void onClickExit()
     {
+        onHideCategory();
         Program.I().shiftToServant(Program.I().menu);
     }
 
     bool categoryShowed = true;
     public string DECK_PATH = "deck/";
 
+    void onHideCategory()
+    {
+        if (!categoryShowed)
+            onDeckCategory();
+    }
+
     void onDeckCategory()
     {
+        float f = Screen.height / 700f;
+        gameObjectDeckCategory.transform.localScale = new Vector3(f, f, f);
         if (categoryShowed)
         {
             categoryShowed = false;
