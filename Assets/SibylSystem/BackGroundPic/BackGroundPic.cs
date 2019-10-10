@@ -8,16 +8,28 @@ public class BackGroundPic : Servant
     {
         backGround = create(Program.I().mod_simple_ngui_background_texture, Vector3.zero, Vector3.zero, false, Program.ui_back_ground_2d);
         string fileName = "textures/bg";
-        /*
-        if (File.Exists(fileName + ".ogv"))
+        LoadPic();
+        if (File.Exists(fileName + ".mp4"))
         {
-            //移动端无法使用
+            fileName += ".mp4";
+            backGround.AddComponent<BackGroundPlayMP4>();
+            BackGroundPlayMP4.Instance.LoadMP4(fileName);
+        }
+        /*else if (File.Exists(fileName + ".ogv"))
+        {
+            //不支持移动平台 (原因：MovieTexture)
             fileName += ".ogv";
-            BackGroundPlay.Instance.LoadOGV(fileName);
+            backGround.AddComponent<BackGroundPlayOGV>();
+            BackGroundPlayOGV.Instance.LoadOGV(fileName);
+        }*/
+        else if (File.Exists(fileName + ".gif") && Program.ANDROID_API_N)
+        {
+            //移动平台只支持：Android 7.0+ (原因：libgdiplus.so 使用 Termux 编译生成)
+            fileName += ".gif";
+            backGround.AddComponent<BackGroundPlayGIF>();
+            BackGroundPlayGIF.Instance.LoadGIF(fileName);
         }
         else if (File.Exists(fileName + ".png"))
-        */
-        if (File.Exists(fileName + ".png"))
         {
             fileName += ".png";
             LoadJpgOrPng(fileName);
@@ -27,6 +39,12 @@ public class BackGroundPic : Servant
             fileName += ".jpg";
             LoadJpgOrPng(fileName);
         }
+    }
+
+    public void LoadPic()
+    {
+        Texture2D pic = (Texture2D)Resources.Load("bg_menu");
+        backGround.GetComponent<UITexture>().mainTexture = pic;
     }
 
     public void LoadJpgOrPng(string fileName)

@@ -825,12 +825,6 @@ public class GameTextureManager
                 df.Download("http://api.ygo2019.xyz/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
                 path = "expansions/pics/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
-            {
-                //先行卡 (177x254)
-                df.Download("http://download.ygo2019.xyz/ygopro2-data/expansions/pics/" + pic.code.ToString() + ".jpg", "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg");
-                path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
-            }
             LoadCardPicture(pic, path);
         }
         catch (Exception e)
