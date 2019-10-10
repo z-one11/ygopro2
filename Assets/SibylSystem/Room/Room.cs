@@ -30,7 +30,7 @@ public class Room : WindowServantSP
                 if (realPlayers[selftype].getIfPreped() == true)
                 {
                     TcpHelper.CtosMessage_HsNotReady();
-                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse","wizard") + ".ydk"));
+                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck(DECK_PATH + Config.Get("deckInUse","wizard") + ".ydk"));
                     TcpHelper.CtosMessage_HsReady();
                 }
             }
@@ -444,7 +444,6 @@ public class Room : WindowServantSP
             else if (Regex.IsMatch(roomname, @"(\w{1,}[,^]{1}T[,#])?(?(1)|(^T[#,]))"))
             {
                 tags.Add("[D14291][TAG] ");
-
             }
         }
         else
@@ -1090,7 +1089,7 @@ public class Room : WindowServantSP
         if (arg2)
         {
             ColorGreen("ready_");//已准备
-            TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse","miaouwu") + ".ydk"));
+            TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck(DECK_PATH + Config.Get("deckInUse","miaouwu") + ".ydk"));
             TcpHelper.CtosMessage_HsReady();
         }
         else
@@ -1148,7 +1147,7 @@ public class Room : WindowServantSP
                 else
                 {
                     ColorGreen("ready_");//已准备
-                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse", "wizard") + ".ydk"));
+                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck(DECK_PATH + Config.Get("deckInUse", "wizard") + ".ydk"));
                     TcpHelper.CtosMessage_HsReady();
                 }
             }
