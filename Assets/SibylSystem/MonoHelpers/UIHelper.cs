@@ -862,6 +862,47 @@ public static class UIHelper
         return pic;
     }
 
+    public static Texture2D getDuel(string name)
+    {
+        Texture2D re = null;
+        if (File.Exists("texture/duel/" + name))
+        {
+            re = UIHelper.getTexture2D("texture/duel/" + name);
+        }
+        else
+        {
+            re = (Texture2D)Resources.Load("duel/" + name.Substring(0, name.Length - 4));
+        }
+        return re;
+    }
+
+    public static Texture2D getDuelHealthBar(string name)
+    {
+        Texture2D re = null;
+        if (File.Exists("texture/duel/healthBar/" + name))
+        {
+            re = UIHelper.getTexture2D("texture/duel/healthBar/" + name);
+        }
+        else
+        {
+            re = (Texture2D)Resources.Load("duel/healthBar/" + name.Substring(0, name.Length - 4));
+        }
+        return re;
+    }
+
+    public static Texture2D getDuelPhase(string name)
+    {
+        Texture2D re = null;
+        if (File.Exists("texture/duel/phase/" + name))
+        {
+            re = UIHelper.getTexture2D("texture/duel/phase/" + name);
+        }
+        else
+        {
+            re = (Texture2D)Resources.Load("duel/phase/" + name.Substring(0, name.Length - 4));
+        }
+        return re;
+    }
 
     internal static void shiftButton(UIButton btn, bool enabled)
     {

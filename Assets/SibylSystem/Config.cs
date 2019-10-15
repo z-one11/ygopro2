@@ -147,4 +147,26 @@ public static class Config
         }
         File.WriteAllText(path, all);
     }
+
+    public static void writeUIConfig()
+    {
+        string line = "gameButtonSign.color=3e4043FF\ngameChainCheckArea.color=16181bFF\nallUI.color=16181bFF\nList.color=16181bFF\nlable.color=FFFFFFFF\nlable.color.fadecolor=CCCCCCFF";
+        Directory.CreateDirectory(Path.GetDirectoryName("texture/ui/config.txt"));
+        File.WriteAllText("texture/ui/config.txt", line);
+    }
+
+    public static void writeDuelConfig()
+    {
+        string line = "FFFF00";
+        Directory.CreateDirectory(Path.GetDirectoryName("texture/duel/chainColor.txt"));
+        File.WriteAllText("texture/duel/chainColor.txt", line);
+    }
+
+    public static void writeDuelHealthBarConfig()
+    {
+        string line = "totalSize.width=370\ntotalSize.height=124\nplayerNameLable.x=202\nplayerNameLable.y=31\nplayerNameLable.width=300\nplayerNameLable.height=22\nplayerNameLable.color=FFFFFFFF\nplayerNameLable.alignment=0\nplayerNameLable.effect=1\nhealthLable.x=230.9\nhealthLable.y=60.9\nhealthLable.width=300\nhealthLable.height=32\nhealthLable.color=FFFFFFFF\nhealthLable.alignment=0\nhealthLable.effect=2\ntimeLable.x=217.1\ntimeLable.y=87.8\ntimeLable.width=300\ntimeLable.height=24\ntimeLable.color=FFDAACFF\ntimeLable.alignment=0\ntimeLable.effect=2\nhealth.x=231.2\nhealth.y=62\nhealth.width=220\nhealth.height=30\ntime.x=216.7\ntime.y=87.4\ntime.width=190\ntime.height=20\nface.x=61.5\nface.y=72.6\nface.size=70\nface.type=0";
+        Directory.CreateDirectory(Path.GetDirectoryName("texture/duel/healthBar/config.txt"));
+        File.WriteAllText("texture/duel/healthBar/config.txt", line);
+    }
+
 }

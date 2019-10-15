@@ -432,6 +432,21 @@ public class Program : MonoBehaviour
             string filePath = Application.streamingAssetsPath + "/ui.zip";
             ExtractZipFile(filePath, path);
         }
+
+        if (!File.Exists("texture/ui/config.txt"))
+        {
+            Config.writeUIConfig();
+        }
+
+        if (!File.Exists("texture/duel/chainColor.txt"))
+        {
+            Config.writeDuelConfig();
+        }
+
+        if (!File.Exists("texture/duel/healthBar/config.txt"))
+        {
+            Config.writeDuelHealthBarConfig();
+        }
     }
 
     public void ExtractZipFile(string filePath, string outFolder)
