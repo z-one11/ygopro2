@@ -174,6 +174,7 @@ MonoBehaviour:
     type: 2}
   new_ui_cardOnSearchList: {fileID: 121738, guid: 2b6ccbb323c719640a5956255df6e60f,
     type: 2}
+  new_ui_deckCategory: {fileID: 197804, guid: 41966550b91175345a52b6b6a171f0e7, type: 2}
   new_bar_changeSide: {fileID: 122638, guid: 63e044f7c8ec2f941bdf744dfc74c476, type: 2}
   new_bar_duel: {fileID: 123392, guid: 829bf6713f5afeb40840803e21e03092, type: 2}
   new_bar_room: {fileID: 154124, guid: 4450e27d91ca638499a5b7792d561372, type: 2}

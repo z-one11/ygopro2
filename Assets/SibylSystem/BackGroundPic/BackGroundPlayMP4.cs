@@ -28,7 +28,7 @@ public class BackGroundPlayMP4 : MonoBehaviour
 
     IEnumerator PlayMP4()
     {
-        yield return new WaitForSeconds(3f);//延时播放，否则会黑屏
+        yield return new WaitForSeconds(1f);//延时播放，否则会黑屏
 
         BackGroundPic.backGround.GetComponent<UITexture>().mainTexture = BackGroundPic.backGround.GetComponent<VideoPlayer>().texture;
         BackGroundPic.backGround.GetComponent<UITexture>().depth = -100;

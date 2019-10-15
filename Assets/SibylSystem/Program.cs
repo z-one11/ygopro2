@@ -94,6 +94,7 @@ public class Program : MonoBehaviour
     public GameObject new_ui_search;
     public GameObject new_ui_searchDetailed;
     public GameObject new_ui_cardOnSearchList;
+    public GameObject new_ui_deckCategory;
     public GameObject new_bar_changeSide;
     public GameObject new_bar_duel;
     public GameObject new_bar_room;
