@@ -29,13 +29,13 @@ public class ban_icon_ot : MonoBehaviour
                 }
                 else
                 {
-                    Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                    Texture2D icon = (Texture2D)Resources.Load("ui/ban_ot_" + i.ToString());
                     t.mainTexture = icon;
                 }
             }
             else
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
+                Texture2D icon = (Texture2D)Resources.Load("ui/ban_ot_3");
                 t.mainTexture = icon;
             }
         }
@@ -50,13 +50,13 @@ public class ban_icon_ot : MonoBehaviour
                 }
                 else
                 {
-                    Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
+                    Texture2D icon = (Texture2D)Resources.Load("ui/ban_ot_" + i.ToString());
                     r.material.mainTexture = icon;
                 }
             }
             else
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
+                Texture2D icon = (Texture2D)Resources.Load("ui/ban_ot_3");
                 r.material.mainTexture = icon;
             }
         }
