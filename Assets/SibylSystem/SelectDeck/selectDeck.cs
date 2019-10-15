@@ -213,6 +213,21 @@ public class selectDeck : WindowServantSP
                 }
             }
         }
+        if (hashCode == "onDeleteCategory")
+        {
+            if (result[0].value == "yes")
+            {
+                try
+                {
+                    DeleteDir("deck/" + decksList.value);
+                    onDeckCategory();
+                }
+                catch (Exception)
+                {
+                    RMSshow_none(InterString.Get("非法删除！"));
+                }
+            }
+        }
         if (hashCode == "onCopy")
         {
             try
@@ -626,7 +641,14 @@ public class selectDeck : WindowServantSP
     {
         if (decksList.value != "[---------------]")
         {
-            DeleteDir("deck/" + decksList.value);
+            onDeckCategory();
+            RMSshow_yesOrNo
+            (
+                "onDeleteCategory",
+                InterString.Get("确认删除卡组分类「[?]」吗？", decksList.value),
+                new messageSystemValue { hint = "yes", value = "yes" },
+                new messageSystemValue { hint = "no", value = "no" }
+            );
         }
         else
         {
