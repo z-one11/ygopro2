@@ -214,7 +214,7 @@ public class DeckManager : ServantWithCardDescription
         string newname = InterString.Get("[?]的副本", deckName);
         string newnamer = newname;
         int i = 1;
-        while (File.Exists("deck/" + newnamer + ".ydk"))
+        while (File.Exists(Program.I().selectDeck.DECK_PATH + newnamer + ".ydk"))
         {
             newnamer = newname + i.ToString();
             i++;
@@ -274,7 +274,7 @@ public class DeckManager : ServantWithCardDescription
                     {
                         value += deck.Side[i].ToString() + "\r\n";
                     }
-                    System.IO.File.WriteAllText("deck/" + deckInUse + ".ydk", value, System.Text.Encoding.UTF8);
+                    System.IO.File.WriteAllText(Program.I().selectDeck.DECK_PATH + deckInUse + ".ydk", value, System.Text.Encoding.UTF8);
                 }
                 else
                 {
@@ -293,7 +293,7 @@ public class DeckManager : ServantWithCardDescription
                     {
                         value += deck.Deck_O.Side[i].ToString() + "\r\n";
                     }
-                    System.IO.File.WriteAllText("deck/" + deckInUse + ".ydk", value, System.Text.Encoding.UTF8);
+                    System.IO.File.WriteAllText(Program.I().selectDeck.DECK_PATH + deckInUse + ".ydk", value, System.Text.Encoding.UTF8);
                 }
                 deckDirty = false;
                 RMSshow_none(InterString.Get("卡组[?]已经被保存。", deckInUse));
@@ -1179,7 +1179,7 @@ public class DeckManager : ServantWithCardDescription
         gameObjectDesk.transform.position = new Vector3(0, 0, 0);
         gameObjectDesk.transform.eulerAngles = new Vector3(90, 0, 0);
         gameObjectDesk.transform.localScale = new Vector3(30, 30, 1);
-        gameObjectDesk.GetComponent<Renderer>().material.mainTexture = Program.GetTextureViaPath("textures/duel/deckTable.png");//YGOMobile Paths
+        gameObjectDesk.GetComponent<Renderer>().material.mainTexture = UIHelper.getDuel("deckTable.png");
         //UIHelper.SetMaterialRenderingMode(gameObjectDesk.GetComponent<Renderer>().material, UIHelper.RenderingMode.Transparent);
         Rigidbody rigidbody = gameObjectDesk.AddComponent<Rigidbody>();
         rigidbody.useGravity = false;

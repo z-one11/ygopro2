@@ -612,15 +612,7 @@ public class GameTextureManager
                     }
                     LoadCloseupFromCardPicture(pic, path, Iam8);
                 } else {
-                    path = "picture/null.png";
-                    byte[] data;
-                    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-                    {
-                        file.Seek(0, SeekOrigin.Begin);
-                        data = new byte[file.Length];
-                        file.Read(data, 0, (int)file.Length);
-                    }
-                    pic.data = data;
+                    pic.u_data = GameTextureManager.get("ban_3");
 
                     if (!loadedList.ContainsKey(hashPic(pic.code, pic.type)))
                     {
@@ -819,7 +811,7 @@ public class GameTextureManager
             {
                 path = "picture/cardIn8thEdition/" + pic.code.ToString() + ".jpg";
             }
-            if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot))
+            if (!File.Exists(path) && pic.code != 0 && OT.Contains(YGOSharp.CardsManager.Get((int)pic.code).Ot) && AutoPicDownload)
             {
                 //YGOMobile (177x254)
                 df.Download("http://api.ygo2019.xyz/ygopro/pics/" + pic.code.ToString() + ".jpg", "expansions/pics/" + pic.code.ToString() + ".jpg");
@@ -977,16 +969,23 @@ public class GameTextureManager
             }
         }
         Texture2D re = null;
-        for (int i = 0; i < allUI.size; i++)
+        if (File.Exists("textures/ui/" + name + ".png"))
         {
-            if (allUI[i].name == name)
+            for (int i = 0; i < allUI.size; i++)
             {
-                re = allUI[i].data;
-                break;
+                if (allUI[i].name == name)
+                {
+                    re = allUI[i].data;
+                    break;
+                }
+            }
+            if (re == null)
+            {
             }
         }
-        if (re == null)
+        else
         {
+            re = (Texture2D)Resources.Load("ui/" + name);
         }
         return re;
     }
@@ -995,35 +994,34 @@ public class GameTextureManager
 
     internal static void initialize()
     {
-        attack = UIHelper.getTexture2D("textures/attack.png");//YGOMobile Paths
-        myBack = UIHelper.getTexture2D("textures/cover.jpg");//YGOMobile Paths
-        opBack = UIHelper.getTexture2D("textures/cover2.jpg");//YGOMobile Paths
-        unknown = UIHelper.getTexture2D("textures/unknown.jpg");//YGOMobile Paths
-        negated = UIHelper.getTexture2D("textures/negated.png");//YGOMobile Paths
-        bar = UIHelper.getTexture2D("textures/duel/healthBar/bg.png");//YGOMobile Paths
-        exBar = UIHelper.getTexture2D("textures/duel/healthBar/excited.png");//YGOMobile Paths
-        time = UIHelper.getTexture2D("textures/duel/healthBar/t.png");//YGOMobile Paths
-        lp = UIHelper.getTexture2D("textures/duel/healthBar/lp.png");//YGOMobile Paths
-        L = UIHelper.getTexture2D("textures/duel/L.png");//YGOMobile Paths
-        R = UIHelper.getTexture2D("textures/duel/R.png");//YGOMobile Paths
-        LINK = UIHelper.getTexture2D("textures/duel/link.png");//YGOMobile Paths
-        LINKm = UIHelper.getTexture2D("textures/duel/linkMask.png");//YGOMobile Paths
-        Chain = UIHelper.getTexture2D("textures/chain.png");//YGOMobile Paths
-        Mask = UIHelper.getTexture2D("textures/mask.png");//YGOMobile Paths
+        attack = UIHelper.getDuel("attack.png");
+        myBack = UIHelper.getDuel("cover.jpg"); //YGOMobile Paths
+        opBack = UIHelper.getDuel("cover2.jpg");//YGOMobile Paths
+        unknown = UIHelper.getDuel("unknown.jpg");
+        negated = UIHelper.getDuel("negated.png");
 
+        L = UIHelper.getDuel("L.png");
+        R = UIHelper.getDuel("R.png");
+        LINK = UIHelper.getDuel("link.png");
+        LINKm = UIHelper.getDuel("linkMask.png");
+        Chain = UIHelper.getDuel("chain.png");
+        Mask = UIHelper.getDuel("mask.png");
 
-        nt = UIHelper.getTexture2D("textures/duel/phase/nt.png");//YGOMobile Paths
-        bp = UIHelper.getTexture2D("textures/duel/phase/bp.png");//YGOMobile Paths
-        ep = UIHelper.getTexture2D("textures/duel/phase/ep.png");//YGOMobile Paths
-        mp1 = UIHelper.getTexture2D("textures/duel/phase/mp1.png");//YGOMobile Paths
-        mp2 = UIHelper.getTexture2D("textures/duel/phase/mp2.png");//YGOMobile Paths
-        dp = UIHelper.getTexture2D("textures/duel/phase/dp.png");//YGOMobile Paths
-        sp = UIHelper.getTexture2D("textures/duel/phase/sp.png");//YGOMobile Paths
+        bar = UIHelper.getDuelHealthBar("bg.png");
+        exBar = UIHelper.getDuelHealthBar("excited.png");
+        time = UIHelper.getDuelHealthBar("t.png");
+        lp = UIHelper.getDuelHealthBar("lp.png");
 
-        phase = UIHelper.getTexture2D("textures/duel/phase/phase.png");//YGOMobile Paths
-
-        rs = UIHelper.getTexture2D("textures/duel/phase/rs.png");//YGOMobile Paths
-        ts = UIHelper.getTexture2D("textures/duel/phase/ts.png");//YGOMobile Paths
+        nt = UIHelper.getDuelPhase("nt.png");
+        bp = UIHelper.getDuelPhase("bp.png");
+        ep = UIHelper.getDuelPhase("ep.png");
+        mp1 = UIHelper.getDuelPhase("mp1.png");
+        mp2 = UIHelper.getDuelPhase("mp2.png");
+        dp = UIHelper.getDuelPhase("dp.png");
+        sp = UIHelper.getDuelPhase("sp.png");
+        phase = UIHelper.getDuelPhase("phase.png");
+        rs = UIHelper.getDuelPhase("rs.png");
+        ts = UIHelper.getDuelPhase("ts.png");
 
         N = new Texture2D(10, 10);
         for (int i = 0; i < 10; i++)
@@ -1036,7 +1034,7 @@ public class GameTextureManager
         N.Apply();
         try
         {
-            ColorUtility.TryParseHtmlString(File.ReadAllText("textures/duel/chainColor.txt"), out chainColor);//YGOMobile Paths
+            ColorUtility.TryParseHtmlString(File.ReadAllText("textures/duel/chainColor.txt"), out chainColor);
         }
         catch (Exception)
         {

@@ -23,20 +23,11 @@ public class ban_icon_ot : MonoBehaviour
         {
             if (i == 2 || i == 4)  //[1: OCG]、[2: TCG]、[3: OCG&TCG]、[4: Anime]
             {
-                if (File.Exists("textures/ui/ban_ot_" + i.ToString() + ".png"))
-                {
-                    t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
-                }
-                else
-                {
-                    Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
-                    t.mainTexture = icon;
-                }
+                t.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
             }
             else
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
-                t.mainTexture = icon;
+                t.mainTexture = GameTextureManager.get("ban_ot_3");
             }
         }
         else
@@ -44,20 +35,11 @@ public class ban_icon_ot : MonoBehaviour
             Renderer r = GetComponent<Renderer>();
             if (i == 2 || i == 4)  //[1: OCG]、[2: TCG]、[3: OCG&TCG]、[4: Anime]
             {
-                if (File.Exists("textures/ui/ban_ot_" + i.ToString() + ".png"))
-                {
-                    r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
-                }
-                else
-                {
-                    Texture2D icon = (Texture2D)Resources.Load("ban_ot_" + i.ToString());
-                    r.material.mainTexture = icon;
-                }
+                r.material.mainTexture = GameTextureManager.get("ban_ot_" + i.ToString());
             }
             else
             {
-                Texture2D icon = (Texture2D)Resources.Load("ban_ot_3");
-                r.material.mainTexture = icon;
+                r.material.mainTexture = GameTextureManager.get("ban_ot_3");
             }
         }
     }

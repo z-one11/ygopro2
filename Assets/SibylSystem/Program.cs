@@ -94,6 +94,7 @@ public class Program : MonoBehaviour
     public GameObject new_ui_search;
     public GameObject new_ui_searchDetailed;
     public GameObject new_ui_cardOnSearchList;
+    public GameObject new_ui_deckCategory;
     public GameObject new_bar_changeSide;
     public GameObject new_bar_duel;
     public GameObject new_bar_room;
@@ -411,6 +412,21 @@ public class Program : MonoBehaviour
         {
             string filePath = Application.streamingAssetsPath + "/ui.zip";
             ExtractZipFile(filePath, path);
+        }
+
+        if (!File.Exists("textures/ui/config.txt"))
+        {
+            Config.writeUIConfig();
+        }
+
+        if (!File.Exists("textures/duel/chainColor.txt"))
+        {
+            Config.writeDuelConfig();
+        }
+
+        if (!File.Exists("textures/duel/healthBar/config.txt"))
+        {
+            Config.writeDuelHealthBarConfig();
         }
     }
 

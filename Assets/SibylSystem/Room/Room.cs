@@ -30,7 +30,7 @@ public class Room : WindowServantSP
                 if (realPlayers[selftype].getIfPreped() == true)
                 {
                     TcpHelper.CtosMessage_HsNotReady();
-                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse","wizard") + ".ydk"));
+                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck(DECK_PATH + Config.Get("deckInUse","wizard") + ".ydk"));
                     TcpHelper.CtosMessage_HsReady();
                 }
             }
@@ -43,7 +43,7 @@ public class Room : WindowServantSP
     {
         string deckInUse = Config.Get("deckInUse","wizard");
         superScrollView.clear();
-        FileInfo[] fileInfos = (new DirectoryInfo("deck")).GetFiles();
+        FileInfo[] fileInfos = (new DirectoryInfo(DECK_PATH)).GetFiles();
         if (Config.Get(sort,"1") == "1")
         {
             Array.Sort(fileInfos, UIHelper.CompareTime);
@@ -1049,8 +1049,35 @@ public class Room : WindowServantSP
         UIHelper.registUIEventTriggerForClick(duelistButton().gameObject, listenerForClicked);
         UIHelper.registUIEventTriggerForClick(observerButton().gameObject, listenerForClicked);
         UIHelper.registUIEventTriggerForClick(readyButton().gameObject, listenerForClicked);
+        UIHelper.registEvent(gameObject, "decks", deckCategory);
+        decksList = UIHelper.getByName<UIPopupList>(gameObject, "decks");
         realize();
+        loadCategory();
         superScrollView.refreshForOneFrame();
+    }
+
+    UIPopupList decksList;
+    string DECK_PATH = "deck/";
+    void loadCategory()
+    {
+        DirectoryInfo[] directoryInfos = (new DirectoryInfo("deck")).GetDirectories();
+        for (int i = 0; i < directoryInfos.Length; i++)
+        {
+            decksList.items.Add(directoryInfos[i].Name);
+        }
+    }
+    private void deckCategory()
+    {
+        if (decksList.value != "[---------------]")
+        {
+            DECK_PATH = "deck/" + decksList.value + "/";
+            printFile();
+        }
+        else
+        {
+            DECK_PATH = "deck/";
+            printFile();
+        }
     }
 
     private void onPrepareChanged(int arg1, bool arg2)
@@ -1062,7 +1089,7 @@ public class Room : WindowServantSP
         if (arg2)
         {
             ColorGreen("ready_");//已准备
-            TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse","miaouwu") + ".ydk"));
+            TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck(DECK_PATH + Config.Get("deckInUse","miaouwu") + ".ydk"));
             TcpHelper.CtosMessage_HsReady();
         }
         else
@@ -1120,7 +1147,7 @@ public class Room : WindowServantSP
                 else
                 {
                     ColorGreen("ready_");//已准备
-                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck("deck/" + Config.Get("deckInUse", "wizard") + ".ydk"));
+                    TcpHelper.CtosMessage_UpdateDeck(new YGOSharp.Deck(DECK_PATH + Config.Get("deckInUse", "wizard") + ".ydk"));
                     TcpHelper.CtosMessage_HsReady();
                 }
             }
