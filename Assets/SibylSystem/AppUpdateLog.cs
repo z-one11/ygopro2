@@ -14,8 +14,8 @@ public class AppUpdateLog
     public static string GAME_UI_VERSION = "updates/ui.txt";
 
     //立绘数据
-    public static string GAME_CLOSEUP_VERSION = "updates/closeup_0.7.txt";//新版本
-    public static string OLD_CLOSEUP_VERSION = "updates/closeup_0.6.txt"; //旧版本
+    public static string GAME_CLOSEUP_VERSION = "updates/closeup_0.8.txt";//新版本
+    public static string OLD_CLOSEUP_VERSION = "updates/closeup_0.7.txt"; //旧版本
 
     public static string MAIN_CLOSEUP_ZIP = "closeup_0.8.zip";    //主数据
     public static string PATCH_CLOSEUP_ZIP = "up_closeup_0.8.zip";//更新包
