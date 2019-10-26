@@ -985,7 +985,7 @@ public class GameTextureManager
         }
         else
         {
-            re = (Texture2D)Resources.Load("ui/" + name);
+            re = (Texture2D)Resources.Load("texture/ui/" + name);
         }
         return re;
     }

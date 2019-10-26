@@ -871,7 +871,7 @@ public static class UIHelper
         }
         else
         {
-            re = (Texture2D)Resources.Load("duel/" + name.Substring(0, name.Length - 4));
+            re = (Texture2D)Resources.Load("texture/duel/" + name.Substring(0, name.Length - 4));
         }
         return re;
     }
@@ -885,7 +885,7 @@ public static class UIHelper
         }
         else
         {
-            re = (Texture2D)Resources.Load("duel/healthBar/" + name.Substring(0, name.Length - 4));
+            re = (Texture2D)Resources.Load("texture/duel/healthBar/" + name.Substring(0, name.Length - 4));
         }
         return re;
     }
@@ -899,7 +899,7 @@ public static class UIHelper
         }
         else
         {
-            re = (Texture2D)Resources.Load("duel/phase/" + name.Substring(0, name.Length - 4));
+            re = (Texture2D)Resources.Load("texture/duel/phase/" + name.Substring(0, name.Length - 4));
         }
         return re;
     }
