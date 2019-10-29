@@ -9,6 +9,9 @@ using System.Linq;
 
 public class BGMController : MonoBehaviour
 {
+    private float playTime = 0;
+    private bool IsPlaying = false;
+
     public string soundFilePath;
     public AudioSource audioSource;
     AudioClip audioClip;
@@ -58,9 +61,23 @@ public class BGMController : MonoBehaviour
         multiplier = 0.8f;
     }
 
+    private void Update()
+    {
+        if (audioSource.clip != null && !Program.I().setting.isBGMMute.value && IsPlaying)
+        {
+            playTime += Time.fixedDeltaTime;
+            if (playTime >= audioClip.length)
+            {
+                //audioSource.Stop();
+                IsPlaying = false;
+                StartBGM(currentPlaying);
+            }
+        }
+    }
+
     public void StartBGM(BGMType kind)
     {
-        if (currentPlaying == kind)
+        if (currentPlaying == kind && IsPlaying)
             return;
 
         System.Random rnd = new System.Random();
@@ -132,6 +149,8 @@ public class BGMController : MonoBehaviour
                 break;
         }
 
+        playTime = -3f;
+        IsPlaying = true;
         currentPlaying = kind;
     }
 
@@ -237,7 +256,7 @@ public class BGMController : MonoBehaviour
     {
         audioSource.clip = audioClip;
         audioSource.volume = Program.I().setting.BGMvol() * multiplier;
-        audioSource.loop = true;
+        //audioSource.loop = true;
         audioSource.Play();
     }
 
