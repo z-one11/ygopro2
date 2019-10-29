@@ -862,44 +862,16 @@ public static class UIHelper
         return pic;
     }
 
-    public static Texture2D getDuel(string name)
+    public static Texture2D getTexture2D(string path, string name)
     {
         Texture2D re = null;
-        if (File.Exists("texture/duel/" + name))
+        if (File.Exists(path + name))
         {
-            re = UIHelper.getTexture2D("texture/duel/" + name);
+            re = UIHelper.getTexture2D(path + name);
         }
         else
         {
-            re = (Texture2D)Resources.Load("texture/duel/" + name.Substring(0, name.Length - 4));
-        }
-        return re;
-    }
-
-    public static Texture2D getDuelHealthBar(string name)
-    {
-        Texture2D re = null;
-        if (File.Exists("texture/duel/healthBar/" + name))
-        {
-            re = UIHelper.getTexture2D("texture/duel/healthBar/" + name);
-        }
-        else
-        {
-            re = (Texture2D)Resources.Load("texture/duel/healthBar/" + name.Substring(0, name.Length - 4));
-        }
-        return re;
-    }
-
-    public static Texture2D getDuelPhase(string name)
-    {
-        Texture2D re = null;
-        if (File.Exists("texture/duel/phase/" + name))
-        {
-            re = UIHelper.getTexture2D("texture/duel/phase/" + name);
-        }
-        else
-        {
-            re = (Texture2D)Resources.Load("texture/duel/phase/" + name.Substring(0, name.Length - 4));
+            re = (Texture2D)Resources.Load(path + name.Substring(0, name.Length - 4));
         }
         return re;
     }
