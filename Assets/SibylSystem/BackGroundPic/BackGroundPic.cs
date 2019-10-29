@@ -49,16 +49,7 @@ public class BackGroundPic : Servant
 
     public void LoadJpgOrPng(string fileName)
     {
-        FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-        file.Seek(0, SeekOrigin.Begin);
-        byte[] data = new byte[file.Length];
-        file.Read(data, 0, (int)file.Length);
-        file.Close();
-        file.Dispose();
-        file = null;
-        Texture2D pic = new Texture2D(1024, 600);
-        pic.LoadImage(data);
-        backGround.GetComponent<UITexture>().mainTexture = pic;
+        backGround.GetComponent<UITexture>().mainTexture = UIHelper.getTexture2D(fileName);;
         backGround.GetComponent<UITexture>().depth = -100;
     }
 

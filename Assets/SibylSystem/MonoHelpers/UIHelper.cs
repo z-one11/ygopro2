@@ -787,7 +787,7 @@ public static class UIHelper
     {
         try
         {
-            FileInfo[] fileInfos = (new DirectoryInfo("textures/face")).GetFiles();//YGOMobile Paths
+            FileInfo[] fileInfos = (new DirectoryInfo("textures/face")).GetFiles();
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
@@ -799,7 +799,7 @@ public static class UIHelper
                         {
                             try
                             {
-                                faces.Add(name, UIHelper.getTexture2D("textures/face/" + fileInfos[i].Name));//YGOMobile Paths
+                                faces.Add(name, UIHelper.getTexture2D("textures/face/" + fileInfos[i].Name));
                             }
                             catch (Exception e)
                             {
@@ -862,44 +862,16 @@ public static class UIHelper
         return pic;
     }
 
-    public static Texture2D getDuel(string name)
+    public static Texture2D getTexture2D(string path, string name)
     {
         Texture2D re = null;
-        if (File.Exists("textures/" + name))
+        if (File.Exists(path + name))
         {
-            re = UIHelper.getTexture2D("textures/" + name);
+            re = UIHelper.getTexture2D(path + name);
         }
         else
         {
-            re = (Texture2D)Resources.Load("duel/" + name.Substring(0, name.Length - 4));
-        }
-        return re;
-    }
-
-    public static Texture2D getDuelHealthBar(string name)
-    {
-        Texture2D re = null;
-        if (File.Exists("textures/duel/healthBar/" + name))
-        {
-            re = UIHelper.getTexture2D("textures/duel/healthBar/" + name);
-        }
-        else
-        {
-            re = (Texture2D)Resources.Load("duel/healthBar/" + name.Substring(0, name.Length - 4));
-        }
-        return re;
-    }
-
-    public static Texture2D getDuelPhase(string name)
-    {
-        Texture2D re = null;
-        if (File.Exists("textures/duel/phase/" + name))
-        {
-            re = UIHelper.getTexture2D("textures/duel/phase/" + name);
-        }
-        else
-        {
-            re = (Texture2D)Resources.Load("duel/phase/" + name.Substring(0, name.Length - 4));
+            re = (Texture2D)Resources.Load(path + name.Substring(0, name.Length - 4));
         }
         return re;
     }
