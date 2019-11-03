@@ -11,14 +11,12 @@ public class BGMController : MonoBehaviour
     private bool IsPlaying = false;
 
     public string soundFilePath;
-    public string soundName;
     public AudioSource audioSource;
     AudioClip audioClip;
     private float multiplier;
     List<string> duel;
     List<string> disadvantage;
     List<string> deck;
-    List<string> lobby;
     List<string> lose;
     List<string> menu;
     List<string> siding;
@@ -36,12 +34,11 @@ public class BGMController : MonoBehaviour
        duel = 1,
        disadvantage = 2,
        deck = 3,
-       lobby = 4,
-       lose = 5,
-       menu = 6,
-       siding = 7,
-       win = 8,
-       advantage = 9
+       lose = 4,
+       menu = 5,
+       siding = 6,
+       win = 7,
+       advantage = 8
     }
 
     public BGMController ()
@@ -95,13 +92,6 @@ public class BGMController : MonoBehaviour
                     PlayRandomBGM(deck[bgmNumber]);
                 }
                 break;
-            case BGMType.lobby:
-                if (lobby.Count != 0)
-                {
-                    bgmNumber = rnd.Next(0, lobby.Count);
-                    PlayRandomBGM(lobby[bgmNumber]);
-                }
-                break;
             case BGMType.lose:
                 if (lose.Count != 0)
                 {
@@ -140,7 +130,6 @@ public class BGMController : MonoBehaviour
     {
         SoundURI = new Uri(new Uri("file:///"), Environment.CurrentDirectory.Replace("\\", "/") + "/" + bgmName);
         soundFilePath = SoundURI.ToString();
-        soundName = bgmName;
         if (Program.I().setting != null && !Program.I().setting.isBGMMute.value)
         {
             if(soundRoutine != null)
@@ -168,7 +157,6 @@ public class BGMController : MonoBehaviour
         disadvantage = new List<string>();
         advantage = new List<string>();
         deck = new List<string>();
-        lobby = new List<string>();
         lose = new List<string>();
         menu = new List<string>();
         siding = new List<string>();
@@ -181,7 +169,6 @@ public class BGMController : MonoBehaviour
         advantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "advantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         disadvantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "disadvantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         deck.AddRange(Directory.GetFiles(string.Concat(soundPath, "deck"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
-        lobby.AddRange(Directory.GetFiles(string.Concat(soundPath, "lobby"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         lose.AddRange(Directory.GetFiles(string.Concat(soundPath, "lose"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         menu.AddRange(Directory.GetFiles(string.Concat(soundPath, "menu"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         siding.AddRange(Directory.GetFiles(string.Concat(soundPath, "siding"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
@@ -196,7 +183,6 @@ public class BGMController : MonoBehaviour
         BGMdir.Add("advantage/");
         BGMdir.Add("disadvantage/");
         BGMdir.Add("deck/");
-        BGMdir.Add("lobby/");
         BGMdir.Add("lose/");
         BGMdir.Add("menu/");
         BGMdir.Add("siding/");
@@ -235,9 +221,8 @@ public class BGMController : MonoBehaviour
 
     private IEnumerator LoadMP3()
     {
-        WWW request = GetAudioFromFile(soundFilePath);
-        yield return request;
-        audioClip = Mp3Loader.LoadMp3(Environment.CurrentDirectory.Replace("\\", "/") + "/" + soundName);
+        yield return null;
+        audioClip = Mp3Loader.LoadMp3(soundFilePath.Substring(8, soundFilePath.Length - 8));
         audioClip.name = Path.GetFileName(soundFilePath);
         PlayAudioFile();
     }
