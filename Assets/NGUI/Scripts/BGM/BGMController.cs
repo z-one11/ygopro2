@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Linq;
-//using NAudio;
-//using NAudio.Wave;
+using UnityEngine;
+using NLayer;// Loads mp3 files
 
 public class BGMController : MonoBehaviour
 {
-    private float playTime = 0;
     private bool IsPlaying = false;
 
     public string soundFilePath;
+    public string soundName;
     public AudioSource audioSource;
     AudioClip audioClip;
     private float multiplier;
@@ -27,11 +26,9 @@ public class BGMController : MonoBehaviour
     List<string> advantage;
     BGMType currentPlaying;
     Coroutine soundRoutine;
+    Coroutine soundPlayNext;
     Uri SoundURI;
     public static BGMController Instance;
-
-    //IWavePlayer iwavePlayer;
-    //AudioFileReader audioFileReader;
 
     public enum BGMType
     {
@@ -59,20 +56,6 @@ public class BGMController : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
 
         multiplier = 0.8f;
-    }
-
-    private void Update()
-    {
-        if (audioSource.clip != null && !Program.I().setting.isBGMMute.value && IsPlaying)
-        {
-            playTime += Time.fixedDeltaTime;
-            if (playTime >= audioClip.length)
-            {
-                //audioSource.Stop();
-                IsPlaying = false;
-                StartBGM(currentPlaying);
-            }
-        }
     }
 
     public void StartBGM(BGMType kind)
@@ -149,7 +132,6 @@ public class BGMController : MonoBehaviour
                 break;
         }
 
-        playTime = -3f;
         IsPlaying = true;
         currentPlaying = kind;
     }
@@ -158,26 +140,25 @@ public class BGMController : MonoBehaviour
     {
         SoundURI = new Uri(new Uri("file:///"), Environment.CurrentDirectory.Replace("\\", "/") + "/" + bgmName);
         soundFilePath = SoundURI.ToString();
-
+        soundName = bgmName;
         if (Program.I().setting != null && !Program.I().setting.isBGMMute.value)
         {
             if(soundRoutine != null)
                 StopCoroutine(soundRoutine);
-/*          PC平台，尚未找到好的解决方法，暂时就不支持MP3格式播放吧
+
+            if(soundPlayNext != null)
+                StopCoroutine(soundPlayNext);
+
             #if !UNITY_ANDROID || !UNITY_IPHONE
-            if (bgmName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
-            {
-                iwavePlayer = new WaveOut();
-                audioFileReader = new AudioFileReader(bgmName);
-                iwavePlayer.Init(audioFileReader);
-                iwavePlayer.Play();
-            } else {
-                soundRoutine = StartCoroutine(LoadBGM());
-            }
+                if (bgmName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
+                {
+                    soundRoutine = StartCoroutine(LoadMP3());
+                } else {
+                    soundRoutine = StartCoroutine(LoadBGM());
+                }
             #else
-*/
-            soundRoutine = StartCoroutine(LoadBGM());
-            //#endif
+                soundRoutine = StartCoroutine(LoadBGM());
+            #endif
         }
     }
 
@@ -196,16 +177,15 @@ public class BGMController : MonoBehaviour
         string soundPath = "sound/bgm/";
         dirPath(soundPath);
         //Unity 能使用的音频格式：.aif .wav .mp3 .ogg
-        //注: PC平台不支持外部加载MP3，移动平台才能正常使用
-        duel.AddRange(Directory.GetFiles(string.Concat(soundPath, "duel"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        advantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "advantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        disadvantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "disadvantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        deck.AddRange(Directory.GetFiles(string.Concat(soundPath, "deck"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        lobby.AddRange(Directory.GetFiles(string.Concat(soundPath, "lobby"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        lose.AddRange(Directory.GetFiles(string.Concat(soundPath, "lose"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        menu.AddRange(Directory.GetFiles(string.Concat(soundPath, "menu"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        siding.AddRange(Directory.GetFiles(string.Concat(soundPath, "siding"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
-        win.AddRange(Directory.GetFiles(string.Concat(soundPath, "win"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".wav") || s.EndsWith(".ogg")));
+        duel.AddRange(Directory.GetFiles(string.Concat(soundPath, "duel"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        advantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "advantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        disadvantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "disadvantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        deck.AddRange(Directory.GetFiles(string.Concat(soundPath, "deck"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        lobby.AddRange(Directory.GetFiles(string.Concat(soundPath, "lobby"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        lose.AddRange(Directory.GetFiles(string.Concat(soundPath, "lose"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        menu.AddRange(Directory.GetFiles(string.Concat(soundPath, "menu"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        siding.AddRange(Directory.GetFiles(string.Concat(soundPath, "siding"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
+        win.AddRange(Directory.GetFiles(string.Concat(soundPath, "win"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
     }
 
     public void dirPath(string path)
@@ -243,6 +223,7 @@ public class BGMController : MonoBehaviour
         catch { }
 
     }
+
     private IEnumerator LoadBGM()
     {
         WWW request = GetAudioFromFile(soundFilePath);
@@ -252,12 +233,30 @@ public class BGMController : MonoBehaviour
         PlayAudioFile();
     }
 
+    private IEnumerator LoadMP3()
+    {
+        WWW request = GetAudioFromFile(soundFilePath);
+        yield return request;
+        audioClip = Mp3Loader.LoadMp3(Environment.CurrentDirectory.Replace("\\", "/") + "/" + soundName);
+        audioClip.name = Path.GetFileName(soundFilePath);
+        PlayAudioFile();
+    }
+
+    private IEnumerator PlayNext(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        IsPlaying = false;
+        StartBGM(currentPlaying);
+    }
+
     private void PlayAudioFile()
     {
         audioSource.clip = audioClip;
         audioSource.volume = Program.I().setting.BGMvol() * multiplier;
         //audioSource.loop = true;
         audioSource.Play();
+        soundPlayNext = StartCoroutine(PlayNext(audioClip.length));
     }
 
     private WWW GetAudioFromFile(string pathToFile)
