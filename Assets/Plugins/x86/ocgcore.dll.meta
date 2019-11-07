@@ -1,7 +1,5 @@
 fileFormatVersion: 2
-guid: 5beb3ac7c52c73345a5352b3a8dee6a5
-timeCreated: 1470053253
-licenseType: Pro
+guid: 7c65a1af63b10cc41a7baf59401b0d1b
 PluginImporter:
   serializedVersion: 2
   iconMap: {}
@@ -25,8 +23,8 @@ PluginImporter:
           Exclude OSXUniversal: 0
           Exclude SamsungTV: 1
           Exclude Tizen: 1
-          Exclude Win: 1
-          Exclude Win64: 0
+          Exclude Win: 0
+          Exclude Win64: 1
           Exclude WindowsStoreApps: 1
     data:
       first:
@@ -34,8 +32,22 @@ PluginImporter:
       second:
         enabled: 0
         settings:
-          CPU: x86_64
+          CPU: x86
           OS: Windows
+    data:
+      first:
+        '': OSXIntel
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        '': OSXIntel64
+      second:
+        enabled: 0
+        settings:
+          CPU: None
     data:
       first:
         Android: Android
@@ -55,21 +67,22 @@ PluginImporter:
       second:
         enabled: 1
         settings:
+          CPU: x86
           DefaultValueInitialized: true
     data:
       first:
         Facebook: Win
       second:
-        enabled: 0
+        enabled: 1
         settings:
-          CPU: None
+          CPU: AnyCPU
     data:
       first:
         Facebook: Win64
       second:
         enabled: 0
         settings:
-          CPU: AnyCPU
+          CPU: None
     data:
       first:
         Samsung TV: SamsungTV
@@ -90,7 +103,7 @@ PluginImporter:
       second:
         enabled: 1
         settings:
-          CPU: x86_64
+          CPU: None
     data:
       first:
         Standalone: LinuxUniversal
@@ -123,23 +136,29 @@ PluginImporter:
       first:
         Standalone: Win
       second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Win64
+      second:
         enabled: 0
         settings:
           CPU: None
     data:
       first:
-        Standalone: Win64
+        Tizen: Tizen
       second:
-        enabled: 1
-        settings:
-          CPU: AnyCPU
+        enabled: 0
+        settings: {}
     data:
       first:
         Windows Store Apps: WindowsStoreApps
       second:
         enabled: 0
         settings:
-          CPU: AnyCPU
+          CPU: X86
           DontProcess: False
           PlaceholderPath: 
           SDK: AnySDK

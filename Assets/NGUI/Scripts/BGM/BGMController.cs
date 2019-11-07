@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Linq;
+using UnityEngine;
+using NLayer;// Loads mp3 files
 
 public class BGMController : MonoBehaviour
 {
+    private bool IsPlaying = false;
+
     public string soundFilePath;
     public AudioSource audioSource;
     AudioClip audioClip;
@@ -14,7 +17,6 @@ public class BGMController : MonoBehaviour
     List<string> duel;
     List<string> disadvantage;
     List<string> deck;
-    List<string> lobby;
     List<string> lose;
     List<string> menu;
     List<string> siding;
@@ -22,6 +24,7 @@ public class BGMController : MonoBehaviour
     List<string> advantage;
     BGMType currentPlaying;
     Coroutine soundRoutine;
+    Coroutine soundPlayNext;
     Uri SoundURI;
     public static BGMController Instance;
 
@@ -31,12 +34,11 @@ public class BGMController : MonoBehaviour
        duel = 1,
        disadvantage = 2,
        deck = 3,
-       lobby = 4,
-       lose = 5,
-       menu = 6,
-       siding = 7,
-       win = 8,
-       advantage = 9
+       lose = 4,
+       menu = 5,
+       siding = 6,
+       win = 7,
+       advantage = 8
     }
 
     public BGMController ()
@@ -55,7 +57,7 @@ public class BGMController : MonoBehaviour
 
     public void StartBGM(BGMType kind)
     {
-        if (currentPlaying == kind)
+        if (currentPlaying == kind && IsPlaying)
             return;
 
         System.Random rnd = new System.Random();
@@ -90,13 +92,6 @@ public class BGMController : MonoBehaviour
                     PlayRandomBGM(deck[bgmNumber]);
                 }
                 break;
-            case BGMType.lobby:
-                if (lobby.Count != 0)
-                {
-                    bgmNumber = rnd.Next(0, lobby.Count);
-                    PlayRandomBGM(lobby[bgmNumber]);
-                }
-                break;
             case BGMType.lose:
                 if (lose.Count != 0)
                 {
@@ -127,6 +122,7 @@ public class BGMController : MonoBehaviour
                 break;
         }
 
+        IsPlaying = true;
         currentPlaying = kind;
     }
 
@@ -134,12 +130,24 @@ public class BGMController : MonoBehaviour
     {
         SoundURI = new Uri(new Uri("file:///"), Environment.CurrentDirectory.Replace("\\", "/") + "/" + bgmName);
         soundFilePath = SoundURI.ToString();
-
         if (Program.I().setting != null && !Program.I().setting.isBGMMute.value)
         {
             if(soundRoutine != null)
                 StopCoroutine(soundRoutine);
-            soundRoutine = StartCoroutine(LoadBGM());
+
+            if(soundPlayNext != null)
+                StopCoroutine(soundPlayNext);
+
+            #if !UNITY_ANDROID || !UNITY_IPHONE
+                if (bgmName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
+                {
+                    soundRoutine = StartCoroutine(LoadMP3());
+                } else {
+                    soundRoutine = StartCoroutine(LoadBGM());
+                }
+            #else
+                soundRoutine = StartCoroutine(LoadBGM());
+            #endif
         }
     }
 
@@ -149,7 +157,6 @@ public class BGMController : MonoBehaviour
         disadvantage = new List<string>();
         advantage = new List<string>();
         deck = new List<string>();
-        lobby = new List<string>();
         lose = new List<string>();
         menu = new List<string>();
         siding = new List<string>();
@@ -158,12 +165,10 @@ public class BGMController : MonoBehaviour
         string soundPath = "sound/bgm/";
         dirPath(soundPath);
         //Unity 能使用的音频格式：.aif .wav .mp3 .ogg
-        //注: PC平台不支持外部加载MP3，移动平台才能正常使用
         duel.AddRange(Directory.GetFiles(string.Concat(soundPath, "duel"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         advantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "advantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         disadvantage.AddRange(Directory.GetFiles(string.Concat(soundPath, "disadvantage"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         deck.AddRange(Directory.GetFiles(string.Concat(soundPath, "deck"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
-        lobby.AddRange(Directory.GetFiles(string.Concat(soundPath, "lobby"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         lose.AddRange(Directory.GetFiles(string.Concat(soundPath, "lose"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         menu.AddRange(Directory.GetFiles(string.Concat(soundPath, "menu"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
         siding.AddRange(Directory.GetFiles(string.Concat(soundPath, "siding"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));
@@ -178,7 +183,6 @@ public class BGMController : MonoBehaviour
         BGMdir.Add("advantage/");
         BGMdir.Add("disadvantage/");
         BGMdir.Add("deck/");
-        BGMdir.Add("lobby/");
         BGMdir.Add("lose/");
         BGMdir.Add("menu/");
         BGMdir.Add("siding/");
@@ -205,6 +209,7 @@ public class BGMController : MonoBehaviour
         catch { }
 
     }
+
     private IEnumerator LoadBGM()
     {
         WWW request = GetAudioFromFile(soundFilePath);
@@ -214,12 +219,29 @@ public class BGMController : MonoBehaviour
         PlayAudioFile();
     }
 
+    private IEnumerator LoadMP3()
+    {
+        yield return null;
+        audioClip = Mp3Loader.LoadMp3(soundFilePath.Substring(8, soundFilePath.Length - 8));
+        audioClip.name = Path.GetFileName(soundFilePath);
+        PlayAudioFile();
+    }
+
+    private IEnumerator PlayNext(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        IsPlaying = false;
+        StartBGM(currentPlaying);
+    }
+
     private void PlayAudioFile()
     {
         audioSource.clip = audioClip;
         audioSource.volume = Program.I().setting.BGMvol() * multiplier;
-        audioSource.loop = true;
+        //audioSource.loop = true;
         audioSource.Play();
+        soundPlayNext = StartCoroutine(PlayNext(audioClip.length));
     }
 
     private WWW GetAudioFromFile(string pathToFile)
