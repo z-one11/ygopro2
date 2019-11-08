@@ -1,85 +1,149 @@
 fileFormatVersion: 2
-guid: c802b139539e74c4ba82c1fb0468bae4
+guid: 5beb3ac7c52c73345a5352b3a8dee6a5
+timeCreated: 1470053253
+licenseType: Pro
 PluginImporter:
-  externalObjects: {}
   serializedVersion: 2
   iconMap: {}
   executionOrder: {}
   isPreloaded: 0
   isOverridable: 0
   platformData:
-  - first:
-      '': OSXIntel
-    second:
-      enabled: 0
-      settings:
-        CPU: None
-  - first:
-      '': OSXIntel64
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      Any: 
-    second:
-      enabled: 1
-      settings: {}
-  - first:
-      Editor: Editor
-    second:
-      enabled: 0
-      settings:
-        CPU: x86_64
-        DefaultValueInitialized: true
-  - first:
-      Facebook: Win
-    second:
-      enabled: 0
-      settings:
-        CPU: None
-  - first:
-      Facebook: Win64
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: Linux
-    second:
-      enabled: 0
-      settings:
-        CPU: None
-  - first:
-      Standalone: Linux64
-    second:
-      enabled: 1
-      settings:
-        CPU: x86_64
-  - first:
-      Standalone: LinuxUniversal
-    second:
-      enabled: 1
-      settings:
-        CPU: x86_64
-  - first:
-      Standalone: OSXUniversal
-    second:
-      enabled: 0
-      settings:
-        CPU: x86_64
-  - first:
-      Standalone: Win
-    second:
-      enabled: 0
-      settings:
-        CPU: None
-  - first:
-      Standalone: Win64
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
+    data:
+      first:
+        '': Any
+      second:
+        enabled: 0
+        settings:
+          Exclude Android: 1
+          Exclude Editor: 0
+          Exclude Linux: 0
+          Exclude Linux64: 0
+          Exclude LinuxUniversal: 0
+          Exclude OSXIntel: 0
+          Exclude OSXIntel64: 0
+          Exclude OSXUniversal: 0
+          Exclude SamsungTV: 1
+          Exclude Tizen: 1
+          Exclude Win: 1
+          Exclude Win64: 0
+          Exclude WindowsStoreApps: 1
+    data:
+      first:
+        '': Editor
+      second:
+        enabled: 0
+        settings:
+          CPU: x86_64
+          OS: Windows
+    data:
+      first:
+        Android: Android
+      second:
+        enabled: 0
+        settings:
+          CPU: ARMv7
+    data:
+      first:
+        Any: 
+      second:
+        enabled: 0
+        settings: {}
+    data:
+      first:
+        Editor: Editor
+      second:
+        enabled: 1
+        settings:
+          DefaultValueInitialized: true
+    data:
+      first:
+        Facebook: Win
+      second:
+        enabled: 0
+        settings:
+          CPU: None
+    data:
+      first:
+        Facebook: Win64
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Samsung TV: SamsungTV
+      second:
+        enabled: 0
+        settings:
+          STV_MODEL: STANDARD_15
+    data:
+      first:
+        Standalone: Linux
+      second:
+        enabled: 1
+        settings:
+          CPU: x86
+    data:
+      first:
+        Standalone: Linux64
+      second:
+        enabled: 1
+        settings:
+          CPU: x86_64
+    data:
+      first:
+        Standalone: LinuxUniversal
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: OSXIntel
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: OSXIntel64
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: OSXUniversal
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Win
+      second:
+        enabled: 0
+        settings:
+          CPU: None
+    data:
+      first:
+        Standalone: Win64
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Windows Store Apps: WindowsStoreApps
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+          DontProcess: False
+          PlaceholderPath: 
+          SDK: AnySDK
+          ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
   assetBundleVariant: 
