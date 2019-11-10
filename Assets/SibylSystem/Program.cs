@@ -324,13 +324,13 @@ public class Program : MonoBehaviour
         });
         go(300, () =>
         {
-            InterString.initialize("config" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
+            InterString.initialize("config/" + AppLanguage.LanguageDir() + "/translation.conf");   //System Language
             GameTextureManager.initialize();
             Config.initialize("config/config.conf");
             //GameStringManager.initialize("config/strings.conf");
-            if (File.Exists("config" + AppLanguage.LanguageDir() + "/strings.conf"))
+            if (File.Exists("config/" + AppLanguage.LanguageDir() + "/strings.conf"))
             {
-                GameStringManager.initialize("config" + AppLanguage.LanguageDir() + "/strings.conf");
+                GameStringManager.initialize("config/" + AppLanguage.LanguageDir() + "/strings.conf");
             }
             if (File.Exists("cdb/strings.conf"))
             {
@@ -342,14 +342,14 @@ public class Program : MonoBehaviour
             }
             YGOSharp.BanlistManager.initialize("config/lflist.conf");
 
-            FileInfo[] fileInfos = (new DirectoryInfo("cdb" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
+            FileInfo[] fileInfos = (new DirectoryInfo("cdb/" + AppLanguage.LanguageDir())).GetFiles().OrderByDescending(x => x.Name).ToArray();//System Language
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 if (fileInfos[i].Name.Length > 4)
                 {
                     if (fileInfos[i].Name.Substring(fileInfos[i].Name.Length - 4, 4) == ".cdb")
                     {
-                        YGOSharp.CardsManager.initialize("cdb" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
+                        YGOSharp.CardsManager.initialize("cdb/" + AppLanguage.LanguageDir() + "/" + fileInfos[i].Name);//System Language
                     }
                 }
             }

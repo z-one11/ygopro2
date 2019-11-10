@@ -141,9 +141,9 @@ public class GameField : OCGobject
         }
         else
         {
-            leftT.mainTexture = new Texture2D(100, 100);
-            midT.mainTexture = new Texture2D(100, 100);
-            rightT.mainTexture = new Texture2D(100, 100);
+            leftT.mainTexture = UIHelper.getTexture2D("texture/duel/", "newfield.png");
+            midT.mainTexture = UIHelper.getTexture2D("texture/duel/", "newfield.png");
+            rightT.mainTexture = UIHelper.getTexture2D("texture/duel/", "newfield.png");
         }
         phaseTexure.mainTexture = GameTextureManager.phase;
         gameObject.GetComponentInChildren<lazyBTNMOVER>().shift(false);
@@ -161,9 +161,9 @@ public class GameField : OCGobject
         }
         else
         {
-            leftT.mainTexture = new Texture2D(100, 100);
-            midT.mainTexture = new Texture2D(100, 100);
-            rightT.mainTexture = new Texture2D(100, 100);
+            leftT.mainTexture = UIHelper.getTexture2D("texture/duel/", "newfield.png");
+            midT.mainTexture = UIHelper.getTexture2D("texture/duel/", "newfield.png");
+            rightT.mainTexture = UIHelper.getTexture2D("texture/duel/", "newfield.png");
         }
         phaseTexure.mainTexture = null;
         gameObject.GetComponentInChildren<lazyBTNMOVER>().shift(true);
