@@ -55,6 +55,12 @@ public class BGMController : MonoBehaviour
         multiplier = 0.8f;
     }
 
+    public void PlayNext()
+    {
+        IsPlaying = false;
+        StartBGM(currentPlaying);
+    }
+
     public void StartBGM(BGMType kind)
     {
         if (currentPlaying == kind && IsPlaying)

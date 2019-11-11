@@ -97,8 +97,15 @@ public class Room : WindowServantSP
     {
         if (val != "")
         {
-            TcpHelper.CtosMessage_Chat(val);
-            //AddChatMsg(val, -1);
+            if (val == "/bgm" || val == "/BGM")
+            {
+                BGMController.Instance.PlayNext();
+            }
+            else
+            {
+                TcpHelper.CtosMessage_Chat(val);
+                //AddChatMsg(val, -1);
+            }
         }
     }
 
