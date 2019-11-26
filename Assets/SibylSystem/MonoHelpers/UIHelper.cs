@@ -1013,14 +1013,14 @@ public static class UIHelper
         {
             return;
         }
-        string path = "sound/" + p + ".mp3";
+        string path = "sound/" + p + ".ogg";
         if (File.Exists(path) == false)
         {
             path = "sound/" + p + ".wav";
         }
         if (File.Exists(path) == false)
         {
-            path = "sound/" + p + ".ogg";
+            path = "sound/" + p + ".mp3";
         }
         if (File.Exists(path) == false)
         {

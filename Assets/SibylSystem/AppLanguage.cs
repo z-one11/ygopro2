@@ -3,23 +3,23 @@ using System.IO;
 
 public class AppLanguage
 {
-    public static string CN = "/zh-CN";        //简体中文(中国大陆) ChineseSimplified
-    public static string TW = "/zh-TW";        //繁体中文(中国台湾) ChineseTraditional
-    public static string Chinese = "/Chinese"; //汉语
+    public static string CN = "zh-CN";        //简体中文(中国大陆) ChineseSimplified
+    public static string TW = "zh-TW";        //繁体中文(中国台湾) ChineseTraditional
+    public static string Chinese = "Chinese"; //汉语
 
-    public static string US = "/en-US";        //英语(美国) English
-    public static string FR = "/fr-FR";        //法语(法国) French
-    public static string DE = "/de-DE";        //德语(德国) German
-    public static string IT = "/it-IT";        //意大利语(意大利) Italian
+    public static string US = "en-US";        //英语(美国) English
+    public static string FR = "fr-FR";        //法语(法国) French
+    public static string DE = "de-DE";        //德语(德国) German
+    public static string IT = "it-IT";        //意大利语(意大利) Italian
 
-    public static string JP = "/ja-JP";        //日语(日本) Japanese
-    public static string KR = "/ko-KR";        //韩语(韩国) Korean
+    public static string JP = "ja-JP";        //日语(日本) Japanese
+    public static string KR = "ko-KR";        //韩语(韩国) Korean
 
-    public static string PT = "/pt-PT";        //葡萄牙语(葡萄牙) Portuguese
-    public static string ES = "/es-ES";        //西班牙语(西班牙) Spanish
+    public static string PT = "pt-PT";        //葡萄牙语(葡萄牙) Portuguese
+    public static string ES = "es-ES";        //西班牙语(西班牙) Spanish
 
     //public static string Null = "";          //Unknown
-    public static string Null = "/en-US";      //English
+    public static string Null = "en-US";      //English
 
     public static string LanguageDir()
     {

@@ -402,9 +402,9 @@ public class Program : MonoBehaviour
             ExtractZipFile(filePath, path);
         }
 
-        if (!File.Exists(AppUpdateLog.GAME_BGM_VERSION))
+        if (!File.Exists(AppUpdateLog.GAME_SOUND_VERSION))
         {
-            string filePath = Application.streamingAssetsPath + "/bgm.zip";
+            string filePath = Application.streamingAssetsPath + "/sound.zip";
             ExtractZipFile(filePath, path);
         }
 

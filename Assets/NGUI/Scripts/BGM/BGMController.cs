@@ -55,6 +55,12 @@ public class BGMController : MonoBehaviour
         multiplier = 0.8f;
     }
 
+    public void PlayNext()
+    {
+        IsPlaying = false;
+        StartBGM(currentPlaying);
+    }
+
     public void StartBGM(BGMType kind)
     {
         if (currentPlaying == kind && IsPlaying)
@@ -132,21 +138,19 @@ public class BGMController : MonoBehaviour
         soundFilePath = SoundURI.ToString();
         if (Program.I().setting != null && !Program.I().setting.isBGMMute.value)
         {
-            if(soundRoutine != null)
-                StopCoroutine(soundRoutine);
+            if (soundRoutine != null) { StopCoroutine(soundRoutine); }
+            if (soundPlayNext != null) { StopCoroutine(soundPlayNext); }
 
-            if(soundPlayNext != null)
-                StopCoroutine(soundPlayNext);
-
-            #if !UNITY_ANDROID || !UNITY_IPHONE
+            #if UNITY_ANDROID || UNITY_IPHONE
+                soundRoutine = StartCoroutine(LoadBGM());
+            #else
                 if (bgmName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
                 {
+                    soundFilePath = bgmName;
                     soundRoutine = StartCoroutine(LoadMP3());
                 } else {
                     soundRoutine = StartCoroutine(LoadBGM());
                 }
-            #else
-                soundRoutine = StartCoroutine(LoadBGM());
             #endif
         }
     }
@@ -222,7 +226,7 @@ public class BGMController : MonoBehaviour
     private IEnumerator LoadMP3()
     {
         yield return null;
-        audioClip = Mp3Loader.LoadMp3(soundFilePath.Substring(8, soundFilePath.Length - 8));
+        audioClip = Mp3Loader.LoadMp3(soundFilePath);
         audioClip.name = Path.GetFileName(soundFilePath);
         PlayAudioFile();
     }
