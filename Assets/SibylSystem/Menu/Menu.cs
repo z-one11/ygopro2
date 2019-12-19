@@ -38,7 +38,7 @@ public class Menu : WindowServantSP
     }
 
     static int Version = 0;
-    string url = "http://api.ygo2019.xyz/ygopro2/ver_android.txt";
+    string url = "http://api.ygo2020.xyz/ygopro2/ver_android.txt";
     string upurl = "";
     string VERSION = "";
     void up()
@@ -168,11 +168,11 @@ public class Menu : WindowServantSP
             }
             else if (File.Exists(AppUpdateLog.OLD_CLOSEUP_VERSION))//如果有则下载更新补丁
             {
-                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2/" + AppUpdateLog.PATCH_CLOSEUP_ZIP, AppUpdateLog.MD5_PATCH_CLOSEUP);
+                jo.Call("doDownloadFile", "https://download.ygo2020.xyz/ygopro2/" + AppUpdateLog.PATCH_CLOSEUP_ZIP, AppUpdateLog.MD5_PATCH_CLOSEUP);
             }
             else                                                   //否则直接下载完整补丁
             {
-                jo.Call("doDownloadFile", "https://download.ygo2019.xyz/ygopro2/" + AppUpdateLog.MAIN_CLOSEUP_ZIP, AppUpdateLog.MD5_MAIN_CLOSEUP);
+                jo.Call("doDownloadFile", "https://download.ygo2020.xyz/ygopro2/" + AppUpdateLog.MAIN_CLOSEUP_ZIP, AppUpdateLog.MD5_MAIN_CLOSEUP);
             }
         }
         else
