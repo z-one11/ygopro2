@@ -167,7 +167,7 @@ public class BGMController : MonoBehaviour
         {
             path = "sound/chants/" + code.ToString() + ".ogg";
         }
-        if (File.Exists(path))
+        if (File.Exists(path) && audioClip.name != Path.GetFileName(path))
         {
             IsPlaying = false;
             PlayMusic(path);
