@@ -45,7 +45,7 @@ public class BGMController : MonoBehaviour
     {
         currentPlaying = BGMType.none;
         BGMController.Instance = this;
-        LoadAllBGM();
+        RefreshBGMDir();
     }
     // Use this for initialization
     public void Start()
@@ -74,65 +74,64 @@ public class BGMController : MonoBehaviour
                 if (duel.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, duel.Count);
-                    PlayRandomBGM(duel[bgmNumber]);
+                    PlayMusic(duel[bgmNumber]);
                 }
                 break;
             case BGMType.advantage:
                 if (advantage.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, advantage.Count);
-                    PlayRandomBGM(advantage[bgmNumber]);
+                    PlayMusic(advantage[bgmNumber]);
                 }
                 break;
             case BGMType.disadvantage:
                 if (disadvantage.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, disadvantage.Count);
-                    PlayRandomBGM(disadvantage[bgmNumber]);
+                    PlayMusic(disadvantage[bgmNumber]);
                 }
                 break;
             case BGMType.deck:
                 if (deck.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, deck.Count);
-                    PlayRandomBGM(deck[bgmNumber]);
+                    PlayMusic(deck[bgmNumber]);
                 }
                 break;
             case BGMType.lose:
                 if (lose.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, lose.Count);
-                    PlayRandomBGM(lose[bgmNumber]);
+                    PlayMusic(lose[bgmNumber]);
                 }
                 break;
             case BGMType.menu:
                 if (menu.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, menu.Count);
-                    PlayRandomBGM(menu[bgmNumber]);
+                    PlayMusic(menu[bgmNumber]);
                 }
                 break;
             case BGMType.siding:
                 if (siding.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, siding.Count);
-                    PlayRandomBGM(siding[bgmNumber]);
+                    PlayMusic(siding[bgmNumber]);
                 }
                 break;
             case BGMType.win:
                 if (win.Count != 0)
                 {
                     bgmNumber = rnd.Next(0, win.Count);
-                    PlayRandomBGM(win[bgmNumber]);
+                    PlayMusic(win[bgmNumber]);
                 }
                 break;
         }
 
-        IsPlaying = true;
         currentPlaying = kind;
     }
 
-    public void PlayRandomBGM(string bgmName)
+    public void PlayMusic(string bgmName)
     {
         SoundURI = new Uri(new Uri("file:///"), Environment.CurrentDirectory.Replace("\\", "/") + "/" + bgmName);
         soundFilePath = SoundURI.ToString();
@@ -152,10 +151,32 @@ public class BGMController : MonoBehaviour
                     soundRoutine = StartCoroutine(LoadBGM());
                 }
             #endif
+            IsPlaying = true;
         }
     }
 
-    public void LoadAllBGM()
+    public bool PlayChant(int code)
+    {
+        if (!Directory.Exists("sound/chants/")) Directory.CreateDirectory("sound/chants/");
+        string path = "sound/chants/" + code.ToString() + ".mp3";
+        if (!File.Exists(path))
+        {
+            path = "sound/chants/" + code.ToString() + ".wav";
+        }
+        if (!File.Exists(path))
+        {
+            path = "sound/chants/" + code.ToString() + ".ogg";
+        }
+        if (File.Exists(path))
+        {
+            IsPlaying = false;
+            PlayMusic(path);
+            return true;
+        }
+        return false;
+    }
+
+    public void RefreshBGMDir()
     {
         duel = new List<string>();
         disadvantage = new List<string>();

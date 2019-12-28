@@ -4510,7 +4510,7 @@ public class Ocgcore : ServantWithCardDescription
                 if (card != null)
                 {
                     card.set_code(code);
-                    UIHelper.playSound("summon", 1f);
+                    if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("summon", 1f);
                     if (Program.I().setting.setting.Vsum.value == true)
                     {
                         GameObject mod = Program.I().mod_ocgcore_ss_spsummon_normal;
@@ -4553,7 +4553,7 @@ public class Ocgcore : ServantWithCardDescription
                             {
                                 mod = Program.I().mod_ocgcore_ss_spsummon_ronghe;
                             }
-                            UIHelper.playSound("specialsummon2", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon2", 1f);
                         }
                         else if (GameStringHelper.differ(card.get_data().Type, (long)CardType.Synchro))
                         {
@@ -4561,7 +4561,7 @@ public class Ocgcore : ServantWithCardDescription
                             {
                                 mod = Program.I().mod_ocgcore_ss_spsummon_tongtiao;
                             }
-                            UIHelper.playSound("specialsummon2", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon2", 1f);
 
                         }
                         else if (GameStringHelper.differ(card.get_data().Type, (long)CardType.Ritual))
@@ -4570,7 +4570,7 @@ public class Ocgcore : ServantWithCardDescription
                             {
                                 mod = Program.I().mod_ocgcore_ss_spsummon_yishi;
                             }
-                            UIHelper.playSound("specialsummon2", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon2", 1f);
                         }
                         else if (GameStringHelper.differ(card.get_data().Type, (long)CardType.Link))
                         {
@@ -4582,11 +4582,11 @@ public class Ocgcore : ServantWithCardDescription
                                 card.animationEffect(Program.I().mod_ocgcore_ss_spsummon_link);
                                 mod.GetComponent<partical_scaler>().scale = Mathf.Clamp(card.get_data().Attack, 0, 3500) / 3000f * 3f;
                             }
-                            UIHelper.playSound("specialsummon2", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon2", 1f);
                         }
                         else
                         {
-                            UIHelper.playSound("specialsummon", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon", 1f);
                             mod.GetComponent<partical_scaler>().scale = Mathf.Clamp(card.get_data().Attack, 0, 3500) / 3000f * 3f;
                         }
                         card.animationEffect(mod);
@@ -4595,19 +4595,19 @@ public class Ocgcore : ServantWithCardDescription
                     {
                         if (GameStringHelper.differ(card.get_data().Type, (long)CardType.Fusion))
                         {
-                            UIHelper.playSound("specialsummon2", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon2", 1f);
                         }
                         else if (GameStringHelper.differ(card.get_data().Type, (long)CardType.Synchro))
                         {
-                            UIHelper.playSound("specialsummon2", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon2", 1f);
                         }
                         else if (GameStringHelper.differ(card.get_data().Type, (long)CardType.Ritual))
                         {
-                            UIHelper.playSound("specialsummon2", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon2", 1f);
                         }
                         else
                         {
-                            UIHelper.playSound("specialsummon", 1f);
+                            if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("specialsummon", 1f);
                         }
                     }
                     card.animation_show_off( true);
@@ -4624,7 +4624,7 @@ public class Ocgcore : ServantWithCardDescription
                 if (card != null)
                 {
                     card.set_code(code);
-                    UIHelper.playSound("summon", 1f);
+                    if (!BGMController.Instance.PlayChant(code)) UIHelper.playSound("summon", 1f);
                     if (Program.I().setting.setting.Vflip.value == true)
                     {
                         GameObject mod = Program.I().mod_ocgcore_ss_spsummon_normal;
