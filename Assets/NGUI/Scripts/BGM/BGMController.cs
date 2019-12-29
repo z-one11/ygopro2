@@ -13,7 +13,6 @@ public class BGMController : MonoBehaviour
     public string soundFilePath;
     public AudioSource audioSource;
     AudioClip audioClip;
-    private float multiplier;
     List<string> duel;
     List<string> disadvantage;
     List<string> deck;
@@ -51,8 +50,7 @@ public class BGMController : MonoBehaviour
     public void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
-
-        multiplier = 0.8f;
+        audioSource.volume = 0;
     }
 
     public void PlayNext()
@@ -228,16 +226,15 @@ public class BGMController : MonoBehaviour
         {
             if (audioSource != null)
             {
-                audioSource.volume = vol * multiplier;
+                audioSource.volume = vol;
             }
         }
         catch { }
-
     }
 
     private IEnumerator LoadBGM()
     {
-        WWW request = GetAudioFromFile(soundFilePath);
+        WWW request = new WWW(soundFilePath);
         yield return request;
         audioClip = request.GetAudioClip(true, true);
         audioClip.name = Path.GetFileName(soundFilePath);
@@ -263,15 +260,9 @@ public class BGMController : MonoBehaviour
     private void PlayAudioFile()
     {
         audioSource.clip = audioClip;
-        audioSource.volume = Program.I().setting.BGMvol() * multiplier;
         //audioSource.loop = true;
         audioSource.Play();
         soundPlayNext = StartCoroutine(PlayNext(audioClip.length));
     }
 
-    private WWW GetAudioFromFile(string pathToFile)
-    {
-        WWW request = new WWW(pathToFile);
-        return request;
-    }
 }
