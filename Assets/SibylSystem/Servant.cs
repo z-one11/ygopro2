@@ -818,6 +818,7 @@ public class Servant
             UIHelper.faces.Remove(faceName);//防止bug，先删除再添加
             UIHelper.faces.Add(faceName, Face);
             UIHelper.getByName<UITexture>(currentMSwindow_Face, "face_").mainTexture = Face;
+            Program.I().selectServer.face.mainTexture = Face;
         }
     }
 

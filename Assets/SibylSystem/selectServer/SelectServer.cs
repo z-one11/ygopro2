@@ -17,6 +17,8 @@ public class SelectServer : WindowServantSP
     UISprite inputIP_;
     UISprite inputPort_;
 
+    public UITexture face;
+
     public override void initialize()
     {
         createWindow(Program.I().new_ui_selectServer);
@@ -25,6 +27,7 @@ public class SelectServer : WindowServantSP
         UIHelper.registEvent(gameObject, "join_", onClickJoin);
         UIHelper.registEvent(gameObject, "clearPsw_", onClearPsw);
         serversList = UIHelper.getByName<UIPopupList>(gameObject, "server");
+        //serversList.fontSize = 30;
         UIHelper.registEvent(gameObject, "server", pickServer);
         UIHelper.getByName<UIInput>(gameObject, "name_").value = Config.Get("name", "YGOPro2 User");
         list = UIHelper.getByName<UIPopupList>(gameObject, "history_");
@@ -40,15 +43,21 @@ public class SelectServer : WindowServantSP
 
         inputIP.value = Config.Get("ip_", "s1.ygo233.com");
         inputPort.value = Config.Get("port_", "233");
-        serversList.value = Config.Get("serversPicker", "[Ser1] 233正式服");
+        serversList.value = Config.Get("serversPicker", "[OCG]233 Server");
 
-        serversList.items.Add("[Ser1] 233正式服");
-        serversList.items.Add("[Ser2] 23333先行服");
-        serversList.items.Add("[Ser3] 2Pick轮抽服");
-        serversList.items.Add("[Ser4] Koishi Server (TCG)");
-        serversList.items.Add("[Ser5] Koishi Server (高速决斗)");
-        serversList.items.Add("[自定义]");
+        face = UIHelper.getByName<UITexture>(gameObject, "face_");
+        face.mainTexture = UIHelper.getFace(name);
 
+        //方便免修改 [selectServerWithRoomlist.prefab]
+        serversList.items.Add("[OCG]233 Server");
+        serversList.items.Add("[OCG]233 Server (大师规则2020)");
+        serversList.items.Add("[TCG]Koishi Server");
+        serversList.items.Add("[OCG&TCG]23333先行服");
+        serversList.items.Add("[OCG&TCG]YGOhollow (JP)");
+        serversList.items.Add("----------------------------------------------");
+        serversList.items.Add("[2Pick]轮抽服");
+        serversList.items.Add("[SP Duel]Koishi Server");
+        //
         SetActiveFalse();
     }
 
@@ -57,56 +66,72 @@ public class SelectServer : WindowServantSP
         string server = serversList.value;
         switch (server)
         {
-            case "[Ser1] 233正式服":
+            case "[OCG]233 Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "233";
-                Config.Set("serversPicker", "[Ser1] 233正式服");
-                save();
+                Config.Set("serversPicker", "[OCG]233 Server");
 
                 inputIP_.enabled = false;
-                inputPort_.enabled = false;
+                inputPort_.enabled = true;
                 break;
             }
-            case "[Ser2] 23333先行服":
+            case "[OCG]233 Server (大师规则2020)":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
-                UIHelper.getByName<UIInput>(gameObject, "port_").value = "23333";
-                Config.Set("serversPicker", "[Ser2] 23333先行服");
-                save();
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "2020";
+                Config.Set("serversPicker", "[OCG]233 Server (大师规则2020)");
 
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
             }
-            case "[Ser3] 2Pick轮抽服":
-            {
-                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
-                UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
-                Config.Set("serversPicker", "[Ser3] 2Pick轮抽服");
-                save();
-
-                inputIP_.enabled = false;
-                inputPort_.enabled = false;
-                break;
-            }
-            case "[Ser4] Koishi Server (TCG)":
+            case "[TCG]Koishi Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "1311";
-                Config.Set("serversPicker", "[Ser4] Koishi Server (TCG)");
-                save();
+                Config.Set("serversPicker", "[TCG]Koishi Server");
+
+                inputIP_.enabled = false;
+                inputPort_.enabled = true;
+                break;
+            }
+            case "[OCG&TCG]23333先行服":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "s1.ygo233.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "23333";
+                Config.Set("serversPicker", "[OCG&TCG]23333先行服");
 
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
                 break;
             }
-            case "[Ser5] Koishi Server (高速决斗)":
+            case "[OCG&TCG]YGOhollow (JP)":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "ads.ygoads.com";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "7911";
+                Config.Set("serversPicker", "[OCG&TCG]YGOhollow (JP)");
+
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            //----------------------------------------------
+            case "[SP Duel]Koishi Server":
             {
                 UIHelper.getByName<UIInput>(gameObject, "ip_").value = "koishi.moecube.com";
                 UIHelper.getByName<UIInput>(gameObject, "port_").value = "7373";
-                Config.Set("serversPicker", "[Ser5] Koishi Server (高速决斗)");
-                save();
+                Config.Set("serversPicker", "[SP Duel]Koishi Server");
+
+                inputIP_.enabled = false;
+                inputPort_.enabled = false;
+                break;
+            }
+            case "[2Pick]轮抽服":
+            {
+                UIHelper.getByName<UIInput>(gameObject, "ip_").value = "2pick.mycard.moe";
+                UIHelper.getByName<UIInput>(gameObject, "port_").value = "765";
+                Config.Set("serversPicker", "[2Pick]轮抽服");
 
                 inputIP_.enabled = false;
                 inputPort_.enabled = false;
@@ -114,15 +139,13 @@ public class SelectServer : WindowServantSP
             }
             default:
             {
-                Config.Set("serversPicker", "[自定义]");
-                save();
+                Config.Set("serversPicker", "----------------------------------------------");
 
                 inputIP_.enabled = true;
                 inputPort_.enabled = true;
                 break;
             }
         }
-
     }
 
     void onSelected()
@@ -199,6 +222,7 @@ public class SelectServer : WindowServantSP
                 TcpHelper.tcpClient.Close();
             }
         }
+        save();
     }
 
     public void set_version(string str)
@@ -282,12 +306,14 @@ public class SelectServer : WindowServantSP
     void onClickFace()
     {
         name = UIHelper.getByName<UIInput>(gameObject, "name_").value;
+        face.mainTexture = UIHelper.getFace(name);
         RMSshow_face("showFace", name);
         Config.Set("name", name);
     }
 
     public void save()
     {
+        Config.Set("name", UIHelper.getByName<UIInput>(gameObject, "name_").value);
         Config.Set("ip_", UIHelper.getByName<UIInput>(gameObject, "ip_").value);
         Config.Set("port_", UIHelper.getByName<UIInput>(gameObject, "port_").value);
     }

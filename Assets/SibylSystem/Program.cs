@@ -286,7 +286,7 @@ public class Program : MonoBehaviour
 
         go(1, () =>
         {
-            GAME_VERSION = PRO_VERSION();
+            GAME_VERSION = PRO_VERSION() + "-fix1";
             UIHelper.iniFaces();
             initializeALLcameras();
             fixALLcamerasPreFrame();
