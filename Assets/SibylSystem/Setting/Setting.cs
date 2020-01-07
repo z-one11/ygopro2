@@ -102,7 +102,7 @@ public class Setting : WindowServant2D
         {
             if (Program.I().bgm != null)
             {
-                Program.I().bgm.Start();
+                Program.I().bgm.PlayNext();
             }
         }
         else
