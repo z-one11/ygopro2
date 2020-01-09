@@ -185,7 +185,7 @@ public class BGMController : MonoBehaviour
         siding = new List<string>();
         win = new List<string>();
 
-        string soundPath = "sound/bgm/";
+        string soundPath = "sound/BGM/";
         dirPath(soundPath);
         //Unity 能使用的音频格式：.aif .wav .mp3 .ogg
         duel.AddRange(Directory.GetFiles(string.Concat(soundPath, "duel"), "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".mp3") || s.EndsWith(".ogg") || s.EndsWith(".wav")));

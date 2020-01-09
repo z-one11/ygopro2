@@ -37,7 +37,7 @@ public class Menu : WindowServantSP
     }
 
     static int Version = 0;
-    string url = "http://api.ygo2020.xyz/ygopro2/ver.txt";
+    string url = "http://api.ygo2020.xyz/ygopro2/ver_win.txt";
     string upurl = "";
     string VERSION = "";
     void up()

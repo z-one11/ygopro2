@@ -175,7 +175,8 @@ public class Setting : WindowServant2D
     public void setScreenSizeValue()
     {
         //dontResizeTwice = 3;
-        UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Screen.width.ToString() + "*" + Screen.height.ToString();
+        //UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Screen.width.ToString() + "*" + Screen.height.ToString();
+        UIHelper.getByName<UIPopupList>(gameObject, "screen_").value = Config.Get("screen_", Screen.width.ToString() + "*" + Screen.height.ToString());
     }
 
     void onCP()
@@ -300,6 +301,7 @@ public class Setting : WindowServant2D
         string[] mats = UIHelper.getByName<UIPopupList>(gameObject, "screen_").value.Split(new string[] { "*" }, StringSplitOptions.RemoveEmptyEntries);
         if (mats.Length == 2)
         {
+            Config.Set("screen_", mats[0] + "*" + mats[1]);
             Screen.SetResolution(int.Parse(mats[0]), int.Parse(mats[1]), UIHelper.getByName<UIToggle>(gameObject, "full_").value);
         }
         Program.go(100, () => { Program.I().fixScreenProblems(); });
