@@ -3,7 +3,7 @@ using System;
 using System.IO;
 public class BackGroundPic : Servant
 {
-    public static GameObject backGround;
+    GameObject backGround;
     public override void initialize()
     {
         backGround = create(Program.I().mod_simple_ngui_background_texture, Vector3.zero, Vector3.zero, false, Program.ui_back_ground_2d);
@@ -13,21 +13,14 @@ public class BackGroundPic : Servant
         {
             fileName += ".mp4";
             backGround.AddComponent<BackGroundPlayMP4>();
-            BackGroundPlayMP4.Instance.LoadMP4(fileName);
+            BackGroundPlayMP4.Instance.LoadMP4(backGround, fileName);
         }
         else if (File.Exists(fileName + ".ogv"))
         {
             //不支持移动平台 (原因：MovieTexture)
             fileName += ".ogv";
             backGround.AddComponent<BackGroundPlayOGV>();
-            BackGroundPlayOGV.Instance.LoadOGV(fileName);
-        }
-        else if (File.Exists(fileName + ".gif"))
-        {
-            //不支持移动平台 (原因：System.Drawing)
-            fileName += ".gif";
-            backGround.AddComponent<BackGroundPlayGIF>();
-            BackGroundPlayGIF.Instance.LoadGIF(fileName);
+            BackGroundPlayOGV.Instance.LoadOGV(backGround, fileName);
         }
         else if (File.Exists(fileName + ".png"))
         {

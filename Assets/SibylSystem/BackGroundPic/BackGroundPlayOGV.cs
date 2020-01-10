@@ -5,19 +5,23 @@ using UnityEngine.UI;
 
 public class BackGroundPlayOGV : MonoBehaviour
 {
-    public MovieTexture movieTexture;
+    GameObject backGround;
+
+    MovieTexture movieTexture;
+
     string bgFilePath;
-    Uri fileURI;
 
     public static BackGroundPlayOGV Instance;
+
     public BackGroundPlayOGV()
     {
         BackGroundPlayOGV.Instance = this;
     }
 
-    public void LoadOGV(string fileName)
+    public void LoadOGV(GameObject bg, string fileName)
     {
-        fileURI = new Uri(new Uri("file:///"), Environment.CurrentDirectory.Replace("\\", "/") + "/" + fileName);
+        backGround = bg;
+        Uri fileURI = new Uri(new Uri("file:///"), Environment.CurrentDirectory.Replace("\\", "/") + "/" + fileName);
         bgFilePath = fileURI.ToString();
 
         StartCoroutine(PlayOGV());
@@ -31,8 +35,8 @@ public class BackGroundPlayOGV : MonoBehaviour
         while(!movieTexture.isReadyToPlay)
             yield return request;
 
-        BackGroundPic.backGround.GetComponent<UITexture>().mainTexture = movieTexture;
-        BackGroundPic.backGround.GetComponent<UITexture>().depth = -100;
+        backGround.GetComponent<UITexture>().mainTexture = movieTexture;
+        backGround.GetComponent<UITexture>().depth = -100;
 
         movieTexture.loop = true;
         movieTexture.Play();
